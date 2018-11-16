@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
-import Navbar from './Navbar/Navbar';
 import ApplicantLogin from './Login/applicantLogin';
 
 class Main extends Component {

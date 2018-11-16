@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
+
 import jwt_decode from 'jwt-decode';
 
 
-class Login extends Component {
+class ApplicantLogin extends Component {
 
     constructor(props) {
         //Call the constrictor of Super class i.e The Component
@@ -16,8 +17,6 @@ class Login extends Component {
         this.state = {
             email: "",
             password: ""
-            // authFlag : false,
-            // message : ""
         }
         //Bind the handlers to this class
         this.emailChangeHandler = this.emailChangeHandler.bind(this);
@@ -74,6 +73,7 @@ class Login extends Component {
         this.props.onSubmitHandle(values)
     }
    
+
     render() {
         const { handleSubmit } = this.props;
         let redirect = null;
@@ -81,7 +81,6 @@ class Login extends Component {
             console.log("hello");
             redirect = <Redirect to="/home" />
         }
-        console.log(this.props.message);
         return (
             <div style={{ backgroundColor: "#f4f4f4" }}>
                 <div>
@@ -90,6 +89,7 @@ class Login extends Component {
                         <div class="login-form">
 
                             <h1>Log in to LinkedIn</h1>
+
                             <div class="main-div">
                                 <div class="panel">
 
@@ -162,11 +162,11 @@ const mapDispatchToProps = dispatch => {
                     localStorage.setItem('token', response.data.token);
                     const decoded = jwt_decode(response.data.token);
                     console.log(decoded);
-                    localStorage.setItem('decoded_isRecruiter', decoded.isRecruiter);
+                    localStorage.setItem('decoded_is_owner', decoded.is_owner);
                     localStorage.setItem('decoded_email', decoded.email);
                     localStorage.setItem('decoded_id', decoded.id);
-                    localStorage.setItem('decoded_fName', decoded.fName);
-                    localStorage.setItem('decoded_lName', decoded.lName);
+                    localStorage.setItem('decoded_fname', decoded.first_name);
+                    localStorage.setItem('decoded_lname', decoded.last_name);
                     dispatch({ type: 'LOGIN', payload: response.data, statusCode: response.status })
                 })
                 .catch((error) => {
@@ -180,5 +180,5 @@ const mapDispatchToProps = dispatch => {
 export default reduxForm({
     validate,
     form: "login"
-})(connect(mapStateToProps, mapDispatchToProps)(Login));
+})(connect(mapStateToProps, mapDispatchToProps)(ApplicantLogin));
 
