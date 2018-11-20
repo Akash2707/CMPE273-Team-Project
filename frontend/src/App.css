@@ -21,6 +21,108 @@
  
 }
 
+.bold{
+  font-weight: 900;
+ 
+}
+
+.detailJobBox{
+height:auto;
+width: 100%;
+padding: 0px;
+margin: 0px;
+
+
+}
+.detailJobBanner{
+  position:absolute; 
+  height:240px; 
+  width:100%;
+  border:1px solid transparent;
+  padding:0px;
+  margin:0px;
+}
+ 
+.detailJobBanner img {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+.detailJobDiv{
+  position:relative; 
+  height: 240px; 
+  width: 60%;
+  border: 1px solid transparent;
+  top:170px;
+  left:130px;
+  background-color: #ffffff;
+  padding:5px;
+  -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
+  -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+.detailJobDiv1{
+  position:relative; 
+  height: auto; 
+  width: 60%;
+  margin-bottom: 80px;
+  border: 1px solid transparent;
+  background-color: #ffffff;
+  padding:20px;
+  padding-bottom: 50px;
+  top:190px;
+  left:130px;
+  -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
+  -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+
+.chip {
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  border:1px solid black;
+  background-color: #ffffff;
+  text-align: center;
+  margin:3px;
+}
+
+.detailJobLogo{
+  height: 160px;
+  width: 180px;
+  border:1px solid black;
+  margin:35px 30px 30px 30px;
+  
+}
+
+.detailJobCompanyDetail{
+  height: 110px;
+  width: 60%;
+  border:1px solid black;
+  margin:35px 5px 0px 0px;
+  padding: 5px;
+  
+}
+
+.jobApplyBox {
+  background: #ffffff none repeat scroll 0 0;
+  border-radius: 2px;
+  margin: 30px;
+  width: 70%;
+  height: auto;
+  padding: 30px 10px 30px;
+  border: 1px solid #d4d4d4;
+ 
+}
 
 .form-group {
   margin-bottom:10px;
