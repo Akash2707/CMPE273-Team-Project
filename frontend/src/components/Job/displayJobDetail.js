@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
@@ -145,6 +143,9 @@ class DisplayJobDetail extends Component {
                             <p>"Answer"</p>
 
                             <label>Job Function</label>
+                            <p>"Answer"</p>
+
+                             <label>Level of Education</label>
                             <p>"Answer"</p>
                         </div>
                     </div>

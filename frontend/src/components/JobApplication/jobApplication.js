@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ApplicantDetail from '../JobApplication/applicantDetial';
-// import ApplicantEducation from '../JobApplication/applicantEducation';
+import ApplicantEducation from '../JobApplication/applicantEducation';
 import EqualOpportunity from '../JobApplication/equalOpportunity';
 
 import { connect } from "react-redux";
@@ -32,7 +32,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Personal Detail',  'Equal Opportunity' ];
+  return ['Personal Detail', 'Education', 'Equal Opportunity' ];
 }
 
 class JobApplication extends React.Component {
@@ -68,8 +68,10 @@ class JobApplication extends React.Component {
           switch (step) {
             case 0: 
               return <ApplicantDetail getValues={() => (this.getValues())} updateValues={(u) => {this.updateValues(u)}}/>;
+              case 1: 
+              return <ApplicantEducation getValues={() => (this.getValues())} updateValues={(u) => {this.updateValues(u)}}/>;
             
-            case 1:
+            case 2:
               return <EqualOpportunity getValues={() => (this.getValues())} updateValues={(u) => {this.updateValues(u)}}/>;
        
               default:

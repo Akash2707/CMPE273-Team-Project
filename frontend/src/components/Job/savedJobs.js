@@ -1,0 +1,45 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect } from 'react-router';
+import axios from 'axios';
+
+class SavedJobs extends Component {
+
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
+        }
+    }
+    render(){
+        return(
+            <div className="containerFluid" style={{backgroundColor:"#f4f4f4"}}> 
+                <div className="col-md-12 savedJobsBanner">
+                    <h4 style={{margin:"20px 0px 0px 20px"}}>Saved Jobs</h4>
+                </div>
+                <div className="col-md-12 savedJobsBox">
+                    <div  className="col-md-12 savedJobsCards">
+                        <div className="col-md-2 savedJobsLogo">
+
+                        </div>
+                        <div className="col-md-7 savedJobsDetails">
+                        
+                            <h5><b>Position</b></h5>
+                            <h6>Company Name</h6>
+                            <br/>
+                            <p>Location</p>
+                        </div>
+                        <div align="right" class="col-md-2">
+                            <p><i class="glyphicon glyphicon-bookmark" style={{fontSize:"30px", color:"blue", marginTop:"50%"}} ></i></p>
+                        
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default SavedJobs;
