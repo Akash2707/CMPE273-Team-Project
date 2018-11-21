@@ -2,6 +2,7 @@ var connection =  new require('./kafka/Connection');
 //topics files
 //var signin = require('./services/signin.js');
 var applicantLogin = require('./services/applicantLogin');
+var postJob = require('./services/PostJob');
 
 
 function handleTopicRequest(topic_name,fname){
@@ -37,3 +38,4 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("applicantLoginCheck",applicantLogin)
+handleTopicRequest("post_job",postJob)

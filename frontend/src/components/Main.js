@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import ApplicantLogin from './Login/applicantLogin';
+import PostJobMain from './PostJob/PostJobMain';
 
 class Main extends Component {
     render(){
@@ -8,6 +9,7 @@ class Main extends Component {
             <div>
                 {/*Render Different Component based on Route*/}
                 <Route path="/applicantlogin" component={ApplicantLogin}/>
+                <Route path="/job-posting" component={PostJobMain}/>
             </div>
         )
     }
