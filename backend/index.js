@@ -6,6 +6,13 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var passport = require('passport')
 var cors = require('cors');
+app.set('view engine', 'ejs');
+var AWS = require('aws-sdk');
+var path = require('path');
+var awsCredFile = path.join(__dirname, './', 'configuration.json');
+AWS.config.loadFromPath(awsCredFile);
+var applicantLoginController = require('./controllers/applicantLoginController');
+var addJobController = require('./controllers/AddJobContorller');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
@@ -32,19 +39,20 @@ app.use(session({
 // app.use(bodyParser.urlencoded({
 //     extended: true
 //   }));
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(morgan('dev'));
 
 //Allow Access Control
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers');
     res.setHeader('Cache-Control', 'no-cache');
     next();
-  });
+});
+
 
 
 var loginController = require('./controllers/login')
@@ -52,8 +60,23 @@ var signupController = require('./controllers/signup')
 
 app.post('/login',loginController.authenticate);
 app.post('/signup',signupController.register);
+app.post('/add/job', addJobController.addJob)
+
+
+
+app.get('/download/:file(*)', (req, res) => {
+    console.log("Inside download file");
+    var file = req.params.file;
+    var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
+    var params = { Bucket: 'linkedin-bucket', Key: file };
+    s3Bucket.getObject(params, function (err, data) {
+        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        res.write(data.Body, 'binary');
+        res.end(null, 'binary');
+    });
+});
+
 
 
 app.listen(3001);
 console.log("Server Listening on port 3001");
-
