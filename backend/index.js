@@ -8,6 +8,7 @@ var passport = require('passport')
 var cors = require('cors');
 app.set('view engine', 'ejs');
 var applicantLoginController = require('./controllers/applicantLoginController');
+var jobApplicationController = require('./controllers/jobApplicationController');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
@@ -46,7 +47,7 @@ app.use(function(req, res, next) {
   });
 
 app.post('/travelerlogin',applicantLoginController.authenticate);
-
+app.post('/applyjob',jobApplicationController.jobApply);
 
 app.listen(3001);
 console.log("Server Listening on port 3001");
