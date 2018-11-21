@@ -7,3 +7,4 @@ module.exports = {
     'database_user': '',
     'database_password': '',
 };
+

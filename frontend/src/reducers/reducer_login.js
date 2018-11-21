@@ -1,34 +1,57 @@
-
 const initialStore = {
-    authFlag : false,
+    loginflag : false,
     message : "",
     token : "",
-    status : false
+    status : false,
+    data : [],
+    signflag : false,
+    recruiter : false
 }
 
-const reducerLogin = (state = initialStore,action) => {
-    if(action.type === "LOGIN" && action.statusCode == 200){
-        console.log("token" +action.payload.token);
+export default function(state = initialStore,action) {
+   
+    if(action.type === "LOGIN" && action.statusCode === 200){
+    //    console.log("token" +action.payload.token);
+    //    console.log(" payload 200 login : " + action.payload)
+    //   console.log(' recruiter :', action.payload.isRecruiter)
+    //    console.log(' success flag : ', action.payload.success)
         return {
             ...state,
-            authFlag : action.payload.success,
-            message : action.payload.message,
+           loginflag : action.payload.success,
+           recruiter: action.payload.isRecruiter,
+           data : action.payload.reply,
+           message : action.payload.message
         }
     }
-    if(action.type === "LOGIN" && action.statusCode == 403){
+    if(action.type === "LOGIN" && action.statusCode === 400){
+    //    console.log(" payload 400 login : " + action.payload) 
+    //     console.log(action.payload.success)
         return {
             ...state,
-            authFlag : action.payload.success,
+            loginflag : action.payload.success,
             message : action.payload.message 
         }
     }
-    if(action.type === "HOME"){
+
+    if(action.type === "SIGNUP" && action.statusCode === 200){
+     //   console.log(" payload 200 signup : " + action.payload)
+     //   console.log(" success flag ", action.payload.success)
         return {
             ...state,
-            status : true,
+            signflag : action.payload.success,
+            message : action.payload.message,
+
+        }
+    }
+    if(action.type === "SIGNUP" && action.statusCode === 400){
+    //    console.log(" payload 400 signup : " + action.payload)
+    //    console.log(action.payload.success)
+        return {
+            ...state,
+            signflag: action.payload.success,
+            message : action.payload.message 
         }
     }
     return state;
 }
 
-export default reducerLogin;

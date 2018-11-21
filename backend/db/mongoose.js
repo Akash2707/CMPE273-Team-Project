@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/linkedIn', { useNewUrlParser: true , poolSize : 100});
 
-mongoose.connect('mongodb://localhost:27017/linkedIn?poolSize=20', {poolSize: 20});
+var db = mongoose.connection
 
-module.exports = {mongoose};
+db.Promise = global.Promise;
+
+module.exports = {db};

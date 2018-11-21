@@ -6,22 +6,23 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var passport = require('passport')
 var cors = require('cors');
-app.set('view engine', 'ejs');
-var applicantLoginController = require('./controllers/applicantLoginController');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
+
 // Bring in defined Passport Strategy
 require('./config/passport')(passport);
+
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 module.exports = app;
 
-app.use(cookieParser('homeaway'));
+app.use(cookieParser('linkedIn'));
 app.use(express.static('public'));
+
 //use express session to maintain session data
 app.use(session({
-    secret              : 'homeaway',
+    secret              : 'linkedIn',
     resave              : false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
     saveUninitialized   : false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
     duration            : 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
@@ -45,7 +46,12 @@ app.use(function(req, res, next) {
     next();
   });
 
-app.post('/travelerlogin',applicantLoginController.authenticate);
+
+var loginController = require('./controllers/login')
+var signupController = require('./controllers/signup')
+
+app.post('/login',loginController.authenticate);
+app.post('/signup',signupController.register);
 
 
 app.listen(3001);

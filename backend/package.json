@@ -23,6 +23,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.0",
     "mysql": "^2.16.0",
+    "nodemon": "^1.18.6",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "supertest": "^3.3.0"

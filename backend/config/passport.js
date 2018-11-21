@@ -1,7 +1,7 @@
 'use strict';
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
-var { Users } = require('.././models/users')
+var { Profile } = require('.././models/profile')
 var { mongoose } = require('.././db/mongoose');
 var config = require('./settings');
 
@@ -27,3 +27,4 @@ module.exports = function (passport) {
         });
     }));
 }
+

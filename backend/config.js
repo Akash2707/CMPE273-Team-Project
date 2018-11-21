@@ -3,7 +3,7 @@ var pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'root1234',
     database: 'linkedIn'
 })
 pool.getConnection((err, connection) => {
@@ -17,6 +17,8 @@ pool.getConnection((err, connection) => {
         if (err.code === 'ECONNREFUSED') {
             console.error('Database connection was refused.')
         }
+    } else{
+        console.log(' Connection successful to mysql database ... ')
     }
     if (connection) connection.release()
     return
