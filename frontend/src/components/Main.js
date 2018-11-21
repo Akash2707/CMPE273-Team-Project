@@ -4,6 +4,7 @@ import ApplicantLogin from './Login/applicantLogin';
 import JobApplication from './JobApplication/jobApplication';
 import DisplayJobDetail from './Job/displayJobDetail';
 import SavedJobs from './Job/savedJobs';
+import SearchJobDisplay from './Job/searchJobDisplay';
 class Main extends Component {
     render(){
         return(
@@ -13,6 +14,7 @@ class Main extends Component {
                 <Route path="/jobapplication" component={JobApplication}/>
                 <Route path="/jobdetail" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>
+                <Route path="/searchjobdisplay" component={SearchJobDisplay}/>
             </div>
         )
     }
