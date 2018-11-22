@@ -195,7 +195,7 @@ a:-webkit-any-link {
   -webkit-clip-path: none;
   clip-path: none;
   transform: scale(1);
-
+}
 .step-progress .multi-step .btn-prev{
   background: #0073b1 none repeat scroll 0 0;
   border-color: #0073b1;

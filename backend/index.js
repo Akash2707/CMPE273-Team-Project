@@ -11,7 +11,6 @@ var AWS = require('aws-sdk');
 var path = require('path');
 var awsCredFile = path.join(__dirname, './', 'configuration.json');
 AWS.config.loadFromPath(awsCredFile);
-var applicantLoginController = require('./controllers/applicantLoginController');
 var addJobController = require('./controllers/AddJobContorller');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import MainReducer from "./reducer_main"
+import MainReducer from "./reducer_login"
 import { reducer as formReducer } from "redux-form";
 import PostJobReducer from "./reducer_postjob";
 
