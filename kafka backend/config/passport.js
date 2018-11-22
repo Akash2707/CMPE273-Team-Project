@@ -1,3 +1,4 @@
+/*
 'use strict';
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -26,3 +27,5 @@ module.exports = function (passport) {
         });
     }));
 }
+
+*/

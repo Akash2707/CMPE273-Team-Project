@@ -1,14 +1,16 @@
 import { combineReducers } from "redux";
-import reducerLogin from "./reducer_login"
+import MainReducer from "./reducer_login"
 import { reducer as formReducer } from "redux-form";
 import jobApplication from "./reducer_jobapply"
-
+import PostJobReducer from "./reducer_postjob";
 
 const rootReducer = combineReducers({
-    login : reducerLogin,
+
+    jobApplyReducer: jobApplication,
+    mainReducer : MainReducer,
     form: formReducer,
-    jobApplyReducer: jobApplication
+    postJobReducer: PostJobReducer,
+
 });
 
 export default rootReducer;
-
