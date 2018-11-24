@@ -73,13 +73,13 @@ function handle_request(msg, callback){
 
 var crypt = require('../crypt');
 var conn = require('../db/mysqlConnection')
-var { Login } = require('../models/login')
+var { Users } = require('../models/User')
 
 function handle_request(msg, callback){
 
     var mail = msg.email.toLowerCase()
 
-    Login.findOne({ 
+    Users.findOne({ 
        email : mail,
     }, function(err, user){
        if(err || user === ''){

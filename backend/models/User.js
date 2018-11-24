@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
 
-var Profile = mongoose.model('profile',{
+var Users = mongoose.model('users',{
     fName :{
         type : String
     },
     lName : {
         type : String
-    },
-    email : {
+    },email : {
         type : String
     },
     password : {
@@ -22,6 +21,6 @@ var Profile = mongoose.model('profile',{
     updated_at : {
         type : String
     }
-},'profile');
+});
 
-module.exports = {Profile};
+module.exports = {Users};

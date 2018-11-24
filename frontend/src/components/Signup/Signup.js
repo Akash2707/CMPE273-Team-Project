@@ -107,12 +107,14 @@ class Signup extends Component{
                 { redirect } 
                 <div class="main">
                     <center>
-                        <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+                        
                         <div class="boxSignup">
 
                             <div id="info1"> Be great at what you do</div>
 			                <div id="info2"> Get started - it's free.</div>
-
+                            <br/>
+                            <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+                            <br/>
                                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                                     
                                     <div id="info3"> First name</div>
@@ -133,12 +135,13 @@ class Signup extends Component{
                                         component={this.renderEmailField} 
                                     />
 
-                                    <div id="info3"> Recruiter </div>
-                                    <div class="radio-inline">
-                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="true" />Yes
+                                    <div id="info3"> Recruiter 
+                                    <div class="radio-inline" style={{marginLeft: '15px'}}>
+                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="true" style={{color: 'black'}}/>Yes
                                     </div>
                                     <div class="radio-inline">
                                         <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="no" checked/>No
+                                    </div>
                                     </div>
                                    
                                     <div id="info3"> Password</div>
@@ -148,7 +151,7 @@ class Signup extends Component{
                                         component={this.renderPasswordField} 
                                     />
 
-                                    <button type="submit" className="btn btn-primary">Join now</button>
+                                    <button type="submit" className="btn btn-primary btn-lg">Join now</button>
                                 </form>
                             </div>
                     </center>

@@ -3,7 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-
+import "../../cssFiles/nav.css"
 class Navbar extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +12,7 @@ class Navbar extends Component {
         }
 
         this.dropDownHandler  = this.dropDownHandler.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     dropDownHandler () {
@@ -28,6 +29,19 @@ class Navbar extends Component {
     }
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        localStorage.removeItem('id')
+        localStorage.removeItem('isRecruiter')
+        let detailPage = null
+        detailPage = this.props.history.push({
+            pathname: "/login",
+            state: {
+            }
+        })
+    }
+
     render() {
         let homeClass = null;
         let networkClass = null;
@@ -35,6 +49,8 @@ class Navbar extends Component {
         let messageClass = null;
         let dropDownClass = null;
         let expanded = null;
+        let navigationBar = null
+        
         console.log(this.props.location.pathname);
         if (this.props.location.pathname == "/feed/") {
             homeClass = "nav-item__link nav-item__link--underline js-nav-item-link active"
@@ -66,9 +82,10 @@ class Navbar extends Component {
             dropDownClass = "dropdown closed dropdown"
             expanded = "false"    
         }
-    
-        return (
-            <nav id="extended-nav" className="extended-nav nav-main-container" role="banner" tabIndex="-1" style={{ display: "block" }}>
+
+        if(localStorage.getItem("token") != null){
+            navigationBar = (
+                <nav id="extended-nav" className="extended-nav nav-main-container" role="banner" tabIndex="-1" style={{ display: "block" }}>
                 <div className="nav-main__content full-height display-flex align-items-center">
                     <div class="nav-main__inbug-container fl mr3">
                         <div id="inbug-nav-item" class="nav-item--inbug" lang="en">
@@ -88,17 +105,6 @@ class Navbar extends Component {
                         </div>
                     </div>
                     <ul className="nav-main nav-container display-flex full-height" role="navigation" aria-label="Primary">
-                        <li id="feed-nav-item" className="nav-item nav-item--feed" style={{ opacity: "1" }} lang="en">
-                            <a href="/feed/" data-alias="" data-link-to="feed" data-resource="feed/badge" data-control-name="" className={homeClass}>
-                                <span id="feed-tab-icon" className="nav-item__icon" lang="en" aria-role="presentation">
-                                    <li-icon aria-hidden="true" type="nav-small-home-icon" color="true">
-                                        <svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="nav-icon" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M22,8.45L12.85,2.26a1.5,1.5,0,0,0-1.69,0L2,8.45,3.06,10,4,9.37V19a1,1,0,0,0,1,1h5V15h4v5h5a1,1,0,0,0,1-1V9.37L20.94,10Z" class="active-item" style={{ fillOpacity: "1" }}></path>
-                                            <path d="M22,9.45L12.85,3.26a1.5,1.5,0,0,0-1.69,0L2,9.45,3.06,11,4,10.37V20a1,1,0,0,0,1,1h6V16h2v5h6a1,1,0,0,0,1-1V10.37L20.94,11ZM18,19H15V15a1,1,0,0,0-1-1H10a1,1,0,0,0-1,1v4H6V8.89l6-4,6,4V19Z" class="inactive-item" style={{ fill: "currentColor" }}></path></svg>
-                                    </li-icon>
-                                </span> <span className="nav-item__title">Home</span>
-                            </a>
-                        </li>
                         <li id="mynetwork-nav-item" class="nav-item nav-item--mynetwork" style={{ opacity: "1" }} lang="en">
                             <a href="/mynetwork/" data-alias="relationships" data-link-to="mynetwork" data-resource="voyagerCommunicationsTabBadges" data-control-name="" class={networkClass}>
                                 <span id="mynetwork-tab-icon" class="nav-item__icon" lang="en" aria-role="presentation">
@@ -158,15 +164,15 @@ class Navbar extends Component {
                                                     <img src="https://media.licdn.com/dms/image/C5103AQFY76yHBmz70Q/profile-displayphoto-shrink_100_100/0?e=1548288000&amp;v=beta&amp;t=doXqRRdC4IVu-a1fFF93cj7_5GfKU0ZsV2PuY42byxc" class="nav-settings__member-photo EntityPhoto-circle-4" alt="Aakash Thakkar" height="70" width="70" />
                                                 </div>
                                                 <div class="nav-settings__member-info-container">
-                                                    <h3 class="nav-settings__member-name t-16 t-black t-bold">
+                                                    <h3 class="nav-settings__member-name t-16 t-black t-bold" style={{fontSize: "80%"}}>
                                                         Aakash Thakkar
                                                     </h3>
-                                                    <h4 class="nav-settings__member-occupation t-14 t-black--light t-normal">
+                                                    <h4 class="nav-settings__member-occupation t-14 t-black--light t-normal" style={{fontSize: "80%"}}>
                                                         Graduate Student at San Jose State University
                                                     </h4>
                                                 </div>
                                             </div>
-                                            <div class="nav-settings__linkcard nav-settings__block">
+                                            <div class="nav-settings__linkcard nav-settings__block" style={{fontSize: "80%"}}>
                                                 <span class="nav-settings__linkcard-link button-tertiary-medium">
                                                     View profile
                                                 </span>
@@ -176,7 +182,7 @@ class Navbar extends Component {
                                     <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
                                         <ul class="nav-settings__dropdown-items">
                                             <li class="nav-dropdown__item nav-settings__dropdown-item nav-dropdown__action t-14 t-black t-bold">
-                                                <a data-control-name="nav.settings_signout" href="/m/logout/" id="ember9108" class="block ember-view">              Sign out
+                                                <a data-control-name="nav.settings_signout" onClick={() => this.handleLogout()} id="ember9108" class="block ember-view" style={{fontSize: "80%"}}>              Sign out
                                                 </a>
                                             </li>
                                         </ul>
@@ -187,7 +193,14 @@ class Navbar extends Component {
                     </ul>
                 </div>
             </nav>
-        )
+            )
+        }
+    
+        return (
+            <div>
+            {navigationBar}
+            </div>
+            )
     }
 }
 

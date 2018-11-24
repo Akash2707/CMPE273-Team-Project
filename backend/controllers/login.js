@@ -1,18 +1,5 @@
-var connection = require('../config');
-var express = require('express');
-var app = express();
-var crypt = require('../crypt');
 var config = require('../config/settings');
-
-var passport = require('passport');
 var jwt = require('jsonwebtoken');
-
-var requireAuth = passport.authenticate('jwt', { session: false });
-app.use(passport.initialize());
-
-// Bring in defined Passport Strategy
-require('../config/passport')(passport);
-
 var kafka = require('../kafka/client');
 
 module.exports.authenticate = function (req, res) {
@@ -47,7 +34,7 @@ module.exports.authenticate = function (req, res) {
                 success : true,
                 message: 'successfully authenticated',
                 isRecruiter: user.isRecruiter,
-                token : token
+                token : "JWT " + token
             })
         }res.end()
     });

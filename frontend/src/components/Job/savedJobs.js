@@ -14,7 +14,7 @@ class SavedJobs extends Component {
     }
     render(){
         return(
-            <div className="containerFluid" > 
+            <div className="containerFluid" style={{marginTop: "52px"}}> 
                 <div className="col-md-12 savedJobsBanner">
                     <h4 style={{margin:"20px 0px 0px 20px"}}>Saved Jobs</h4>
                 </div>

@@ -64,9 +64,9 @@ class PostJobMain extends Component {
   render() {
     //if not logged in go to login page
     let redirectVar = null;
-    // if (!localStorage.getItem('email') || localStorage.getItem('isOwner') == 'false') {
-    //   redirectVar = <Redirect to="/loginOwner" />
-    // }
+    if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == 'false') {
+      redirectVar = <Redirect to="/login" />
+    }
     if (this.props.jobAdded) {
       redirectVar = <Redirect to="/applicantLogin" />
     }
@@ -128,9 +128,9 @@ const mapDispatchStateToProps = dispatch => {
     submitJob: (values) => {
       console.log(values)
       axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/add/job', values, {
+      axios.post('http://localhost:3001/add/job', values, {headers: { Authorization: localStorage.getItem('token')},
       params: {
-          email: "s@s.com"
+          email: localStorage.getItem("email")
       }})
         .then(response => {
           console.log(response)

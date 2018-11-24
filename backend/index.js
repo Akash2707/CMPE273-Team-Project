@@ -14,6 +14,7 @@ var awsCredFile = path.join(__dirname, './', 'configuration.json');
 AWS.config.loadFromPath(awsCredFile);
 var addJobController = require('./controllers/AddJobContorller');
 
+var passport = require('passport');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
@@ -61,7 +62,7 @@ var signupController = require('./controllers/signup')
 
 app.post('/login',loginController.authenticate);
 app.post('/signup',signupController.register);
-app.post('/add/job', addJobController.addJob)
+app.post('/add/job', requireAuth, addJobController.addJob)
 app.post('/applyjob',jobApplicationController.jobApply);
 
 

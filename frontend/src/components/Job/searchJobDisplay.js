@@ -53,7 +53,7 @@ class SearchJobDisplay extends Component {
       
         return(
            
-            <div className="containerFluid" > 
+            <div className="containerFluid" style={{marginTop: "52px"}}> 
                 <div className="col-md-12 savedJobsBanner">
                     <div className="col-md-2 form-group" >
                         <input type="text"  className="form-control" name="location" placeholder="Location" onChange={this.locationHandler} defaultValue={this.state.location}  />
@@ -98,7 +98,8 @@ class SearchJobDisplay extends Component {
                     </div>
                 </div>
                 <div className="col-md-12">
-                <div className="col-md-7 savedJobsBox">
+                <div className="col-md-3"></div>
+                <div className="col-md-6 savedJobsBox">
                     <div  className="col-md-12 savedJobsCards" style={{height:"250px"}}>
                         <div className="col-md-2 savedJobsLogo">
 
@@ -114,7 +115,7 @@ class SearchJobDisplay extends Component {
                             </div>
                                     <div class="col-md-1 nav-main__inbug-container fl mr3">
                                     <div id="inbug-nav-item" class="nav-item--inbug" lang="en">
-                                        <a href="/feed/" data-alias="" data-link-to="feed" data-resource="feed/badge" data-control-name="" class = "nav-item__link js-nav-item-link active">
+                                        
                                      
                                             <span class="nav-item__icon nav-item__icon--inbug" lang="en" aria-role="presentation">
                                                 <li-icon aria-hidden="true" type="linkedin-bug" size="34dp" color="brand">
@@ -127,7 +128,7 @@ class SearchJobDisplay extends Component {
                                                     </svg>
                                                 </li-icon>
                                             </span>
-                                        </a>
+                                        
                                        
                                     </div>
                                 </div>
@@ -139,6 +140,7 @@ class SearchJobDisplay extends Component {
                         
                     </div>
                 </div>
+                <div className="col-md-3"></div>
                 </div>
             </div>
         )
