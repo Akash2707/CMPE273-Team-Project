@@ -136,7 +136,7 @@ class Login extends Component {
                                         onChange={this.passwordChangeHandler}
                                     />
                                         
-                                    <button type="submit" className="btn btn-primary btn-lg" style={{marginTop: '15px'}}>Sign in </button>
+                                    <button type="submit" className="btn btn-primary" style={{marginTop: '15px'}}>Sign in </button>
                                             
                                     </form>
                                 </div>

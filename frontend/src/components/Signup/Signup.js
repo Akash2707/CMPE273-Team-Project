@@ -114,7 +114,6 @@ class Signup extends Component{
 			                <div id="info2"> Get started - it's free.</div>
                             <br/>
                             <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
-                            <br/>
                                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                                     
                                     <div id="info3"> First name</div>
@@ -151,7 +150,7 @@ class Signup extends Component{
                                         component={this.renderPasswordField} 
                                     />
 
-                                    <button type="submit" className="btn btn-primary btn-lg">Join now</button>
+                                    <button type="submit" className="btn btn-primary ">Join now</button>
                                 </form>
                             </div>
                     </center>
