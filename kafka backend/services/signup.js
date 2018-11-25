@@ -1,7 +1,7 @@
 var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
-var { Profile } = require('../models/profile')
-var {Login } = require('../models/login')
+var { UserProfile } = require('../models/UserProfile')
+var {Users } = require('../models/User')
 var conn = require('../db/mysqlConnection')
 
 function handle_request(msg, callback){
@@ -9,7 +9,7 @@ function handle_request(msg, callback){
     console.log(" in handle request : "+ JSON.stringify(msg));
     var today = new Date();
 
-    Login.findOne({
+    Users.findOne({
         email : msg.email
     }, function(err, user){
         if(err || user === ''){
@@ -24,10 +24,15 @@ function handle_request(msg, callback){
 
                     var mail = msg.email.toLowerCase()
 
-                    var theUser = new Login({
+                    var theUser = new Users({
+                        fName : msg.fname,
+                        lName : msg.lname,
                         email : mail,
                         password : pass,
-                        isRecruiter : msg.isRecruiter
+                        state: msg.state,
+                        isRecruiter : msg.isRecruiter,
+                        created_at : today,
+                        updated_at : today
                     });
 
                  /*   var sql = `insert into login values(null, '${msg.email}', '${pass}', '${flag}')`;
@@ -37,14 +42,12 @@ function handle_request(msg, callback){
                         console.log(err, ' ', result)
                     })      */
 
-                    var profile = new Profile({
-                        fname : msg.fname,
-                        lname : msg.lname,
+                    var profile = new UserProfile({
+                        fName : msg.fname,
+                        lName : msg.lname,
                         email : mail,
-                        password : pass,
                         isRecruiter : msg.isRecruiter,
-                        created_at : today,
-                        updated_at : today
+                        state: msg.state,
                     })
 
                     theUser.save().then((user) => {

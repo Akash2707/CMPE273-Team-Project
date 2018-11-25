@@ -1,8 +1,8 @@
 'use strict';
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
-var { Profile } = require('.././models/profile')
 var { mongoose } = require('.././db/mongoose');
+var { Users } = require('./../models/User');
 var config = require('./settings');
 
 // Setup work and export for the JWT passport strategy
@@ -12,6 +12,7 @@ module.exports = function (passport) {
         secretOrKey: config.secret
     };
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
+        console.log(jwt_payload)
         Users.findOne({ email: jwt_payload.email }, function (err, user) {
             if (err) {
                 return callback(err, false);

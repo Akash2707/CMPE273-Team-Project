@@ -105,7 +105,7 @@ class Login extends Component {
          
             <div class="main">
                 <center> 
-                <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+                
                     <div class="box">
                         {redirect}
                         <div>
@@ -113,8 +113,10 @@ class Login extends Component {
                             <div id="info1"> Be great at what you do</div>
                             <div id="info2"> Get started - it's free.</div>
                             <Link to="/signup">Join Now</Link>
-                                
-                            <div class="main-div">
+                            <br/>
+                            <br/>
+                            <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+                            <div class="login-div">
                                 <div class="panel"> </div>
                                     
                                 {/* //handleSubmit is the method that comes from redux and it tells redux what to do with the submitted form data
@@ -134,7 +136,7 @@ class Login extends Component {
                                         onChange={this.passwordChangeHandler}
                                     />
                                         
-                                    <button type="submit" className="btn btn-primary">Sign in </button>
+                                    <button type="submit" className="btn btn-primary" style={{marginTop: '15px'}}>Sign in </button>
                                             
                                     </form>
                                 </div>
@@ -181,12 +183,13 @@ const mapDispatchToProps = dispatch => {
             axios.post('http://localhost:3001/login', data)
                 .then((response) => {
                     if(response.data.status === 200){
-                        localStorage.setIte=('token', response.data.token);
+                        localStorage.setItem('token', response.data.token);
                         const decoded = jwt_decode(response.data.token);
                         console.log(decoded);
-                        localStorage.setItem('decoded_id', decoded.id);
-                        localStorage.setItem('decoded_email', decoded.email);
-                        localStorage.setItem('decoded_recruiter', decoded.isRecruiter);
+                        localStorage.setItem('id', decoded.id);
+                        localStorage.setItem('email', decoded.email);
+                        localStorage.setItem('isRecruiter', decoded.isRecruiter);
+                        localStorage.setItem('state', decoded.state);
                     }
                     dispatch({ type: 'LOGIN', payload: response.data, statusCode: response.data.status })
                 })

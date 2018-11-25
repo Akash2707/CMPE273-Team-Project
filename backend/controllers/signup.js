@@ -27,7 +27,7 @@ module.exports.register = function(req, res){
             res.json({
                 status: 200,
                 success : true,
-                message: 'successfully authenticated',
+                message: 'Account created successfully!',
                 reply : user
             })
             res.end()

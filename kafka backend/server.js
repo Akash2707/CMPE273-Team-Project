@@ -4,7 +4,15 @@ var connection = new require('./kafka/Connection');
 var signup = require('./services/signup.js');
 var login = require('./services/login.js');
 //var signin = require('./services/signin.js');
+
+var jobApplication = require('./services/jobApplication');
 var postJob = require('./services/PostJob');
+var searchJobs = require('./services/searchJobs');
+var easyApply = require('./services/EasyApply');
+var checkEasyApply = require('./services/CheckEasyApply');
+var checkApplication = require('./services/CheckApplication');
+var saveJob = require('./services/SaveJob')
+var checkSavedJob = require('./services/CheckSavedJob')
 
 
 function handleTopicRequest(topic_name, fname) {
@@ -41,6 +49,15 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
+
+
+handleTopicRequest("job_application",jobApplication)
 handleTopicRequest("post_login", login)
 handleTopicRequest("post_signup", signup)
 handleTopicRequest("post_job",postJob)
+handleTopicRequest("get_jobs",searchJobs)
+handleTopicRequest("easy_apply",easyApply)
+handleTopicRequest("check_easyapply", checkEasyApply)
+handleTopicRequest("check_application",checkApplication)
+handleTopicRequest("save_job",saveJob)
+handleTopicRequest("check_savedJob",checkSavedJob)

@@ -4,36 +4,44 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
-
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng,
+} from 'react-places-autocomplete';
 import "../../cssFiles/first.css"
 
-class Signup extends Component{
+class Signup extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            fName : "",
-            lName : "",
-            isRecruiter : "",
-            email : "",
-            password : "",
-            signupFlag : ""
+            fName: "",
+            lName: "",
+            isRecruiter: "",
+            email: "",
+            state: "",
+            password: "",
+            signupFlag: ""
         }
         this.radioButtonHandler = this.radioButtonHandler.bind(this)
+        this.stateChangeHandle = this.stateChangeHandle.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.setState({
-            signupFlag : false,
+            signupFlag: false,
         })
     }
 
     radioButtonHandler = (r) => {
         this.setState({
-            isRecruiter : r.target.value
+            isRecruiter: r.target.value
         })
     }
 
+    stateChangeHandle = state => {
+        this.setState({ state });
+    };
 
     renderField(field) {
         const { meta: { touched, error } } = field;
@@ -81,22 +89,22 @@ class Signup extends Component{
 
         )
     }
-        
-    onSubmit(values){
-        this.props.submitHandle(values,this.state.isRecruiter);
+
+    onSubmit(values) {
+        this.props.submitHandle(values, this.state.isRecruiter, this.state.state);
     }
 
-    render(){
+    render() {
         const { handleSubmit } = this.props;
         let redirect = null
-        if(redirect == null  && this.props.signupFlag){
+        if (redirect == null && this.props.signupFlag) {
             console.log(' end of signup page ... ')
             redirect = <Redirect to='/login' />
         }
-        return(
+        return (
             <div>
 
-                <div class="header"> 
+                <div class="header">
                     <div class="wrapper">
                         <h1>
                             <img class="header" alt="LinkedIn" src="https://static.licdn.com/sc/h/95o6rrc5ws6mlw6wqzy0xgj7y" />
@@ -104,53 +112,72 @@ class Signup extends Component{
                     </div>
                 </div>
 
-                { redirect } 
+                {redirect}
                 <div class="main">
                     <center>
-                        <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+
                         <div class="boxSignup">
 
                             <div id="info1"> Be great at what you do</div>
-			                <div id="info2"> Get started - it's free.</div>
+                            <div id="info2"> Get started - it's free.</div>
+                            <br />
+                            <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
+                            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-                                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                                    
-                                    <div id="info3"> First name</div>
-                                    <Field
-                                        name="fname"
-                                        component={this.renderField} 
-                                    />
-                                    
-                                    <div id="info3"> Last name</div>
-                                    <Field
-                                        name="lname"
-                                        component={this.renderField} 
-                                    />
-                                   
-                                    <div id="info3"> Email Id</div>
-                                    <Field
-                                        name="email"
-                                        component={this.renderEmailField} 
-                                    />
+                                <div id="info3"> First name</div>
+                                <Field
+                                    name="fname"
+                                    component={this.renderField}
+                                />
 
-                                    <div id="info3"> Recruiter </div>
-                                    <div class="radio-inline">
-                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="true" />Yes
+                                <div id="info3"> Last name</div>
+                                <Field
+                                    name="lname"
+                                    component={this.renderField}
+                                />
+
+                                <PlacesAutocomplete value={this.state.state} defaultValue={this.state.state} onChange={this.stateChangeHandle}>
+                                    {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
+                                        <div className="autocomplete-root">
+                                            <div id="info3">State/Region/City</div>
+                                            <input {...getInputProps({ className: 'form-control form-group', name: "state", type: "text", autoComplete: "noop" })} />
+                                            <div className="autocomplete-dropdown-container">
+                                                {loading && <div>Loading...</div>}
+                                                {suggestions.map(suggestion => (
+                                                    <div {...getSuggestionItemProps(suggestion)}>
+                                                        <span>{suggestion.description}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </PlacesAutocomplete>
+
+                                <div id="info3"> Email Id</div>
+                                <Field
+                                    name="email"
+                                    component={this.renderEmailField}
+                                />
+
+                                <div id="info3"> Recruiter
+                                    <div class="radio-inline" style={{ marginLeft: '15px' }}>
+                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="true" style={{ color: 'black' }} />Yes
                                     </div>
                                     <div class="radio-inline">
-                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="no" checked/>No
+                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="no" checked />No
                                     </div>
-                                   
-                                    <div id="info3"> Password</div>
-                                    <Field
-                                        
-                                        name="password"
-                                        component={this.renderPasswordField} 
-                                    />
+                                </div>
 
-                                    <button type="submit" className="btn btn-primary">Join now</button>
-                                </form>
-                            </div>
+                                <div id="info3"> Password</div>
+                                <Field
+
+                                    name="password"
+                                    component={this.renderPasswordField}
+                                />
+
+                                <button type="submit" className="btn btn-primary ">Join now</button>
+                            </form>
+                        </div>
                     </center>
                 </div>
             </div>
@@ -178,7 +205,7 @@ function validate(values) {
     if (!values.isRecruiter) {
         errors.isRecruiter = "Enter the isRecruiter field";
     }
-    
+
 
     // If errors is empty, the form is fine to submit
     // If errors has *any* properties, redux form assumes form is invalid
@@ -186,17 +213,18 @@ function validate(values) {
 }
 
 const mapStateToProps = state => {
-    return{
-        signupFlag : state.mainReducer.signflag,
-        message : state.mainReducer.message
+    return {
+        signupFlag: state.mainReducer.signflag,
+        message: state.mainReducer.message
     }
 }
 
 const mapDispatchToProps = dispatch => {
-    return{
-        submitHandle : (data,recruiter) => {
-            
+    return {
+        submitHandle: (data, recruiter, state) => {
+
             data["isRecruiter"] = recruiter
+            data["state"] = state
 
             axios.defaults.withCredentials = true;
             axios.post('http://localhost:3001/signup', data)
