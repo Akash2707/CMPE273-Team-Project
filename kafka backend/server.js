@@ -2,6 +2,12 @@ var connection =  new require('./kafka/Connection');
 //topics files
 //var signin = require('./services/signin.js');
 var applicantLogin = require('./services/applicantLogin');
+var updateProfile = require('./services/updateProfile');
+var addExperience = require('./services/addExperience');
+var addEducation = require('./services/addEducation');
+var profilePhoto = require('./services/uploadProfile');
+var profileDisplay = require('./services/displayProfile');
+var addSkills = require('./services/addSkills');
 
 
 function handleTopicRequest(topic_name,fname){
@@ -37,3 +43,9 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("applicantLoginCheck",applicantLogin)
+handleTopicRequest("profile_update",updateProfile)
+handleTopicRequest("add_experience",addExperience)
+handleTopicRequest("add_education",addEducation)
+handleTopicRequest("profilePhoto_upload",profilePhoto)
+handleTopicRequest("user_profile_display",profileDisplay)
+handleTopicRequest("add_skill",addSkills)

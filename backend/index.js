@@ -7,7 +7,13 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport')
 var cors = require('cors');
 app.set('view engine', 'ejs');
+var AWS = require('aws-sdk');
+var path = require('path');
+var awsCredFile = path.join(__dirname, './', 'configuration.json');
+AWS.config.loadFromPath(awsCredFile);
 var applicantLoginController = require('./controllers/applicantLoginController');
+var updateProfile = require('./controllers/profileController');
+
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
@@ -46,6 +52,24 @@ app.use(function(req, res, next) {
   });
 
 app.post('/travelerlogin',applicantLoginController.authenticate);
+app.put('/recruiter/profile/update',updateProfile.update);
+app.put('/recruiter/profile/experience',updateProfile.addExperience);
+app.put('/recruiter/profile/education',updateProfile.addEducation);
+app.put('/recruiter/profile/imageupload',updateProfile.imageUpload);
+app.get('/recruiter/profile',updateProfile.profileDisplay);
+app.put('/recruiter/profile/skills',updateProfile.addskills);
+
+app.get('/download/:file(*)', (req, res) => {
+    console.log("Inside download file");
+    var file = req.params.file;
+    var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
+    var params = { Bucket: 'linkedin-bucket', Key: file };
+    s3Bucket.getObject(params, function (err, data) {
+        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        res.write(data.Body, 'binary');
+        res.end(null, 'binary');
+    });
+});
 
 
 app.listen(3001);

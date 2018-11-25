@@ -17,6 +17,7 @@
     "react-bootstrap-calendar": "0.0.3",
     "react-bootstrap-date-picker": "^5.1.0",
     "react-bootstrap-daterangepicker": "^4.1.0",
+    "react-bootstrap-typeahead": "^3.2.4",
     "react-cookies": "^0.1.0",
     "react-date-range": "^0.9.4",
     "react-datepicker": "^1.6.0",
