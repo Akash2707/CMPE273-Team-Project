@@ -59,11 +59,20 @@ app.use(function (req, res, next) {
 
 var loginController = require('./controllers/login')
 var signupController = require('./controllers/signup')
+var searchJobController = require('./controllers/SearchJobsController')
+var applyJobController = require('./controllers/ApplyJobController')
+var saveJobController = require('./controllers/SaveJobController')
 
 app.post('/login',loginController.authenticate);
 app.post('/signup',signupController.register);
 app.post('/add/job', requireAuth, addJobController.addJob)
-app.post('/applyjob',jobApplicationController.jobApply);
+app.post('/applyjob', jobApplicationController.jobApply);
+app.get('/search/jobs', requireAuth, searchJobController.getJobs)
+app.post('/easyapply', requireAuth, applyJobController.easyApply)
+app.get('/check/easyapply', requireAuth, applyJobController.checkEasyApply)
+app.get('/check/application', requireAuth, jobApplicationController.checkApplication)
+app.post('/savejob', requireAuth, saveJobController.saveJob)
+app.get('/check/savedJobs', requireAuth, saveJobController.checkSavedJob)
 
 
 app.get('/download/:file(*)', (req, res) => {

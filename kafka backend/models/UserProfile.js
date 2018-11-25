@@ -12,7 +12,10 @@ var UserProfile = mongoose.model('userprofile',{
     },
     isRecruiter : {
         type : Boolean
-    }
+    },
+    state : {
+        type : String
+    },
 });
 
 module.exports = {UserProfile};

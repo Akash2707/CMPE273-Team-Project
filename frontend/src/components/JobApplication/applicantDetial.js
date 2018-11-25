@@ -118,7 +118,7 @@ class ApplicantDetail extends Component {
             <div className="container" style={{ background: "#ffffff", display: "flex", justifyContent: "center" }}>
                 <div className="col-md-12 jobApplyBox">
                     <div className="col-md-12">
-                        <h2 style={{ color: "#000000", textAlign: "center", margin: "5px" }}>Job Application</h2>
+                        <h2 style={{ color: "#000000", textAlign: "center", margin: "5px" }}>Job Application for <span style={{color: "blue"}}>{this.props.getValues().jobCompanyName}</span></h2>
                         <hr />
                     </div>
                     

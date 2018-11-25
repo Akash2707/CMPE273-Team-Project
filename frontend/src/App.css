@@ -98,7 +98,7 @@ margin: 0px;
 .detailJobLogo{
   height: 160px;
   width: 180px;
-  border:1px solid black;
+  border:1px transparent black;
   margin:35px 30px 30px 30px;
   
 }
@@ -106,7 +106,7 @@ margin: 0px;
 .detailJobCompanyDetail{
   height: 110px;
   width: 60%;
-  border:1px solid black;
+  border:1px transparent black;
   margin:35px 5px 0px 0px;
   padding: 5px;
   
@@ -150,8 +150,14 @@ margin: 0px;
   margin: 10px;
   padding: 5px 0px 5px 0px;
 }
+
+
+.savedJobsCards:hover {
+  background-color: rgba(152,216,244,.25);
+}
+
 .savedJobsLogo{
-  border:1px solid #B8BDBE;
+  border:1px transparent #B8BDBE;
   width:80px;
   height:80px;
   margin: 40px 25px;
@@ -638,4 +644,14 @@ ol.progtrckr li.progtrckr-done:hover:before {
 .input-range {
   margin-bottom: 20px;
   margin-top: 10px;
+}
+
+.react-paginate ul {
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.react-paginate li {
+  display: inline-block;
 }

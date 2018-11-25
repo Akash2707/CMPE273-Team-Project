@@ -1,8 +1,20 @@
 var mongoose = require('mongoose');
 
-var JobApplication = mongoose.model('jobApplication',{
+var JobApplication = mongoose.model('jobApplication', {
 
 	jobId: {
+		type: String
+	},
+	jobCompanyName: {
+		type: String
+	},
+	jobCompanyLogo: {
+		type: String
+	},
+	jobLocation: {
+		type: String
+	},
+	jobTitle: {
 		type: String
 	},
 	applicantId: {
@@ -14,18 +26,18 @@ var JobApplication = mongoose.model('jobApplication',{
 	coverLetter: {
 		type: String
 	},
-	linkedInUrl:{
-		type:String
-    },
-    gitWebUrl:{
-		type:String
-    },
-    phone:{
-		type:String
-    },
-    email:{
-		type:String
-    },
+	linkedInUrl: {
+		type: String
+	},
+	gitWebUrl: {
+		type: String
+	},
+	phone: {
+		type: String
+	},
+	email: {
+		type: String
+	},
 	fName: {
 		type: String
 	},
@@ -44,15 +56,36 @@ var JobApplication = mongoose.model('jobApplication',{
 	diversity: {
 		type: String
 	},
-	Gender:{
-    type:String
-    },
-	disable:{
+	Gender: {
 		type: String
 	},
-	veteran:{
+	disable: {
+		type: String
+	},
+	veteran: {
+		type: String
+	},
+	school: {
+		type: String
+	},
+	discipline: {
+		type: String
+	},
+	degree: {
+		type: String
+	},
+	companyName: {
+		type: String
+	},
+	positionExperience: {
+		type: String
+	},
+	created_at: {
+		type: String
+	},
+	updated_at: {
 		type: String
 	}
 });
 
-module.exports = {JobApplication};
+module.exports = { JobApplication };

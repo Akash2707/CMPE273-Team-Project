@@ -29,6 +29,7 @@ function handle_request(msg, callback){
                         lName : msg.lname,
                         email : mail,
                         password : pass,
+                        state: msg.state,
                         isRecruiter : msg.isRecruiter,
                         created_at : today,
                         updated_at : today
@@ -45,7 +46,8 @@ function handle_request(msg, callback){
                         fName : msg.fname,
                         lName : msg.lname,
                         email : mail,
-                        isRecruiter : msg.isRecruiter
+                        isRecruiter : msg.isRecruiter,
+                        state: msg.state,
                     })
 
                     theUser.save().then((user) => {

@@ -1,15 +1,16 @@
-var { JobApplication } = require('./../models/jobApplicantion')
+var { SavedJob } = require('./../models/Savedjob');
 
 function handle_request(msg, callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
     
-    var addJobApply = new JobApplication(msg)
+    var saveJob = new SavedJob(msg);
 
-    addJobApply.save().then((application) => {
-        callback(null,"Job added successfully!");
+    saveJob.save().then((application) => {
+        callback(null,"Job saved successfully!");
     }, (err) => {
         callback(err,[]);
     })
 }
 exports.handle_request = handle_request;
+

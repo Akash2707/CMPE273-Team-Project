@@ -189,6 +189,7 @@ const mapDispatchToProps = dispatch => {
                         localStorage.setItem('id', decoded.id);
                         localStorage.setItem('email', decoded.email);
                         localStorage.setItem('isRecruiter', decoded.isRecruiter);
+                        localStorage.setItem('state', decoded.state);
                     }
                     dispatch({ type: 'LOGIN', payload: response.data, statusCode: response.data.status })
                 })

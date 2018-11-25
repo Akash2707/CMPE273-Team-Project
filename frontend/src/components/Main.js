@@ -19,9 +19,9 @@ class Main extends Component {
 
 
                 <Route path="/jobapplication" component={JobApplication}/>
-                <Route path="/jobdetail" component={DisplayJobDetail}/>
+                <Route path="/jobs/view" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>
-                <Route path="/searchjobdisplay" component={SearchJobDisplay}/>
+                <Route path="/jobs/search" component={SearchJobDisplay}/>
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
                 <Route path="/applicantHome" component={ViewProfileApplicant}/>

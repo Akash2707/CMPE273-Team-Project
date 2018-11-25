@@ -15,6 +15,9 @@ var Users = mongoose.model('users',{
     isRecruiter : {
         type : Boolean
     },
+    state : {
+        type : String
+    },
     created_at : {
         type : String
     },

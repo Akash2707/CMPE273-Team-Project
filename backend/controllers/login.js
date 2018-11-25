@@ -22,7 +22,8 @@ module.exports.authenticate = function (req, res) {
             var data = {
                 id: user._id,
                 email: user.email,
-                isRecruiter: user.isRecruiter
+                isRecruiter: user.isRecruiter,
+                state: user.state
             };
 
             var token = jwt.sign(data, config.secret, {
