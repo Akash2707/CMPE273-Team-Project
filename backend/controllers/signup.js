@@ -27,33 +27,10 @@ module.exports.register = function(req, res){
             res.json({
                 status: 200,
                 success : true,
-                message: 'Account created successfully!',
-                reply : user
+                message: 'Account created successfully!'
             })
             res.end()
         }
     }); 
 }
-     /*   if (err) {
-           console.log("Inside err");
-            res.status(403).json({
-                success: false,
-                message: "System Error, Try Again."
-            })
-        } else if(typeof user == "string"){
-            res.status(400);
-            res.send(user)
-        } else{
-                var data = {
-                    email: user.email
-                };
-                res.json({
-                    status : 200,
-                    success: true,
-                    message: "success signup",
-                //    token: 'JWT ' + token
-                });
-            }   
-            res.end();
-        */
         

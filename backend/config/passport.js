@@ -2,6 +2,7 @@
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var { mongoose } = require('.././db/mongoose');
+var connection = require('./../db/connection');
 var { Users } = require('./../models/User');
 var config = require('./settings');
 
@@ -13,19 +14,20 @@ module.exports = function (passport) {
     };
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
         console.log(jwt_payload)
-        Users.findOne({ email: jwt_payload.email }, function (err, user) {
-            if (err) {
-                return callback(err, false);
-            } else {
-                if (user) {
-                    var user = user;
+        connection.query('SELECT * FROM users WHERE email = ?',[jwt_payload.email], function (error, results, fields) {
+            if (error) {
+                return error(err, false);
+            }else{
+              if(results.length >0){
+                var user = results[0];
                     delete user.password;
-                    callback(null, user);
-                } else {
-                    return callback(null, false);
-                }
+                    callback(null, user);           
+              }
+              else{
+                return callback(null, false);
+              }
             }
-        });
+          });
     }));
 }
 

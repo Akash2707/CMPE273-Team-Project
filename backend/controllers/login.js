@@ -18,11 +18,11 @@ module.exports.authenticate = function (req, res) {
             })
         } else{
         
-            console.log(' authenticated ...  ', user._id)
+            console.log(' authenticated ...  ', user.id)
             var data = {
-                id: user._id,
+                id: user.id,
                 email: user.email,
-                isRecruiter: user.isRecruiter,
+                isRecruiter: user.isRecruiter == 1 ? 'true' : 'false',
                 state: user.state
             };
 
