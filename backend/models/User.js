@@ -6,8 +6,7 @@ var Users = mongoose.model('users',{
     },
     lName : {
         type : String
-    },
-    email : {
+    },email : {
         type : String
     },
     password : {

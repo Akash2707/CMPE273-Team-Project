@@ -30,3 +30,4 @@ crypt.compareHash = function (data, encrypted, successCallback, failureCallback)
 };
 
 module.exports = crypt;
+

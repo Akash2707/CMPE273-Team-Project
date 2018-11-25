@@ -1,8 +1,18 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
-import ApplicantLogin from './Login/applicantLogin';
+
 import Profile from './Profile/profile'
 import ViewProfile from './ViewProfile/viewProfile'
+import JobApplication from './JobApplication/jobApplication';
+import DisplayJobDetail from './Job/displayJobDetail';
+import SavedJobs from './Job/savedJobs';
+import SearchJobDisplay from './Job/searchJobDisplay';
+import Login from './Login/Login'
+import Signup from './Signup/Signup'
+import ViewProfileApplicant from './ViewProfileApplicant'
+import ViewProfileRecruiter from './ViewProfileRecruiter'
+import Navbar from './Navbar/Navbar'
+import PostJobMain from './PostJob/PostJobMain';
 class Main extends Component {
     render(){
         return(
@@ -10,7 +20,16 @@ class Main extends Component {
                 {/*Render Different Component based on Route*/}
                 <Route path="/profile" component={Profile}/>
                 <Route path="/viewprofile" component = {ViewProfile}/>
-                <Route path="/applicantlogin" component={ApplicantLogin}/>
+                <Route path="/jobapplication" component={JobApplication}/>
+                <Route path="/jobs/view" component={DisplayJobDetail}/>
+                <Route path="/savedjobs" component={SavedJobs}/>
+                <Route path="/jobs/search" component={SearchJobDisplay}/>
+                <Route path="/login" component={Login} />
+                <Route path="/signup" component={Signup}/>
+                <Route path="/applicantHome" component={ViewProfileApplicant}/>
+                <Route path="/recruiterHome" component={ViewProfileRecruiter}/>
+                <Route path= "/" component = {Navbar}/>
+                <Route path="/job-posting" component={PostJobMain}/>
             </div>
         )
     }
