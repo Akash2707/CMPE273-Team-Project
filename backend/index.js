@@ -16,6 +16,7 @@ var awsCredFile = path.join(__dirname, './', 'configuration.json');
 AWS.config.loadFromPath(awsCredFile);
 var updateProfile = require('./controllers/profileController');
 var addJobController = require('./controllers/AddJobContorller');
+var connectionController=require('./controllers/connectionController')
 
 var passport = require('passport');
 
@@ -71,7 +72,7 @@ var signupController = require('./controllers/signup')
 var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
-
+var connectionController=require('./controllers/connectionController')
 
 
 app.post('/login',loginController.authenticate);
@@ -90,6 +91,17 @@ app.put('/recruiter/profile/education',updateProfile.addEducation);
 app.put('/recruiter/profile/imageupload',updateProfile.imageUpload);
 app.get('/recruiter/profile', updateProfile.profileDisplay);
 app.put('/recruiter/profile/skills',updateProfile.addskills);
+
+//app.post('/travelerlogin',applicantLoginController.authenticate);
+app.get('/searchpeople',connectionController.getpeople);
+app.put('/sendrequest',connectionController.sendrequest);
+app.get('/getRequests',connectionController.getrequest);
+app.get('/getsentRequests',connectionController.getsentrequest);
+app.post('/requestaccept',connectionController.acceptrequest);
+app.post('/requestdeny',connectionController.denyrequest);
+app.post('/requestwithdraw',connectionController.withdrawrequest);
+app.get('/getConnections',connectionController.getConnections);
+
 
 
 app.get('/download/:file(*)', (req, res) => {

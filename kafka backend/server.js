@@ -21,6 +21,16 @@ var saveJob = require('./services/SaveJob')
 var checkSavedJob = require('./services/CheckSavedJob')
 
 
+var getRequests=require('./services/getRequests')
+var requestaccept=require('./services/requestaccept')
+var searchPeople = require('./services/searchpeople')
+var sendrequest = require('./services/sendrequest')
+var allConnections=require('./services/allConnections')
+var requestdeny=require('./services/requestdeny')
+var requestwithdraw=require('./services/requestwithdraw')
+var getsentrequest=require('./services/getsentRequests')
+
+
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
     var consumer = connection.getConsumer(topic_name);
@@ -72,3 +82,13 @@ handleTopicRequest("check_easyapply", checkEasyApply)
 handleTopicRequest("check_application",checkApplication)
 handleTopicRequest("save_job",saveJob)
 handleTopicRequest("check_savedJob",checkSavedJob)
+
+
+handleTopicRequest("getallrequest",getRequests)
+handleTopicRequest("accept_request",requestaccept)
+handleTopicRequest("deny_request",requestdeny)
+handleTopicRequest("search_people",searchPeople)
+handleTopicRequest("sendrequest",sendrequest)
+handleTopicRequest("all_connections",allConnections)
+handleTopicRequest("withdraw_request",requestwithdraw)
+handleTopicRequest("getallsentrequest",getsentrequest)

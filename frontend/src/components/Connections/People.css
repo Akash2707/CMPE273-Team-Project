@@ -1,0 +1,65 @@
+body{
+    margin-top:20px;
+    background-color: #edf0f0;    
+}
+#searchbutton{
+    width:100px;
+    height:50px;
+}
+.btn-primary, 
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active, 
+.btn-primary.active, 
+.btn-primary.focus, 
+.btn-primary:active, 
+.btn-primary:focus, 
+.btn-primary:hover, 
+.open>.dropdown-toggle.btn-primary {
+    background-color: #3bc0c3;
+    border: 1px solid #3bc0c3;
+}
+
+.media-main a.pull-left {
+    width: 100px;
+}
+.thumb-lg {
+    height: 84px;
+    width: 84px;
+}
+.media-main .info {
+    overflow: hidden;
+    color: #000;
+}
+.media-main .info h4 {
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+#connectionlist{
+    text-align: center
+}
+.left-container{
+    align-content: center;
+    padding:'20px 20px 20px 20px';
+        width: 250px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+        background-color: white;  
+}
+#middle-container{
+    width: 580px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    margin-right:20px;
+    padding:20px;
+    background-color: white;
+}
+.right-container{
+    align-content: center;
+    padding:'20px 20px 20px 20px';
+        width: 200px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+        background-color:white;  
+
+}

@@ -13,6 +13,12 @@ import ViewProfileApplicant from './ViewProfileApplicant'
 import ViewProfileRecruiter from './ViewProfileRecruiter'
 import Navbar from './Navbar/Navbar'
 import PostJobMain from './PostJob/PostJobMain';
+
+import ConnectionList from './Connections/connectionList';
+//import SearchPeople from './Connections/searchPeople';
+import sentRequest from './Connections/sentRequest'
+import receivedRequest from './Connections/receivedRequest';
+import People from './Connections/Peoples'; 
 class Main extends Component {
     render(){
         return(
@@ -30,6 +36,12 @@ class Main extends Component {
                 <Route path="/recruiterHome" component={ViewProfileRecruiter}/>
                 <Route path= "/" component = {Navbar}/>
                 <Route path="/job-posting" component={PostJobMain}/>
+                {/* <Route path="/applicantlogin" component={ApplicantLogin}/> */}
+                {/* <Route path='/searchpeople' component={SearchPeople}></Route> */}
+                <Route path='/peoples' component={ConnectionList}></Route>
+                <Route path='/getRequests' component={receivedRequest}></Route>
+                <Route path='/Mynetwork' component={People}></Route>
+                <Route path='/sentrequest' component={sentRequest}></Route>
             </div>
         )
     }

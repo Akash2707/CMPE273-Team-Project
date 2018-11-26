@@ -101,7 +101,12 @@ var UserProfile = mongoose.model('userprofile', {
         eduDescription: {
             type: String
         }
-    }]
+    }],
+    requests:{
+        sendrequest:[String],
+        receiverequest:[String],
+        connectionlistlist:[String]
+    }
 });
 
 module.exports = { UserProfile };
