@@ -33,8 +33,8 @@ function handle_request(msg, callback){
                 callback(error," Error in Singnup ... ");
              } else {
                 var profile = new UserProfile({
-                    fName : msg.fname,
-                    lName : msg.lname,
+                    fName : msg.fName,
+                    lName : msg.lName,
                     email : msg.email,
                     isRecruiter : msg.isRecruiter,
                     state: msg.state,
