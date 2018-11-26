@@ -16,19 +16,21 @@ var awsCredFile = path.join(__dirname, './', 'configuration.json');
 AWS.config.loadFromPath(awsCredFile);
 var updateProfile = require('./controllers/profileController');
 var addJobController = require('./controllers/AddJobContorller');
-var connectionController=require('./controllers/connectionController')
-
+var connectionController = require('./controllers/connectionController')
 var passport = require('passport');
 
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
-    const client = redis.createClient();
-    client.on('error', (err) => {
-        console.log("Error " + err);
-    });
+const client = redis.createClient({
+    port: 6379,
+    host: "3.16.242.224"
+});
+client.on('error', (err) => {
+    console.log("Error " + err);
+});
 
-    app.use(responseTime());
+app.use(responseTime());
 // Bring in defined Passport Strategy
 require('./config/passport')(passport);
 
@@ -41,11 +43,11 @@ app.use(express.static('public'));
 
 //use express session to maintain session data
 app.use(session({
-    secret              : 'linkedIn',
-    resave              : false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
-    saveUninitialized   : false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
-    duration            : 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
-    activeDuration      :  5 * 60 * 1000
+    secret: 'linkedIn',
+    resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
+    saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+    duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
+    activeDuration: 5 * 60 * 1000
 }));
 
 // app.use(bodyParser.urlencoded({
@@ -72,11 +74,11 @@ var signupController = require('./controllers/signup')
 var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
-var connectionController=require('./controllers/connectionController')
+var connectionController = require('./controllers/connectionController')
 
 
-app.post('/login',loginController.authenticate);
-app.post('/signup',signupController.register);
+app.post('/login', loginController.authenticate);
+app.post('/signup', signupController.register);
 app.post('/add/job', requireAuth, addJobController.addJob)
 app.post('/applyjob', jobApplicationController.jobApply);
 app.get('/search/jobs', requireAuth, searchJobController.getJobs)
@@ -85,22 +87,22 @@ app.get('/check/easyapply', requireAuth, applyJobController.checkEasyApply)
 app.get('/check/application', requireAuth, jobApplicationController.checkApplication)
 app.post('/savejob', requireAuth, saveJobController.saveJob)
 app.get('/check/savedJobs', requireAuth, saveJobController.checkSavedJob)
-app.put('/recruiter/profile/update',updateProfile.update);
-app.put('/recruiter/profile/experience',updateProfile.addExperience);
-app.put('/recruiter/profile/education',updateProfile.addEducation);
-app.put('/recruiter/profile/imageupload',updateProfile.imageUpload);
+app.put('/recruiter/profile/update', updateProfile.update);
+app.put('/recruiter/profile/experience', updateProfile.addExperience);
+app.put('/recruiter/profile/education', updateProfile.addEducation);
+app.put('/recruiter/profile/imageupload', updateProfile.imageUpload);
 app.get('/recruiter/profile', updateProfile.profileDisplay);
-app.put('/recruiter/profile/skills',updateProfile.addskills);
+app.put('/recruiter/profile/skills', updateProfile.addskills);
 
 //app.post('/travelerlogin',applicantLoginController.authenticate);
-app.get('/searchpeople',connectionController.getpeople);
-app.put('/sendrequest',connectionController.sendrequest);
-app.get('/getRequests',connectionController.getrequest);
-app.get('/getsentRequests',connectionController.getsentrequest);
-app.post('/requestaccept',connectionController.acceptrequest);
-app.post('/requestdeny',connectionController.denyrequest);
-app.post('/requestwithdraw',connectionController.withdrawrequest);
-app.get('/getConnections',connectionController.getConnections);
+app.get('/searchpeople', connectionController.getpeople);
+app.put('/sendrequest', connectionController.sendrequest);
+app.get('/getRequests', connectionController.getrequest);
+app.get('/getsentRequests', connectionController.getsentrequest);
+app.post('/requestaccept', connectionController.acceptrequest);
+app.post('/requestdeny', connectionController.denyrequest);
+app.post('/requestwithdraw', connectionController.withdrawrequest);
+app.get('/getConnections', connectionController.getConnections);
 
 
 

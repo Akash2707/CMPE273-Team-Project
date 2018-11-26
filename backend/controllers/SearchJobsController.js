@@ -1,6 +1,9 @@
 var kafka = require('./../kafka/client');
 const redis = require('redis');
-const client = redis.createClient();
+const client = redis.createClient({
+    port : 6379,
+    host : "3.16.242.224"
+});
 client.on('error', (err) => {
     console.log("Error " + err);
 });
