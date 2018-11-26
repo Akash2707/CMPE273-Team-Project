@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 
+import Profile from './Profile/profile'
+import ViewProfile from './ViewProfile/viewProfile'
 import JobApplication from './JobApplication/jobApplication';
 import DisplayJobDetail from './Job/displayJobDetail';
 import SavedJobs from './Job/savedJobs';
@@ -16,8 +18,8 @@ class Main extends Component {
         return(
             <div>
                 {/*Render Different Component based on Route*/}
-
-
+                <Route path="/profile" component={Profile}/>
+                <Route path="/viewprofile" component = {ViewProfile}/>
                 <Route path="/jobapplication" component={JobApplication}/>
                 <Route path="/jobs/view" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>

@@ -5,6 +5,12 @@ var signup = require('./services/signup.js');
 var login = require('./services/login.js');
 //var signin = require('./services/signin.js');
 
+var updateProfile = require('./services/updateProfile');
+var addExperience = require('./services/addExperience');
+var addEducation = require('./services/addEducation');
+var profilePhoto = require('./services/uploadProfile');
+var profileDisplay = require('./services/displayProfile');
+var addSkills = require('./services/addSkills');
 var jobApplication = require('./services/jobApplication');
 var postJob = require('./services/PostJob');
 var searchJobs = require('./services/searchJobs');
@@ -50,7 +56,12 @@ function handleTopicRequest(topic_name, fname) {
 //first argument is topic name
 //second argument is a function that will handle this topic request
 
-
+handleTopicRequest("profile_update",updateProfile)
+handleTopicRequest("add_experience",addExperience)
+handleTopicRequest("add_education",addEducation)
+handleTopicRequest("profilePhoto_upload",profilePhoto)
+handleTopicRequest("user_profile_display",profileDisplay)
+handleTopicRequest("add_skill",addSkills)
 handleTopicRequest("job_application",jobApplication)
 handleTopicRequest("post_login", login)
 handleTopicRequest("post_signup", signup)

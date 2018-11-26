@@ -7,13 +7,9 @@ var UserProfile = mongoose.model('userprofile', {
     lName: {
         type: String
     },
-    email: {
+    address: {
         type: String
     },
-    isRecruiter: {
-        type: Boolean
-    },
-
     country: {
         type: String
     },
@@ -29,22 +25,22 @@ var UserProfile = mongoose.model('userprofile', {
     uniEducation: {
         type: String
     },
-    industry: {
+    industry :{
         type: String
     },
-    phone: {
+    phone:{
+        type: String
+    },        
+    birthDate :{
         type: String
     },
-    birthDate: {
+    summary :{
         type: String
     },
-    summary: {
+    resume:{
         type: String
     },
-    resume: {
-        type: String
-    },
-    skills: {
+    skills:{
         type: String
     },
     profileSummary: {
@@ -53,53 +49,50 @@ var UserProfile = mongoose.model('userprofile', {
     resume: {
         type: String
     },
-    profilePhoto: {
-        type: String
-    },
-    experience: [{
-        position: {
-            type: String
+    experience : [{
+        position : {
+            type : String
         },
-        company: {
-            type: String
+        company : {
+            type : String
         },
-        compLocation: {
-            type: String
+        compLocation : {
+            type : String
         },
-        compDescription: {
-            type: String
+        compDescription : {
+            type : String
         },
-        from: {
-            type: String
+        from : {
+            type : String
         },
-        isWorking: {
-            type: Boolean
+        isWorking : {
+            type : Boolean
         },
-        to: {
-            type: String
+        to : {
+            type : String
         }
     }],
-    education: [{
-        school: {
-            type: String
+    education : [{
+        school : {
+            type : String
         },
-        degree: {
-            type: String
+        degree : {
+            type : String
         },
-        field: {
-            type: String
+        field : {
+            type : String
         },
-        grade: {
-            type: String
+        grade : {
+            type : String
         },
-        fromYear: {
-            type: String
+        fromYear : {
+            type : String
         },
-        toYear: {
-            type: String
+        toYear : {
+            type : String
         },
-        eduDescription: {
-            type: String
+        eduDescription : {
+            type : String
         }
     }]
 });
