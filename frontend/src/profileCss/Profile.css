@@ -138,11 +138,15 @@
     width: 1px;
   }
   .t-16 {
-    font-size: 1.2rem;
     line-height: 1.5;
     font-size: 18px;
   }
   
+  .t-14 {
+    font-size: 16px;
+    line-height: 1.42857;
+  }
+
   .t-normal {
     font-weight: 200;
     font-size: 16px;

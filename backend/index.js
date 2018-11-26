@@ -7,7 +7,8 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport')
 var cors = require('cors');
 app.set('view engine', 'ejs');
-
+const responseTime = require('response-time')
+const redis = require('redis');
 var jobApplicationController = require('./controllers/jobApplicationController');
 var AWS = require('aws-sdk');
 var path = require('path');
@@ -21,7 +22,12 @@ var passport = require('passport');
 var requireAuth = passport.authenticate('jwt', { session: false });
 app.use(passport.initialize());
 
+    const client = redis.createClient();
+    client.on('error', (err) => {
+        console.log("Error " + err);
+    });
 
+    app.use(responseTime());
 // Bring in defined Passport Strategy
 require('./config/passport')(passport);
 
@@ -66,6 +72,8 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 
+
+
 app.post('/login',loginController.authenticate);
 app.post('/signup',signupController.register);
 app.post('/add/job', requireAuth, addJobController.addJob)
@@ -80,7 +88,7 @@ app.put('/recruiter/profile/update',updateProfile.update);
 app.put('/recruiter/profile/experience',updateProfile.addExperience);
 app.put('/recruiter/profile/education',updateProfile.addEducation);
 app.put('/recruiter/profile/imageupload',updateProfile.imageUpload);
-app.get('/recruiter/profile',updateProfile.profileDisplay);
+app.get('/recruiter/profile', updateProfile.profileDisplay);
 app.put('/recruiter/profile/skills',updateProfile.addskills);
 
 

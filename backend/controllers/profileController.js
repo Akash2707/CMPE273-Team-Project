@@ -8,6 +8,14 @@ var AWS = require('aws-sdk');
 var path = require('path');
 var awsCredFile = path.join(__dirname, './../', 'configuration.json');
 AWS.config.loadFromPath(awsCredFile);
+const responseTime = require('response-time')
+const redis = require('redis');
+const client = redis.createClient();
+client.on('error', (err) => {
+    console.log("Error " + err);
+});
+
+
 
 module.exports.update = function (req, res) {
     console.log(req.body);
@@ -53,6 +61,7 @@ module.exports.addExperience = function (req, res) {
     console.log(req.body);
     if (req.body.isExpNew == true) {
         var data = {
+            email: req.query.email,
             position: req.body.position,
             company: req.body.company,
             compLocation: req.body.compLocation,
@@ -60,12 +69,13 @@ module.exports.addExperience = function (req, res) {
             from: req.body.from,
             isWorking: req.body.isWorking,
             to: req.body.to,
-            isExpNew : req.body.isExpNew
+            isExpNew: req.body.isExpNew
         }
     } else {
         var data = {
-            experience : req.body.experience,
-            isExpNew : req.body.isExpNew
+            email: req.query.email,
+            experience: req.body.experience,
+            isExpNew: req.body.isExpNew
         }
     }
 
@@ -93,21 +103,22 @@ module.exports.addExperience = function (req, res) {
 module.exports.addEducation = function (req, res) {
     console.log(req.body);
     if (req.body.isEduNew == true) {
-    var data = {
-        school: req.body.school,
-        degree: req.body.degree,
-        field: req.body.field,
-        grade: req.body.grade,
-        fromYear: req.body.fromYear,
-        toYear: req.body.toYear,
-        eduDescription: req.body.eduDescription,
-        isEduNew : req.body.isEduNew
-    }
-}
-    else{
         var data = {
-            education : req.body.education,
-            isEduNew : req.body.isEduNew
+            email: req.query.email,
+            school: req.body.school,
+            degree: req.body.degree,
+            field: req.body.field,
+            grade: req.body.grade,
+            fromYear: req.body.fromYear,
+            toYear: req.body.toYear,
+            eduDescription: req.body.eduDescription,
+            isEduNew: req.body.isEduNew
+        }
+    }
+    else {
+        var data = {
+            education: req.body.education,
+            isEduNew: req.body.isEduNew
         }
     }
 
@@ -184,58 +195,70 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    kafka.make_request('user_profile_display', req.query.email, function (err, user) {
-        console.log('in result');
-        console.log(JSON.stringify(user));
-        console.log(user);
-        if (err) {
-            console.log("Inside err");
-            res.status(400).json({
-                success: false,
-                message: "System Error, Try Again."
-            })
+    client.get(`profile:${req.query}`, (err, result) => {
+        // If that key exist in Redis store
+        if (result) {
+            console.log("if");
+            const resultJSON = JSON.parse(result);
+            return res.status(200).json(resultJSON);
         } else {
-            if (Object.keys(user).length != 0) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/json'
-                })
-                res.end(JSON.stringify(user));
-            } else {
-                res.status(400).json({
-                    success: false,
-                    message: "!User is not yet registerd"
-                })
-            }
+            console.log("else");
+            return kafka.make_request('user_profile_display', req.query, function (err, user) {
+                console.log('in result');
+                console.log(JSON.stringify(user));
+                console.log(user);
+                if (err) {
+                    console.log("Inside err");
+                    res.status(400).json({
+                        success: false,
+                        message: "System Error, Try Again."
+                    })
+                } else {
+                    if (Object.keys(user).length != 0) {
+                        client.setex(`profile:${req.query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json'
+                        })
+                        res.end(JSON.stringify(user));
+                    } else {
+                        res.status(400).json({
+                            success: false,
+                            message: "!User is not yet registerd"
+                        })
+                    }
+                }
+            })
         }
     })
 }
 
 module.exports.addskills = function (req, res) {
-    console.log(req.body);
-    var data = {
-        skills: req.body
-    }
+            console.log(req.body);
+            var data = {
+                email: req.query.email,
+                skills: req.body
+            }
 
-    kafka.make_request('add_skill', data, function (err, user) {
-        console.log(req.body);
-        console.log('in result');
-        console.log(JSON.stringify(user));
-        console.log(user);
-        if (err) {
-            console.log("Inside err");
-            res.status(400).json({
-                success: false,
-                message: "System Error, Try Again."
-            })
-        } else {
-            res.json({
-                status: 200,
-                data: user,
-                message: 'Education Successfully Added.'
+            kafka.make_request('add_skill', data, function (err, user) {
+                console.log(req.body);
+                console.log('in result');
+                console.log(JSON.stringify(user));
+                console.log(user);
+                if (err) {
+                    console.log("Inside err");
+                    res.status(400).json({
+                        success: false,
+                        message: "System Error, Try Again."
+                    })
+                } else {
+                    res.json({
+                        status: 200,
+                        data: user,
+                        message: 'Education Successfully Added.'
+                    })
+                }
             })
         }
-    })
-}
 
 
 

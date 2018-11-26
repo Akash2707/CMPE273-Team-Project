@@ -71,7 +71,7 @@ class Profile extends Component {
     componentDidMount() {
         axios.get('http://localhost:3001/recruiter/profile',
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -82,7 +82,6 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     profile: response.data,
-                    imageURL: response.data.imageURL,
                     fName: response.data.fName,
                     lName: response.data.lName,
                     headline: response.data.headline,
@@ -95,7 +94,12 @@ class Profile extends Component {
                     address: response.data.address,
                     summary: response.data.summary,
                     resume: response.data.resume,
-                })
+                });
+                if (response.data.profilePhoto) {
+                    this.setState({
+                        profilePhoto: response.data.profilePhoto
+                    })
+                }
             }).catch(error => {
                 console.log("else")
                 this.setState({
@@ -184,7 +188,7 @@ class Profile extends Component {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/imageupload', image,
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -223,7 +227,7 @@ class Profile extends Component {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/update', data,
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -266,7 +270,7 @@ class Profile extends Component {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/experience', data,
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -309,7 +313,7 @@ class Profile extends Component {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/education', data,
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -339,7 +343,7 @@ class Profile extends Component {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/skills', skills,
             {
-                //  headers: { Authorization: localStorage.getItem('token') },
+                headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
 
@@ -503,102 +507,102 @@ class Profile extends Component {
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 </div>
                                             </div>
-                                            <div class="modal-body">
-                                                <form name="editExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
-                                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                                        <label>Title</label>
-                                                        <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.position} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
-                                                    </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form name="editExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
+                                                <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                                    <label>Title</label>
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.position} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
+                                                </div>
 
-                                                    <div className="col-md-12 form-group pop-up">
-                                                        <label>Company</label>
-                                                        <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.company} className="form-control" name="company" placeholder="Ex. Microsoft" required />
+                                                <div className="col-md-12 form-group pop-up">
+                                                    <label>Company</label>
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.company} className="form-control" name="company" placeholder="Ex. Microsoft" required />
+                                                </div>
+                                                <div className="col-md-12 form-group pop-up">
+                                                    <label>Location</label>
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compLocation} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
+                                                </div>
+                                                <div className="col-md-12 form-group pop-up" >
+                                                    <div className="col-md-6" style={{ padding: "0px" }}>
+                                                        <label>From:</label>
+                                                        <select name="cfMonth" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.from} className="form-control" style={{ width: "100%" }}>
+                                                            <option value="month">Month</option>
+                                                            <option value="january">January</option>
+                                                            <option value="february">February</option>
+                                                            <option value="march">March</option>
+                                                            <option value="april">April</option>
+                                                            <option value="may">May</option>
+                                                            <option value="june">June</option>
+                                                            <option value="july">July</option>
+                                                            <option value="august">August</option>
+                                                            <option value="september">September</option>
+                                                            <option value="october">October</option>
+                                                            <option value="november">November</option>
+                                                            <option value="december">December</option>
+                                                        </select>
+                                                        <select name="cfYear" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.to} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
+                                                            <option value="year">Year</option>
+                                                            <option value="1980">1980</option>
+                                                            <option value="1981">1981</option>
+                                                            <option value="1982">1982</option>
+                                                            <option value="1983">1983</option>
+                                                            <option value="1984">1984</option>
+                                                            <option value="1985">1985</option>
+                                                            <option value="1986">1986</option>
+                                                            <option value="1987">1987</option>
+                                                            <option value="1988">1988</option>
+                                                            <option value="1989">1989</option>
+                                                            <option value="1990">1990</option>
+                                                            <option value="1991">1991</option>
+                                                            <option value="1991">1991</option>
+                                                            <option value="1993">1993</option>
+                                                            <option value="1994">1994</option>
+                                                            <option value="1995">1995</option>
+                                                            <option value="1996">1996</option>
+                                                            <option value="1997">1997</option>
+                                                            <option value="1998">1998</option>
+                                                            <option value="1999">1999</option>
+                                                            <option value="2000">2000</option>
+                                                            <option value="2001">2001</option>
+                                                            <option value="2002">2002</option>
+                                                            <option value="2003">2003</option>
+                                                            <option value="2004">2004</option>
+                                                            <option value="2005">2005</option>
+                                                            <option value="2006">2006</option>
+                                                            <option value="2007">2007</option>
+                                                            <option value="2008">2008</option>
+                                                            <option value="2009">2009</option>
+                                                            <option value="2010">2010</option>
+                                                            <option value="2011">2011</option>
+                                                            <option value="2012">2012</option>
+                                                            <option value="2013">2013</option>
+                                                            <option value="2014">2014</option>
+                                                            <option value="2015">2015</option>
+                                                            <option value="2016">2016</option>
+                                                            <option value="2017">2017</option>
+                                                            <option value="2018">2018</option>
+                                                        </select>
                                                     </div>
-                                                    <div className="col-md-12 form-group pop-up">
-                                                        <label>Location</label>
-                                                        <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compLocation} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
-                                                    </div>
-                                                    <div className="col-md-12 form-group pop-up" >
-                                                        <div className="col-md-6" style={{ padding: "0px" }}>
-                                                            <label>From:</label>
-                                                            <select name="cfMonth" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.from} className="form-control" style={{ width: "100%" }}>
-                                                                <option value="month">Month</option>
-                                                                <option value="january">January</option>
-                                                                <option value="february">February</option>
-                                                                <option value="march">March</option>
-                                                                <option value="april">April</option>
-                                                                <option value="may">May</option>
-                                                                <option value="june">June</option>
-                                                                <option value="july">July</option>
-                                                                <option value="august">August</option>
-                                                                <option value="september">September</option>
-                                                                <option value="october">October</option>
-                                                                <option value="november">November</option>
-                                                                <option value="december">December</option>
-                                                            </select>
-                                                            <select name="cfYear" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.to} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
-                                                                <option value="year">Year</option>
-                                                                <option value="1980">1980</option>
-                                                                <option value="1981">1981</option>
-                                                                <option value="1982">1982</option>
-                                                                <option value="1983">1983</option>
-                                                                <option value="1984">1984</option>
-                                                                <option value="1985">1985</option>
-                                                                <option value="1986">1986</option>
-                                                                <option value="1987">1987</option>
-                                                                <option value="1988">1988</option>
-                                                                <option value="1989">1989</option>
-                                                                <option value="1990">1990</option>
-                                                                <option value="1991">1991</option>
-                                                                <option value="1991">1991</option>
-                                                                <option value="1993">1993</option>
-                                                                <option value="1994">1994</option>
-                                                                <option value="1995">1995</option>
-                                                                <option value="1996">1996</option>
-                                                                <option value="1997">1997</option>
-                                                                <option value="1998">1998</option>
-                                                                <option value="1999">1999</option>
-                                                                <option value="2000">2000</option>
-                                                                <option value="2001">2001</option>
-                                                                <option value="2002">2002</option>
-                                                                <option value="2003">2003</option>
-                                                                <option value="2004">2004</option>
-                                                                <option value="2005">2005</option>
-                                                                <option value="2006">2006</option>
-                                                                <option value="2007">2007</option>
-                                                                <option value="2008">2008</option>
-                                                                <option value="2009">2009</option>
-                                                                <option value="2010">2010</option>
-                                                                <option value="2011">2011</option>
-                                                                <option value="2012">2012</option>
-                                                                <option value="2013">2013</option>
-                                                                <option value="2014">2014</option>
-                                                                <option value="2015">2015</option>
-                                                                <option value="2016">2016</option>
-                                                                <option value="2017">2017</option>
-                                                                <option value="2018">2018</option>
-                                                            </select>
-                                                        </div>
-                                                        {expdropDown}
-                                                    </div>
-                                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "10px" }}>
-                                                        <label class="container pop-up">I currently work in this role
+                                                    {expdropDown}
+                                                </div>
+                                                <div className="col-md-12 form-group pop-up" style={{ marginTop: "10px" }}>
+                                                    <label class="container pop-up">I currently work in this role
                                                     <input type="checkbox" name="check-box" id="check-box" checked={this.state.isWorking} onChange={this.isWorking} />
-                                                            <span class="checkmark form-control">
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="col-md-12 form-group pop-up">
-                                                        <label>Description</label>
-                                                        <textarea className="form-control" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compDescription} name="cDescription" placeholder="Description" rows="8" cols="8" required />
-                                                    </div>
+                                                        <span class="checkmark form-control">
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div className="col-md-12 form-group pop-up">
+                                                    <label>Description</label>
+                                                    <textarea className="form-control" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compDescription} name="cDescription" placeholder="Description" rows="8" cols="8" required />
+                                                </div>
 
-                                                    <div class="modal-footer">
-                                                        <input class="btn btn-primary " type="submit" value="Submit" />
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                <div class="modal-footer">
+                                                    <input class="btn btn-primary " type="submit" value="Submit" />
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -801,7 +805,7 @@ class Profile extends Component {
                         <div className="pv-top-card-v2-section__photo-wrapper pv-top-card-section__photo-wrapper">
                             <div id="ember638" className="pv-top-card-section__edit-photo pv-top-card-v2-section__edit-photo profile-photo-edit ember-view">
                                 <button data-control-name="edit_profile_photo" className="profile-photo-edit__edit-btn" data-ember-action="" data-ember-action-639="639" disabled>
-                                    <img src={this.state.profile.profilePhoto} className="profile-photo-edit__preview" alt="Edit photo" height="128" width="128" />
+                                    <img src={this.state.profilePhoto} className="profile-photo-edit__preview" alt="Edit photo" height="128" width="128" />
                                     {/* <span className="profile-photo-edit__edit-icon svg-icon-wrap">
                                     <li-icon aria-hidden="true" type="pencil-icon" size="small">
                                         <svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" className="artdeco-icon" focusable="false">
@@ -827,85 +831,84 @@ class Profile extends Component {
 
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <div className="row">
-                                        <div className="col-md-6">
+                                    <div className="row col-md-12">
+                                        <div className="col-md-6" style={{ width: "100%" }}>
                                             <h4 class="modal-title .t-black--light pop-up" >Edit Intro</h4>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-6" style={{ width: "100%" }}>
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.profileUpdate} >
-                                            <div className="col-md-12 form-group" style={{ marginTop: "20px" }}>
-                                                <div style={{ margin: "auto", textAlign: "center" }}>
-                                                    <img id="img" alt="Avatar" src={this.state.profile.profilePhoto} style={{ width: "200px", height: "200px", borderRadius: "50%" }}></img>
-                                                    <input type="file" style={{ textAlign: "center", margin: "auto" }} onChange={this.onImageHandle} name="pic" accept="image/jpg, image/jpeg" />
-                                                    <input class="btn btn-primary " type="submit" value="Upload" onClick={this.imageUpload} />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12">
-                                                <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
-                                                    <label>First Name</label>
-                                                    <input type="text" className="form-control" defaultValue={this.state.fName} onChange={this.onChangeHandle} style={{ background: "#ffffff" }} name="fName" placeholder="First Name" required />
-                                                </div>
-                                                <div className="col-md-2"></div>
-                                                <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
-                                                    <label>Last Name</label>
-                                                    <input type="text" className="form-control" name="lName" defaultValue={this.state.lName} onChange={this.onChangeHandle} placeholder="Last Name" required />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Headline</label>
-                                                <textarea type="text" className="form-control" value={this.state.headline} onChange={this.onChangeHandle} name="headline" rows="3" placeholder="Headline" required />
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Education</label>
-                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.education} name="education" placeholder="Ex. San Jose State University " required />
-                                            </div>
-                                            <div className="col-md-12">
-                                                <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
-                                                    <label>Country/Region</label>
-                                                    <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.country} style={{ background: "#ffffff" }} name="country" placeholder="Country" required />
-                                                </div>
-                                                <div className="col-md-2"></div>
-                                                <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
-                                                    <label>Zip code</label>
-                                                    <input type="number" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" required />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Location within this area</label>
-                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.userLocation} name="userLocation" placeholder="Location" required />
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Industry</label>
-                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.industry} name="industry" placeholder="Ex. Computer Software" required />
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Phone</label>
-                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.phone} name="phone" placeholder="Phone" required />
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Address</label>
-                                                <textarea type="text" className="form-control" onChange={this.onChangeHandle} value={this.state.address} name="address" placeholder="Address" rows="3" required />
-                                            </div>
-                                            <div className="col-md-12 form-group pop-up">
-                                                <label>Summary</label>
-                                                <textarea type="text" onChange={this.onChangeHandle} value={this.state.summary} className="form-control" name="summary" placeholder="Summary" rows="7" required />
-                                            </div>
-                                            <div className="col-md-12 form-group">
-                                                <label>Resume</label>
-                                                <input type="file" onChange={this.onChangeHandle} className="form-control" defaultValue={this.state.profile.resume} name="resume" accept="resume/pdf" placeholder="Resume" />
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn btn-primary " type="submit" value="Submit" />
-                                                <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
-
+                                <div class="modal-body">
+                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.profileUpdate} >
+                                        <div className="col-md-12 form-group" style={{ marginTop: "20px" }}>
+                                            <div style={{ margin: "auto", textAlign: "center" }}>
+                                                <img id="img" alt="Avatar" src={this.state.profilePhoto} style={{ width: "200px", height: "200px", borderRadius: "50%" }}></img>
+                                                <input type="file" style={{ textAlign: "center", margin: "auto" }} onChange={this.onImageHandle} name="pic" accept="image/jpg, image/jpeg" />
+                                                <input class="btn btn-primary " type="submit" value="Upload" onClick={this.imageUpload} />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
+                                                <label>First Name</label>
+                                                <input type="text" className="form-control" defaultValue={this.state.fName} onChange={this.onChangeHandle} style={{ background: "#ffffff" }} name="fName" placeholder="First Name" required />
+                                            </div>
+                                            <div className="col-md-2"></div>
+                                            <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
+                                                <label>Last Name</label>
+                                                <input type="text" className="form-control" name="lName" defaultValue={this.state.lName} onChange={this.onChangeHandle} placeholder="Last Name" required />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Headline</label>
+                                            <textarea type="text" className="form-control" value={this.state.headline} onChange={this.onChangeHandle} name="headline" rows="3" placeholder="Headline" required />
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Education</label>
+                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.education} name="education" placeholder="Ex. San Jose State University " required />
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
+                                                <label>Country/Region</label>
+                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.country} style={{ background: "#ffffff" }} name="country" placeholder="Country" required />
+                                            </div>
+                                            <div className="col-md-2"></div>
+                                            <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
+                                                <label>Zip code</label>
+                                                <input type="number" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" required />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Location within this area</label>
+                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.userLocation} name="userLocation" placeholder="Location" required />
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Industry</label>
+                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.industry} name="industry" placeholder="Ex. Computer Software" required />
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Phone</label>
+                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.phone} name="phone" placeholder="Phone" required />
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Address</label>
+                                            <textarea type="text" className="form-control" onChange={this.onChangeHandle} value={this.state.address} name="address" placeholder="Address" rows="3" required />
+                                        </div>
+                                        <div className="col-md-12 form-group pop-up">
+                                            <label>Summary</label>
+                                            <textarea type="text" onChange={this.onChangeHandle} value={this.state.summary} className="form-control" name="summary" placeholder="Summary" rows="7" required />
+                                        </div>
+                                        <div className="col-md-12 form-group">
+                                            <label>Resume</label>
+                                            <input type="file" onChange={this.onChangeHandle} className="form-control" defaultValue={this.state.profile.resume} name="resume" accept="resume/pdf" placeholder="Resume" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input class="btn btn-primary " type="submit" value="Submit" />
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1024,7 +1027,7 @@ class Profile extends Component {
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <div className="row">
+                                <div className="row col-md-12">
                                     <div className="col-md-6">
                                         <h4 class="modal-title .t-black--light pop-up" >Add Experience</h4>
                                     </div>
@@ -1032,102 +1035,102 @@ class Profile extends Component {
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                 </div>
-                                <div class="modal-body">
-                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
-                                        <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                            <label>Title</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
-                                        </div>
+                            </div>
+                            <div class="modal-body">
+                                <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
+                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                        <label>Title</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
+                                    </div>
 
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Company</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" name="company" placeholder="Ex. Microsoft" required />
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Company</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" name="company" placeholder="Ex. Microsoft" required />
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Location</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up" >
+                                        <div className="col-md-6" style={{ padding: "0px" }}>
+                                            <label>From:</label>
+                                            <select name="cfMonth" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
+                                                <option value="month">Month</option>
+                                                <option value="january">January</option>
+                                                <option value="february">February</option>
+                                                <option value="march">March</option>
+                                                <option value="april">April</option>
+                                                <option value="may">May</option>
+                                                <option value="june">June</option>
+                                                <option value="july">July</option>
+                                                <option value="august">August</option>
+                                                <option value="september">September</option>
+                                                <option value="october">October</option>
+                                                <option value="november">November</option>
+                                                <option value="december">December</option>
+                                            </select>
+                                            <select name="cfYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
+                                                <option value="year">Year</option>
+                                                <option value="1980">1980</option>
+                                                <option value="1981">1981</option>
+                                                <option value="1982">1982</option>
+                                                <option value="1983">1983</option>
+                                                <option value="1984">1984</option>
+                                                <option value="1985">1985</option>
+                                                <option value="1986">1986</option>
+                                                <option value="1987">1987</option>
+                                                <option value="1988">1988</option>
+                                                <option value="1989">1989</option>
+                                                <option value="1990">1990</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1993">1993</option>
+                                                <option value="1994">1994</option>
+                                                <option value="1995">1995</option>
+                                                <option value="1996">1996</option>
+                                                <option value="1997">1997</option>
+                                                <option value="1998">1998</option>
+                                                <option value="1999">1999</option>
+                                                <option value="2000">2000</option>
+                                                <option value="2001">2001</option>
+                                                <option value="2002">2002</option>
+                                                <option value="2003">2003</option>
+                                                <option value="2004">2004</option>
+                                                <option value="2005">2005</option>
+                                                <option value="2006">2006</option>
+                                                <option value="2007">2007</option>
+                                                <option value="2008">2008</option>
+                                                <option value="2009">2009</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                            </select>
                                         </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Location</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up" >
-                                            <div className="col-md-6" style={{ padding: "0px" }}>
-                                                <label>From:</label>
-                                                <select name="cfMonth" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
-                                                    <option value="month">Month</option>
-                                                    <option value="january">January</option>
-                                                    <option value="february">February</option>
-                                                    <option value="march">March</option>
-                                                    <option value="april">April</option>
-                                                    <option value="may">May</option>
-                                                    <option value="june">June</option>
-                                                    <option value="july">July</option>
-                                                    <option value="august">August</option>
-                                                    <option value="september">September</option>
-                                                    <option value="october">October</option>
-                                                    <option value="november">November</option>
-                                                    <option value="december">December</option>
-                                                </select>
-                                                <select name="cfYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
-                                                    <option value="year">Year</option>
-                                                    <option value="1980">1980</option>
-                                                    <option value="1981">1981</option>
-                                                    <option value="1982">1982</option>
-                                                    <option value="1983">1983</option>
-                                                    <option value="1984">1984</option>
-                                                    <option value="1985">1985</option>
-                                                    <option value="1986">1986</option>
-                                                    <option value="1987">1987</option>
-                                                    <option value="1988">1988</option>
-                                                    <option value="1989">1989</option>
-                                                    <option value="1990">1990</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1993">1993</option>
-                                                    <option value="1994">1994</option>
-                                                    <option value="1995">1995</option>
-                                                    <option value="1996">1996</option>
-                                                    <option value="1997">1997</option>
-                                                    <option value="1998">1998</option>
-                                                    <option value="1999">1999</option>
-                                                    <option value="2000">2000</option>
-                                                    <option value="2001">2001</option>
-                                                    <option value="2002">2002</option>
-                                                    <option value="2003">2003</option>
-                                                    <option value="2004">2004</option>
-                                                    <option value="2005">2005</option>
-                                                    <option value="2006">2006</option>
-                                                    <option value="2007">2007</option>
-                                                    <option value="2008">2008</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2010">2010</option>
-                                                    <option value="2011">2011</option>
-                                                    <option value="2012">2012</option>
-                                                    <option value="2013">2013</option>
-                                                    <option value="2014">2014</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2018">2018</option>
-                                                </select>
-                                            </div>
-                                            {expdropDown}
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up" style={{ marginTop: "10px" }}>
-                                            <label class="container pop-up">I currently work in this role
+                                        {expdropDown}
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "10px" }}>
+                                        <label class="container pop-up">I currently work in this role
                                                     <input type="checkbox" name="check-box" id="check-box" checked={this.state.isWorking} onChange={this.isWorking} />
-                                                <span class="checkmark form-control">
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Description</label>
-                                            <textarea className="form-control" onChange={this.onChangeHandle} name="cDescription" placeholder="Description" rows="8" cols="8" required />
-                                        </div>
+                                            <span class="checkmark form-control">
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Description</label>
+                                        <textarea className="form-control" onChange={this.onChangeHandle} name="cDescription" placeholder="Description" rows="8" cols="8" required />
+                                    </div>
 
-                                        <div class="modal-footer">
-                                            <input class="btn btn-primary " type="submit" value="Submit" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    <div class="modal-footer">
+                                        <input class="btn btn-primary " type="submit" value="Submit" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -1165,7 +1168,7 @@ class Profile extends Component {
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <div className="row">
+                                <div className="row col-md-12">
                                     <div className="col-md-6">
                                         <h4 class="modal-title .t-black--light pop-up" >Add Education</h4>
                                     </div>
@@ -1173,132 +1176,133 @@ class Profile extends Component {
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                 </div>
-                                <div class="modal-body">
-                                    <form name="addEdu" style={{ marginTop: "10px" }} onSubmit={this.educationUpdate}>
-                                        <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                            <label>School</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
-                                        </div>
-
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Degree</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Field of Study</label>
-                                            <input type="text" onChange={this.onChangeHandle} className="form-control" name="field" placeholder="Ex. Business" />
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Grade</label>
-                                            <input type="number" onChange={this.onChangeHandle} className="form-control" name="grade" />
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <div className="col-md-5" style={{ padding: "0px" }}>
-                                                <label>From Year</label>
-                                                <select name="efYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
-                                                    <option value="year">Year</option>
-                                                    <option value="1980">1980</option>
-                                                    <option value="1981">1981</option>
-                                                    <option value="1982">1982</option>
-                                                    <option value="1983">1983</option>
-                                                    <option value="1984">1984</option>
-                                                    <option value="1985">1985</option>
-                                                    <option value="1986">1986</option>
-                                                    <option value="1987">1987</option>
-                                                    <option value="1988">1988</option>
-                                                    <option value="1989">1989</option>
-                                                    <option value="1990">1990</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1993">1993</option>
-                                                    <option value="1994">1994</option>
-                                                    <option value="1995">1995</option>
-                                                    <option value="1996">1996</option>
-                                                    <option value="1997">1997</option>
-                                                    <option value="1998">1998</option>
-                                                    <option value="1999">1999</option>
-                                                    <option value="2000">2000</option>
-                                                    <option value="2001">2001</option>
-                                                    <option value="2002">2002</option>
-                                                    <option value="2003">2003</option>
-                                                    <option value="2004">2004</option>
-                                                    <option value="2005">2005</option>
-                                                    <option value="2006">2006</option>
-                                                    <option value="2007">2007</option>
-                                                    <option value="2008">2008</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2010">2010</option>
-                                                    <option value="2011">2011</option>
-                                                    <option value="2012">2012</option>
-                                                    <option value="2013">2013</option>
-                                                    <option value="2014">2014</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2018">2018</option>
-                                                </select>
-
-                                            </div>
-                                            <div className="col-md-2"></div>
-                                            <div className="col-md-5" style={{ padding: "0px" }}>
-                                                <label>To Year</label>
-                                                <select name="etYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
-                                                    <option value="year">Year</option>
-                                                    <option value="1980">1980</option>
-                                                    <option value="1981">1981</option>
-                                                    <option value="1982">1982</option>
-                                                    <option value="1983">1983</option>
-                                                    <option value="1984">1984</option>
-                                                    <option value="1985">1985</option>
-                                                    <option value="1986">1986</option>
-                                                    <option value="1987">1987</option>
-                                                    <option value="1988">1988</option>
-                                                    <option value="1989">1989</option>
-                                                    <option value="1990">1990</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1993">1993</option>
-                                                    <option value="1994">1994</option>
-                                                    <option value="1995">1995</option>
-                                                    <option value="1996">1996</option>
-                                                    <option value="1997">1997</option>
-                                                    <option value="1998">1998</option>
-                                                    <option value="1999">1999</option>
-                                                    <option value="2000">2000</option>
-                                                    <option value="2001">2001</option>
-                                                    <option value="2002">2002</option>
-                                                    <option value="2003">2003</option>
-                                                    <option value="2004">2004</option>
-                                                    <option value="2005">2005</option>
-                                                    <option value="2006">2006</option>
-                                                    <option value="2007">2007</option>
-                                                    <option value="2008">2008</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2010">2010</option>
-                                                    <option value="2011">2011</option>
-                                                    <option value="2012">2012</option>
-                                                    <option value="2013">2013</option>
-                                                    <option value="2014">2014</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2018">2018</option>
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12 form-group pop-up">
-                                            <label>Description</label>
-                                            <textarea className="form-control" onChange={this.onChangeHandle} name="eDescription" placeholder="Description" rows="8" cols="8" required />
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <input class="btn btn-primary " type="submit" value="Submit" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
+                            <div class="modal-body">
+                                <form name="addEdu" style={{ marginTop: "10px" }} onSubmit={this.educationUpdate}>
+                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                        <label>School</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
+                                    </div>
+
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Degree</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Field of Study</label>
+                                        <input type="text" onChange={this.onChangeHandle} className="form-control" name="field" placeholder="Ex. Business" />
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Grade</label>
+                                        <input type="number" onChange={this.onChangeHandle} className="form-control" name="grade" />
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <div className="col-md-5" style={{ padding: "0px" }}>
+                                            <label>From Year</label>
+                                            <select name="efYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
+                                                <option value="year">Year</option>
+                                                <option value="1980">1980</option>
+                                                <option value="1981">1981</option>
+                                                <option value="1982">1982</option>
+                                                <option value="1983">1983</option>
+                                                <option value="1984">1984</option>
+                                                <option value="1985">1985</option>
+                                                <option value="1986">1986</option>
+                                                <option value="1987">1987</option>
+                                                <option value="1988">1988</option>
+                                                <option value="1989">1989</option>
+                                                <option value="1990">1990</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1993">1993</option>
+                                                <option value="1994">1994</option>
+                                                <option value="1995">1995</option>
+                                                <option value="1996">1996</option>
+                                                <option value="1997">1997</option>
+                                                <option value="1998">1998</option>
+                                                <option value="1999">1999</option>
+                                                <option value="2000">2000</option>
+                                                <option value="2001">2001</option>
+                                                <option value="2002">2002</option>
+                                                <option value="2003">2003</option>
+                                                <option value="2004">2004</option>
+                                                <option value="2005">2005</option>
+                                                <option value="2006">2006</option>
+                                                <option value="2007">2007</option>
+                                                <option value="2008">2008</option>
+                                                <option value="2009">2009</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                            </select>
+
+                                        </div>
+                                        <div className="col-md-2"></div>
+                                        <div className="col-md-5" style={{ padding: "0px" }}>
+                                            <label>To Year</label>
+                                            <select name="etYear" onChange={this.onChangeHandle} className="form-control" style={{ width: "100%" }}>
+                                                <option value="year">Year</option>
+                                                <option value="1980">1980</option>
+                                                <option value="1981">1981</option>
+                                                <option value="1982">1982</option>
+                                                <option value="1983">1983</option>
+                                                <option value="1984">1984</option>
+                                                <option value="1985">1985</option>
+                                                <option value="1986">1986</option>
+                                                <option value="1987">1987</option>
+                                                <option value="1988">1988</option>
+                                                <option value="1989">1989</option>
+                                                <option value="1990">1990</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1991">1991</option>
+                                                <option value="1993">1993</option>
+                                                <option value="1994">1994</option>
+                                                <option value="1995">1995</option>
+                                                <option value="1996">1996</option>
+                                                <option value="1997">1997</option>
+                                                <option value="1998">1998</option>
+                                                <option value="1999">1999</option>
+                                                <option value="2000">2000</option>
+                                                <option value="2001">2001</option>
+                                                <option value="2002">2002</option>
+                                                <option value="2003">2003</option>
+                                                <option value="2004">2004</option>
+                                                <option value="2005">2005</option>
+                                                <option value="2006">2006</option>
+                                                <option value="2007">2007</option>
+                                                <option value="2008">2008</option>
+                                                <option value="2009">2009</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 form-group pop-up">
+                                        <label>Description</label>
+                                        <textarea className="form-control" onChange={this.onChangeHandle} name="eDescription" placeholder="Description" rows="8" cols="8" required />
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input class="btn btn-primary " type="submit" value="Submit" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1343,7 +1347,7 @@ class Profile extends Component {
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <div className="row">
+                                <div className="row col-md-12">
                                     <div className="col-md-6">
                                         <h4 class="modal-title .t-black--light pop-up" >Add Skills</h4>
                                     </div>
@@ -1351,29 +1355,30 @@ class Profile extends Component {
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                 </div>
-                                <div class="modal-body">
-                                    <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
-                                        <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                            <label for="skills">Skills</label>
-                                            <Typeahead
-                                                labelKey="name"
-                                                allowNew
-                                                multiple
-                                                newSelectionPrefix="Add a new item: "
-                                                options={[]}
-                                                onChange={this.onChangeSkillsFunction}
-                                                name="skills"
-                                                placeholder="Skill (ex: Data Analysis)"
-                                                selected={this.state.skills}
-                                            />
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input class="btn btn-primary " type="submit" value="Add" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
+                            <div class="modal-body">
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
+                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                        <label for="skills">Skills</label>
+                                        <Typeahead
+                                            labelKey="name"
+                                            allowNew
+                                            multiple
+                                            newSelectionPrefix="Add a new item: "
+                                            options={[]}
+                                            onChange={this.onChangeSkillsFunction}
+                                            name="skills"
+                                            placeholder="Skill (ex: Data Analysis)"
+                                            selected={this.state.skills}
+                                        />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input class="btn btn-primary " type="submit" value="Add" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1382,7 +1387,7 @@ class Profile extends Component {
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <div className="row">
+                                <div className="row col-md-12">
                                     <div className="col-md-6">
                                         <h4 class="modal-title .t-black--light pop-up" >Add Skills</h4>
                                     </div>
@@ -1390,29 +1395,29 @@ class Profile extends Component {
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                 </div>
-                                <div class="modal-body">
-                                    <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
-                                        <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                            <label for="skills">Skills</label>
-                                            <Typeahead
-                                                labelKey="name"
-                                                allowNew
-                                                multiple
-                                                newSelectionPrefix="Add a new item: "
-                                                options={[]}
-                                                onChange={this.onChangeSkillsFunction}
-                                                name="skills"
-                                                value={this.state.profile.skills}
-                                                placeholder="Skill (ex: Data Analysis)"
-                                                selected={this.state.skills}
-                                            />
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input class="btn btn-primary " type="submit" value="Add" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                        </div>
-                                    </form>
-                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
+                                    <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                        <label for="skills">Skills</label>
+                                        <Typeahead
+                                            labelKey="name"
+                                            allowNew
+                                            multiple
+                                            newSelectionPrefix="Add a new item: "
+                                            options={[]}
+                                            onChange={this.onChangeSkillsFunction}
+                                            name="skills"
+                                            value={this.state.profile.skills}
+                                            placeholder="Skill (ex: Data Analysis)"
+                                            selected={this.state.skills}
+                                        />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input class="btn btn-primary " type="submit" value="Add" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
