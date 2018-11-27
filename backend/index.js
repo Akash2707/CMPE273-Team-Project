@@ -35,7 +35,7 @@ app.use(responseTime());
 require('./config/passport')(passport);
 
 //use cors to allow cross origin resource sharing
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000','http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000','http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000'], credentials: true }));
 module.exports = app;
 
 app.use(cookieParser('linkedIn'));
@@ -59,7 +59,7 @@ app.use(bodyParser.json());
 
 //Allow Access Control
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000','http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000','http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000']);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers');

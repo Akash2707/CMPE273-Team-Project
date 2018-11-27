@@ -21,7 +21,7 @@ class People extends Component{
 
     componentDidMount(){
         axios.defaults.withCredentials=true;
-        axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/getRecommendPeople', {headers: { Authorization: localStorage.getItem('token')},
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getRecommendPeople', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
        }})
@@ -42,7 +42,7 @@ class People extends Component{
     onConnect(email,e){
         //   var data={sender_email:localStorage.getItem('email'),reciever_email:email}
            axios.defaults.withCredentials=true;
-           axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
+           axios.put('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
            params: {
                sender_email: localStorage.getItem('email'),
                reciever_email:email
@@ -61,7 +61,7 @@ class People extends Component{
         e.preventDefault();
         axios.defaults.withCredentials =true;
         console.log("hii")
-       axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
+       axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email'),
            q:this.state.q
@@ -91,7 +91,7 @@ class People extends Component{
     onWithdraw(connection_email,e){
         console.log(connection_email)
         axios.defaults.withCredentials=true;
-        axios.post('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/requestwithdraw', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestwithdraw', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:connection_email
@@ -116,7 +116,7 @@ class People extends Component{
     }
     onAccept(connection_email,e){
         axios.defaults.withCredentials=true;
-        axios.post('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:connection_email
@@ -133,7 +133,7 @@ class People extends Component{
     }
     viewConnection(people,e){
         axios.defaults.withCredentials=true;
-        axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/viewProfile',people)
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/viewProfile',people)
         .then((response)=>{
             //window.location.reload()
             if(response.status==400){

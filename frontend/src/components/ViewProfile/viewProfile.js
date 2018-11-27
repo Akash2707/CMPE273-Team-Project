@@ -15,7 +15,7 @@ class ViewProfile extends Component {
         this.state = {
             profile: {},
             skills: [],
-            profilePhoto: "http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/download/userdefault.png",
+            profilePhoto: "http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png",
             imageURL: "",
             fName: "",
             lName: "",
@@ -36,7 +36,7 @@ class ViewProfile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/recruiter/profile',
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/recruiter/profile',
             {
                 //  headers: { Authorization: localStorage.getItem('token') },
                 params: {
