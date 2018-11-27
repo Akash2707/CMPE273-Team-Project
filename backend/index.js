@@ -104,6 +104,7 @@ app.post('/requestdeny', connectionController.denyrequest);
 app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
 
+app.get('/getRecommendPeople',connectionController.getRecommendPeople);
 
 
 app.get('/download/:file(*)', (req, res) => {

@@ -198,7 +198,7 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    client.get(`profile:${req.query}`, (err, result) => {
+    client.get(`profile:${req.query.email}`, (err, result) => {
         // If that key exist in Redis store
         if (result) {
             console.log("if");
@@ -218,7 +218,7 @@ module.exports.profileDisplay = function (req, res) {
                     })
                 } else {
                     if (Object.keys(user).length != 0) {
-                        client.setex(`profile:${req.query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
                         res.writeHead(200, {
                             'Content-Type': 'application/json'
                         })

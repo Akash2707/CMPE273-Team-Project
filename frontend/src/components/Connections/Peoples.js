@@ -13,10 +13,27 @@ class People extends Component{
             onSuccess:false,
             errorMessage:'',
             connectionlist:[],
+            recommendPeople:[],
             q:''
         }
         this.onConnect=this.onConnect.bind(this)
     }
+
+    componentDidMount(){
+        axios.defaults.withCredentials=true;
+        axios.get('http://localhost:3001/getRecommendPeople', {headers: { Authorization: localStorage.getItem('token')},
+       params: {
+           email: localStorage.getItem('email')
+       }})
+        .then((response)=>{
+            console.log(response.data)
+            this.setState({
+                recommendPeople:this.state.recommendPeople.concat(response.data)
+            });
+        });
+    }
+
+
     searchtextHandler(e){
         this.setState({
             q:e.target.value

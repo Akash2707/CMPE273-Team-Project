@@ -3,6 +3,12 @@ var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
 var { UserProfile} = require('../models/UserProfile')
 
+var session = require('express-session')
+const neo4j = require('neo4j-driver').v1;
+
+const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.com:7687', neo4j.auth.basic('neo4j', '12345678'));
+
+
 
     function handle_request(msg, callback){
         console.log("In handle request:"+ JSON.stringify(msg));
@@ -32,6 +38,25 @@ var { UserProfile} = require('../models/UserProfile')
                 upsert:true,multi:true
             }).then((result)=> {
                 console.log("Updated Document:",result);
+
+                // graph
+                console.log(' sender and receiver ', msg.sender_email + ' ' + msg.reciever_email)
+
+                session = driver.session();
+                var resultPromise = session.run(
+                    'match(n:User {email: $send}),(d:User {email: $receive})  Create(n)-[:sent]-> (d) return d',
+                       {send : msg.sender_email, receive : msg.reciever_email } 
+                   )
+                
+                resultPromise = session.run(
+                    'match(n:User {email: $receive}),(d:User {email: $send})  Create(n)-[:hasRequest]-> (d) return d',
+                    {send : msg.sender_email, receive : msg.reciever_email } 
+                )
+                resultPromise.then(result1 => {
+                    session.close();
+                
+                console.log(result1)
+                })
                 callback(null,result);
     
             },(err)=>{

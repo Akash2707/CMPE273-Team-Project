@@ -1,8 +1,15 @@
 var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
 var { UserProfile } = require('../models/UserProfile')
+
 var {Users } = require('../models/User')
 var connection = require('./../db/connection');
+
+var session = require('express-session')
+const neo4j = require('neo4j-driver').v1;
+
+const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.com:7687', neo4j.auth.basic('neo4j', '12345678'));
+
 
 function handle_request(msg, callback){
 
@@ -41,6 +48,27 @@ function handle_request(msg, callback){
                 })
                 profile.save();
                 console.log( " Final try " + users);
+
+                //making a node in graph db
+                session = driver.session();
+                var imageUrl = 'image'
+                var occupation = 'Software Engineer'
+
+           
+                var resultPromise = session.run(
+                    'create(n: User {email : $mail, location : $loc, recruiter : $isRecruiter, fName : $fname, lName : $lname, imageUrl: $image, occupation: $occup}) return n',
+                    {mail : msg.email, loc : msg.state, isRecruiter : users.isRecruiter, fname : msg.fName, lname : msg.lName, image : imageUrl, occup : occupation}
+                )
+                   console.log(msg.fName);
+                    resultPromise.then(result => {
+                    session.close();
+                    console.log("if");  
+                    const singleRecord = result.records[0];
+                    console.log(singleRecord.get(0))
+                
+                    driver.close();
+                });
+
                 users.isRecruiter = msg.isRecruiter
                 callback(null,users)
              }
