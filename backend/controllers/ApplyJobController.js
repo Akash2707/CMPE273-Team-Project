@@ -19,7 +19,7 @@ module.exports.easyApply = function (req, res) {
             key: function (req, file, cb) {
                 console.log(file);
                 var name = Date.now() + '-' + file.originalname
-                resumeName = `http://localhost:3001/download/resume/${name}`
+                resumeName = `http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/download/resume/${name}`
                 cb(null, name); //use Date.now() for unique file keys
             }
         })

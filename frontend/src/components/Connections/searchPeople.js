@@ -28,7 +28,7 @@ class SearchPeople extends Component{
     }
        console.log(localStorage.getItem('semail'))
        axios.defaults.withCredentials =true;
-       axios.get('http://localhost:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
+       axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
        }})
@@ -56,7 +56,7 @@ class SearchPeople extends Component{
     onConnect(email,e){
      //   var data={sender_email:localStorage.getItem('email'),reciever_email:email}
         axios.defaults.withCredentials=true;
-        axios.put('http://localhost:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             sender_email: localStorage.getItem('decoded_email'),
             reciever_email:email

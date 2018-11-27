@@ -15,7 +15,7 @@ class ViewProfile extends Component {
         this.state = {
             profile: {},
             skills: [],
-            profilePhoto: "http://localhost:3001/download/userdefault.png",
+            profilePhoto: "http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/download/userdefault.png",
             imageURL: "",
             fName: "",
             lName: "",

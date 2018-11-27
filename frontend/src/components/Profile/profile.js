@@ -14,7 +14,7 @@ class Profile extends Component {
         this.state = {
             profile: {},
             skills: [],
-            profilePhoto: "http://localhost:3001/download/userdefault.png",
+            profilePhoto: "http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/download/userdefault.png",
             imageURL: "",
             fName: "",
             lName: "",
@@ -69,7 +69,7 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/recruiter/profile',
+        axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -186,7 +186,7 @@ class Profile extends Component {
         image.append("profilePhoto", this.state.imageURL);
         console.log(image);
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/recruiter/profile/imageupload', image,
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile/imageupload', image,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -225,7 +225,7 @@ class Profile extends Component {
             resume: "",
         }
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/recruiter/profile/update', data,
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile/update', data,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -268,7 +268,7 @@ class Profile extends Component {
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/recruiter/profile/experience', data,
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile/experience', data,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -311,7 +311,7 @@ class Profile extends Component {
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/recruiter/profile/education', data,
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile/education', data,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -341,7 +341,7 @@ class Profile extends Component {
         })
 
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/recruiter/profile/skills', skills,
+        axios.put('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/recruiter/profile/skills', skills,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {

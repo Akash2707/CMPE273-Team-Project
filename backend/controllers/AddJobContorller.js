@@ -19,7 +19,7 @@ module.exports.addJob = function (req, res) {
             key: function (req, file, cb) {
                 console.log(file);
                 var name = Date.now() + '-' + file.originalname
-                imageName = `http://localhost:3001/download/${name}`
+                imageName = `http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/download/${name}`
                 cb(null, name); //use Date.now() for unique file keys
             }
         })

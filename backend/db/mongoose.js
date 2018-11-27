@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/linkedIn', { useNewUrlParser: true , poolSize : 100});
+mongoose.connect('mongodb://ec2-18-220-185-16.us-east-2.compute.amazonaws.com:27017/databaseLinkedIn', { useNewUrlParser: true , poolSize : 100});
 
 var db = mongoose.connection
 

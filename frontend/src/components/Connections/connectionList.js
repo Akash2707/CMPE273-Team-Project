@@ -13,7 +13,7 @@ class ConnectionList extends Component{
     }
     componentDidMount(){
         axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/getConnections', {headers: { Authorization: localStorage.getItem('token')},
+        axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/getConnections', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
        }})
@@ -25,7 +25,7 @@ class ConnectionList extends Component{
     }
     viewConnection(people,e){
         axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/viewProfile',people)
+        axios.get('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/viewProfile',people)
         .then((response)=>{
             if(response.status==400){
                 this.setState({

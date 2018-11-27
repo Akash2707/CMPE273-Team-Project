@@ -30,7 +30,7 @@ module.exports.getJobs = function (req, res) {
                     res.status(400);
                     res.send(err);
                 } else {
-                    client.setex(`jobs:${req.query.state}`, 3600, JSON.stringify({ source: 'Redis Cache', ...jobs, }));
+                    client.setex(`jobs:${req.query.state}`, 30, JSON.stringify({ source: 'Redis Cache', ...jobs, }));
                     console.log(jobs)
                     res.writeHead(200, {
                         'Content-Type': 'application/json'

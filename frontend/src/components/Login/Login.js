@@ -180,7 +180,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onSubmitHandle: (data) => {
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/login', data)
+            axios.post('http://NodeLoadBalancer-253592956.us-east-2.elb.amazonaws.com:3001/login', data)
                 .then((response) => {
                     if(response.data.status === 200){
                         localStorage.setItem('token', response.data.token);
