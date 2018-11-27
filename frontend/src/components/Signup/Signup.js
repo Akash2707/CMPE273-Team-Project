@@ -126,13 +126,13 @@ class Signup extends Component {
 
                                 <div id="info3"> First name</div>
                                 <Field
-                                    name="fname"
+                                    name="fName"
                                     component={this.renderField}
                                 />
 
                                 <div id="info3"> Last name</div>
                                 <Field
-                                    name="lname"
+                                    name="lName"
                                     component={this.renderField}
                                 />
 
@@ -164,7 +164,7 @@ class Signup extends Component {
                                         <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="true" style={{ color: 'black' }} />Yes
                                     </div>
                                     <div class="radio-inline">
-                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="false" checked />No
+                                        <input type="radio" class="radio" name="isRecruiter" onChange={this.radioButtonHandler} value="false" />No
                                     </div>
                                 </div>
 

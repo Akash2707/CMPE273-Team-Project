@@ -27,6 +27,28 @@ module.exports.getpeople=function(req,res){
         }
     })
 }
+
+module.exports.getRecommendPeople=function(req,res){
+    //check this out
+     console.log("here request:",req.query)
+     var request={
+         'email':req.query.email,
+         //'q':req.query.q
+     }
+     kafka.make_request('recommend_people',request,function(err,searchresults){
+         if(err){
+             console.log(err)
+             res.status(400);
+             res.send(err);
+         }else{
+             console.log(searchresults)
+             res.writeHead(200,{'Content-Type':'application/json'});
+             res.end(JSON.stringify(searchresults));
+         }
+     })
+ }
+ 
+
 //done
 module.exports.sendrequest=function(req,res){
     console.log('sender_email',req.body.params.sender_email,
