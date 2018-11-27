@@ -126,13 +126,13 @@ class Signup extends Component {
 
                                 <div id="info3"> First name</div>
                                 <Field
-                                    name="fname"
+                                    name="fName"
                                     component={this.renderField}
                                 />
 
                                 <div id="info3"> Last name</div>
                                 <Field
-                                    name="lname"
+                                    name="lName"
                                     component={this.renderField}
                                 />
 
