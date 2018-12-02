@@ -55,7 +55,7 @@ function handle_request(msg, callback){
            
                 var resultPromise = session.run(
                     'create(n: User {email : $mail, location : $loc, recruiter : $isRecruiter, fName : $fname, lName : $lname, imageUrl: $image, occupation: $occup}) return n',
-                    {mail : msg.email, loc : msg.state, isRecruiter : users.isRecruiter, fname : msg.fname, lname : msg.lname, image : imageUrl, occup : occupation}
+                    {mail : msg.email, loc : msg.state, isRecruiter : users.isRecruiter, fname : msg.fName, lname : msg.lName, image : imageUrl, occup : occupation}
                 )
                    console.log(msg.fName);
                     resultPromise.then(result => {
