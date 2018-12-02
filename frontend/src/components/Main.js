@@ -13,7 +13,7 @@ import ViewProfileApplicant from './ViewProfileApplicant'
 import ViewProfileRecruiter from './ViewProfileRecruiter'
 import Navbar from './Navbar/Navbar'
 import PostJobMain from './PostJob/PostJobMain';
-
+import PostedJobs from './Job/jobPosted';
 import ConnectionList from './Connections/connectionList';
 //import SearchPeople from './Connections/searchPeople';
 import sentRequest from './Connections/sentRequest'
@@ -29,6 +29,7 @@ class Main extends Component {
                 <Route path="/jobapplication" component={JobApplication}/>
                 <Route path="/jobs/view" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>
+                <Route path="/postedjobs" component={PostedJobs}/>
                 <Route path="/jobs/search" component={SearchJobDisplay}/>
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>

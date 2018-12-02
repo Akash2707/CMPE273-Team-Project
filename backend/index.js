@@ -75,7 +75,8 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 var connectionController = require('./controllers/connectionController')
-
+var savedJobsController = require('./controllers/SavedJobsController')
+var postedJobsController = require('./controllers/PostedJobController')
 
 app.post('/login', loginController.authenticate);
 app.post('/signup', signupController.register);
@@ -93,7 +94,8 @@ app.put('/recruiter/profile/education', updateProfile.addEducation);
 app.put('/recruiter/profile/imageupload', updateProfile.imageUpload);
 app.get('/recruiter/profile', updateProfile.profileDisplay);
 app.put('/recruiter/profile/skills', updateProfile.addskills);
-
+app.get('/jobs/saved/', savedJobsController.getSaveJobs);
+app.get('/recruiter/jobs/posted/', postedJobsController.getPostedJobs);
 //app.post('/travelerlogin',applicantLoginController.authenticate);
 app.get('/searchpeople', connectionController.getpeople);
 app.put('/sendrequest', connectionController.sendrequest);

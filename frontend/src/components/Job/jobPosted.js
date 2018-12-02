@@ -3,29 +3,30 @@ import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-class SavedJobs extends Component {
+
+class JobsPosted extends Component {
 
     constructor(props) {
 
         super(props);
 
         this.state = {
-            savedjobs: [],
+            postedJobs: [],
             totalPages: "",
-            noSavedJobs: "",
+            noPostedJobs: "",
             errormsg: ""
         }
     }
 
     componentDidMount() {
-        this.getSavedJobs(1)
+        this.getPostedJobs(1)
     }
 
-    getSavedJobs(page) {
+    getPostedJobs(page) {
         this.setState({
-            noSavedJobs: ""
+            noPostedJobs: ""
         })
-        axios.get('http://localhost:3001/jobs/saved',
+        axios.get('http://localhost:3001/recruiter/jobs/posted',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -38,21 +39,21 @@ class SavedJobs extends Component {
                 //update the state with the response data
                 if (response.status === 200) {
                     this.setState({
-                        savedjobs: response.data.jobs,
+                        postedJobs: response.data.jobs,
                         totalPages: response.data.totalPages
                     })
-                    if (this.state.savedjobs.length == 0) {
+                    if (response.data.jobs.length == 0) {
                         this.setState({
 
-                            noSavedJobs: "No Saved Jobs",
-                            savedjobs: []
+                            noPostedJobs: "No Posted Jobs",
+                            postedJobs: []
                         })
                     }
                     console.log(response)
                 }
                 else {
                     this.setState({
-                        savedjobs: []
+                        postedJobs: []
                     })
                 }
             })
@@ -68,13 +69,14 @@ class SavedJobs extends Component {
         // this.setState({
         //     currentPage: selected
         // })
-        this.getSavedJobs(selected)
+        this.getPostedJobs(selected)
 
     }
 
     render() {
-
-        let displaySavedJobs = this.state.savedjobs.map(jobs => {
+        console.log(this.state.noPostedJobs)
+        
+        let displayPostedJobs = this.state.postedJobs.map(jobs => {
             return (
                 
                     <div className="col-md-12 savedJobsCards">
@@ -84,14 +86,15 @@ class SavedJobs extends Component {
                         <div className="col-md-10 bottom-border-jobs">
                         <div className="col-md-7 savedJobsDetails">
 
-                            <h5><b>{jobs.title}</b></h5>
+                            <h5><b>{jobs.title}</b> - <span> {jobs.employmentType}</span></h5> 
+                            
                             <h6>{jobs.companyName}</h6>
                             <br/>
-                            <p>{jobs.location}</p>
+                            <p>{jobs.city}</p>
                             
                         </div>
                         <div align="right" class="col-md-2">
-                            <p><i class="glyphicon glyphicon-bookmark" style={{ fontSize: "30px", color: "blue", marginTop: "50%" }} ></i></p>
+                            <button type="button" class="btn btn-outline-secondary" style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} >Edit Job</button>
 
                         </div>
                        
@@ -102,50 +105,24 @@ class SavedJobs extends Component {
             )
         })
 
-        let displayAppliedJobs =
-            (
-
-                <div className="col-md-4 appliedJobsBox">
-                    <div className="col-md-12">
-                        <h4 style={{ color: "#506B71" }}>Applied Jobs</h4>
-                        <hr />
-                    </div>
-                    <div className="col-md-12 appliedJobDisplay">
-                        <div className="col-md-12" style={{ margin: "0px", padding: "0px" }}>
-                            <div className="col-md-1"></div>
-                            <div className="col-md-2 appliedJobLogo">
-                            </div>
-                            <div className="col-md-1"></div>
-                            <div className="col-md-8 appliedJobDetail">
-
-                                <h5>Position Name</h5>
-                                <label>Company Name</label>
-                                <p>Location </p>
-                            </div>
-                        </div>
-                        <div className="col-md-12" style={{ margin: "0px", padding: "0px" }}>
-                            <div className="col-md-3"></div>
-                            <div className="col-md-9"><hr /></div>
-                        </div>
-                    </div>
-                </div>)
-
         return (
             <div className="containerFluid" style={{ marginTop: "52px" }}>
-             <div className="col-md-12 ">
-                 <div className="col-md-7" >
-                 <div className="col-md-12">
+                
+                <div className="col-md-12">
                 <p style={{ color: "red" }}>{this.state.noSavedJobs}</p>
                 <p style={{ color: "red" }}>{this.state.errormsg}</p>
                 </div>
-               
-               
-                    <div className="col-md-12 savedJobsBox" style={{paddingTop:"0px"}}>
+                <div className="col-md-12 ">
+                <div className="col-md-12">
+                    <div className="col-md-2"></div>
+                    <div className="col-md-8 savedJobsBox" style={{paddingTop:"0px"}}>
                     <div className="col-md-12 savedJobsBanner">
-                     <h4 > Jobs Saved</h4>
+                     <h4 > Jobs Posted</h4>
                     </div>
                        
-                        {displaySavedJobs}
+                        {displayPostedJobs}
+                        
+                    </div>
                     </div>
                     <div className="col-md-12">
                     <div className="col-md-5"></div> 
@@ -164,13 +141,13 @@ class SavedJobs extends Component {
                                 activeClassName={"active"} />
                         </div>
                     </div>
-                    </div>
-                    
-                    <div className="col-md-1"></div>
-                    {displayAppliedJobs}
                 </div>
             </div>
-            )}
+            
+            )
+
+
+    }
 }
 
-export default SavedJobs;
+export default JobsPosted;

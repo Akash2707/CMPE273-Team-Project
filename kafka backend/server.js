@@ -19,8 +19,8 @@ var checkEasyApply = require('./services/CheckEasyApply');
 var checkApplication = require('./services/CheckApplication');
 var saveJob = require('./services/SaveJob')
 var checkSavedJob = require('./services/CheckSavedJob')
-
-
+var getSavedJob = require('./services/GetSaveJob')
+var getPostedJob = require('./services/GetPostedJob')
 var getRequests=require('./services/getRequests')
 var requestaccept=require('./services/requestaccept')
 var searchPeople = require('./services/searchpeople')
@@ -83,8 +83,8 @@ handleTopicRequest("check_easyapply", checkEasyApply)
 handleTopicRequest("check_application",checkApplication)
 handleTopicRequest("save_job",saveJob)
 handleTopicRequest("check_savedJob",checkSavedJob)
-
-
+handleTopicRequest("get_saved_jobs",getSavedJob)
+handleTopicRequest("get_posted_jobs",getPostedJob)
 handleTopicRequest("getallrequest",getRequests)
 handleTopicRequest("accept_request",requestaccept)
 handleTopicRequest("deny_request",requestdeny)
