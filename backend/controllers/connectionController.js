@@ -13,7 +13,8 @@ module.exports.getpeople=function(req,res){
     console.log("here request:",req.query)
     var request={
         'email':req.query.email,
-		'q':req.query.q
+        'q':req.query.q,
+        'page':req.query.page
     }
     kafka.make_request('search_people',request,function(err,searchresults){
         if(err){
@@ -27,13 +28,36 @@ module.exports.getpeople=function(req,res){
         }
     })
 }
+
+module.exports.getRecommendPeople=function(req,res){
+    //check this out
+     console.log("here request:",req.query)
+     var request={
+         'email':req.query.email,
+         //'q':req.query.q
+     }
+     kafka.make_request('recommend_people',request,function(err,searchresults){
+         if(err){
+             console.log(err)
+             res.status(400);
+             res.send(err);
+         }else{
+             console.log(searchresults)
+             res.writeHead(200,{'Content-Type':'application/json'});
+             res.end(JSON.stringify(searchresults));
+         }
+     })
+ }
+
 //done
 module.exports.sendrequest=function(req,res){
-    console.log('sender_email',req.body.params.sender_email,
-    'reciever_email',req.body.params.reciever_email)
+  //  console.log('sender_email',req.body.params.sender_email,
+  //  'reciever_email',req.body.params.reciever_email)
     var request={
-        'sender_email':req.body.params.sender_email,
-        'reciever_email':req.body.params.reciever_email
+    //    'sender_email':req.body.params.sender_email,
+    //    'reciever_email':req.body.params.reciever_email
+        'sender_email' : 'jivan@gmail.com',
+        'receiver_email' : 'ravan@gmail.com'
     }
     kafka.make_request('sendrequest',request,function(err,result){
         if(err){
@@ -52,7 +76,8 @@ module.exports.sendrequest=function(req,res){
 module.exports.getrequest=function(req,res){
     console.log(req)
     var request={
-        'user_email':req.query.email
+       // 'user_email':req.query.email
+        'user_email' : 'ravan@gmail.com'
     }
     kafka.make_request('getallrequest',request,function(err,allrequests){
         if(err){
@@ -69,7 +94,8 @@ module.exports.getrequest=function(req,res){
 module.exports.getsentrequest=function(req,res){
     console.log(req)
     var request={
-        'user_email':req.query.email
+      //  'user_email':req.query.email
+        'user_email' : 'jivan@gmail.com'
     }
     kafka.make_request('getallsentrequest',request,function(err,allsentrequests){
         if(err){
@@ -126,7 +152,7 @@ module.exports.withdrawrequest=function(req,res){
     })
 }
 module.exports.getConnections=function(req,res){
-    console.log(req)
+  //  console.log(req)
     kafka.make_request('all_connections',req.query,function(err,connection_result){
         if(err){
             res.status(400)

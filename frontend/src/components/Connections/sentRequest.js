@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 class sentRequest extends Component{
     constructor(props){
@@ -37,6 +38,7 @@ class sentRequest extends Component{
                     isReqFail:true
                 })
             }
+            window.location.reload()
 
         }))
     }

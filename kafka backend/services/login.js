@@ -4,9 +4,9 @@ var { Users } = require('../models/User')
 
 function handle_request(msg, callback){
 
-    var mail = msg.email.toLowerCase()
+    // var mail = msg.email.toLowerCase()
 
-    connection.query('SELECT * FROM users WHERE email = ?',[mail], function (error, results, fields) {
+    connection.query('SELECT * FROM users WHERE email = ?',[msg.email], function (error, results, fields) {
         if (error) {
             callback(error," User does not exist ... ")  
         }else{

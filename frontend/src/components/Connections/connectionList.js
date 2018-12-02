@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 class ConnectionList extends Component{
     constructor(props){
@@ -8,11 +9,40 @@ class ConnectionList extends Component{
         this.state={
             connections:[],
             isConnectionGet:false,
-            isProfileGet:false
+            isProfileGet:false,
+            searchPageCount:1
         }
+     //   this.handlePageClick=this.handlePageClick.bind(this)
     }
-    componentDidMount(){
+  /*  getConnections(PageNo=1){
         axios.defaults.withCredentials=true;
+        axios.get('http://localhost:3001/getConnections', {headers: { Authorization: localStorage.getItem('token')},
+       params: {
+           email: localStorage.getItem('email'),
+           page:PageNo
+       }})
+        .then((response)=>{
+            if(response.status ===200){
+                this.setState({
+                    connections:response.data,
+                    searchPageCount:response.data.totalpages
+                });
+            }else{
+                this.setState({
+                    onSuccess: false,
+                    errorMessage: response.data.message
+                })
+            }
+           
+        });
+    }
+    handlePageClick = (data) => {
+        this.getConnections(data.selected + 1)
+    };
+    */componentDidMount(){
+
+      //  this.getConnections()
+          axios.defaults.withCredentials=true;
         axios.get('http://localhost:3001/getConnections', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
@@ -22,14 +52,14 @@ class ConnectionList extends Component{
                 connections:this.state.connections.concat(response.data)
             });
         });
-    }
+     }
     viewConnection(people,e){
         axios.defaults.withCredentials=true;
         axios.get('http://localhost:3001/viewProfile',people)
         .then((response)=>{
             if(response.status==400){
                 this.setState({
-                    isProfileGet:true
+                    isProfileGet:false
                 })
             }
             
@@ -100,7 +130,19 @@ class ConnectionList extends Component{
 
                     </div>
                 </div>
-
+       {/*          <div style={{ margin: "auto", textAlign: "center" }}>
+                    <ReactPaginate previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={<a href="">...</a>}
+                        breakClassName={"break-me"}
+                        pageCount={this.state.searchPageCount}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={this.handlePageClick}
+                        containerClassName={"pagination"}
+                        subContainerClassName={"pages pagination"}
+                        activeClassName={"active"} />
+                </div> */}
             </div>
 
             </div>

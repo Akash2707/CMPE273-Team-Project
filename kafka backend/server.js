@@ -30,6 +30,7 @@ var requestdeny=require('./services/requestdeny')
 var requestwithdraw=require('./services/requestwithdraw')
 var getsentrequest=require('./services/getsentRequests')
 
+var getRecommendPeople=require('./services/getRecommendPeople')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -92,3 +93,5 @@ handleTopicRequest("sendrequest",sendrequest)
 handleTopicRequest("all_connections",allConnections)
 handleTopicRequest("withdraw_request",requestwithdraw)
 handleTopicRequest("getallsentrequest",getsentrequest)
+
+handleTopicRequest("recommend_people",getRecommendPeople)

@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 class receivedRequest extends Component{
     constructor(props){
@@ -19,7 +20,7 @@ class receivedRequest extends Component{
        }})
         .then((response)=>{
             this.setState({
-                requests:this.state.requests.concat(response.data)
+                requests:response.data
             });
         });
     }
@@ -35,9 +36,11 @@ class receivedRequest extends Component{
                 this.setState({
                     isReqFail:true
                 })
-            }
+                 }
+            window.location.reload()
 
-        }))
+        })
+        )
     }
     onDeny(connection_email,e){
         axios.defaults.withCredentials=true;
@@ -52,6 +55,7 @@ class receivedRequest extends Component{
                     isReqFail:true
                 })
             }
+            window.location.reload()
 
         }))
     }

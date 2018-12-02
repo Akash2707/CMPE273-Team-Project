@@ -2,15 +2,21 @@ var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
 var { UserProfile} = require('../models/UserProfile')
 
+// for graph
+var session = require('express-session')
+const neo4j = require('neo4j-driver').v1;
+const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.com:7687', neo4j.auth.basic('neo4j', '12345678'));
+// graph end
 
     function handle_request(msg, callback){
-        console.log("In handle request:"+ JSON.stringify(msg));
-      
+        //console.log("In handle request:"+ JSON.stringify(msg));
+
         UserProfile.findOneAndUpdate({
-            'email':msg.user_email
+            // 'email':msg.user_email
+            'email' : 'jivan@gmail.com'
         },
         {
-            $push:{'requests.connectionlistlist':msg.connection_email},$pull:{'requests.receiverequest':{$in:[msg.connection_email]}}
+            $push:{'requests.connectionlistlist':'ravan@gmail.com'},$pull:{'requests.receiverequest':{$in:['ravan@gmail.com']}}
         },
        
         {
@@ -19,16 +25,63 @@ var { UserProfile} = require('../models/UserProfile')
         }).then((result)=> {
             //console.log("Updated Document:",result);
             UserProfile.findOneAndUpdate({
-                'email':msg.connection_email
+              //  'email':msg.connection_email
+              'email' : 'ravan@gmail.com'
             },
             {
-                $push:{'requests.connectionlistlist':msg.user_email},$pull:{'requests.sendrequest':{$in:[msg.user_email]}}
+                $push:{'requests.connectionlistlist':'jivan@gmail.com'},$pull:{'requests.sendrequest':{$in:['jivan@gmail.com']}}
             },
         
             {
                 upsert:true,multi:true
             }).then((result)=> {
                 console.log("Updated Document:",result);
+
+                
+               // Request accepting and make relation called 'connected'
+                // graph start
+              //  console.log(' My email : ', msg.user_email)
+              //  console.log(' Accepting request from : ', msg.connection_email)
+                sender = 'jivan@gmail.com'
+                recevier = 'ravan@gmail.com'
+                 session = driver.session();
+                // delete relationship called 'sent' 
+                var resultPromise = session.run(
+                    'match(n: User {email: $my}) -[r:sent]-> (d: User {email: $others}) delete r',
+                        {my : sender, others : recevier}
+                )
+                // delete relationship called 'hasRequest' 
+                resultPromise = session.run(
+                    'match(n: User {email: $others}) -[r:hasRequest]->(d: User {email: $my}) delete r',
+                        {my : sender, others : recevier}
+                )
+                // create connection from 'me' to 'other' 
+                resultPromise = session.run(
+                    'match(n: User {email: $my}),(d:User {email: $others})  Create (n)-[:connected]->(d) return d',
+                        {my : sender, others : recevier}
+                )
+                // create connection from 'other' to 'me' 
+                resultPromise = session.run(
+                    'match(n: User {email: $others}),(d:User {email: $my})  Create (n)-[:connected]->(d)',
+                        {my : sender, others : recevier}
+                )
+                var data = []
+                 resultPromise.then(result1 => {
+                    session.close();
+                     console.log()
+                    
+                 //   data = result1.records.get(0).properties
+                    data = result1.records
+                     console.log(data)
+                 //    callback(null,data)
+                        
+                    driver.close();
+                })
+                // graph end
+                // deleted for graph from
+               // callback(null,result);
+                // to                
+
                 callback(null,result);
     
             },(err)=>{

@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import './People.css';
+import ReactPaginate from 'react-paginate';
 
 class People extends Component{
     constructor(props){
@@ -13,10 +14,31 @@ class People extends Component{
             onSuccess:false,
             errorMessage:'',
             connectionlist:[],
-            q:''
+            q:'',
+            searchPageCount:1,
+            recommendPeople:[]
+            
         }
         this.onConnect=this.onConnect.bind(this)
+       // this.searchPageCount=this.searchPageCount.bind(this)
+        this.handlePageClick=this.handlePageClick.bind(this)
     }
+    
+    
+    componentDidMount(){
+        axios.defaults.withCredentials=true;
+        axios.get('http://localhost:3001/getRecommendPeople', {headers: { Authorization: localStorage.getItem('token')},
+       params: {
+           email: localStorage.getItem('email')
+       }})
+        .then((response)=>{
+            console.log(response.data)
+            this.setState({
+                recommendPeople:response.data
+            });
+        });
+    }
+
     searchtextHandler(e){
         this.setState({
             q:e.target.value
@@ -40,21 +62,23 @@ class People extends Component{
    
            }))
        }
-    SearchHandler(e){
-        e.preventDefault();
+    SearchHandler(pageNo=1){
+       // e.preventDefault();
         axios.defaults.withCredentials =true;
         console.log("hii")
        axios.get('http://localhost:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email'),
-           q:this.state.q
+           q:this.state.q,
+           page:pageNo
+    
        }})
            .then(response => {
                console.log("Status Code : ", response);
                if (response.status === 200) {
                    this.setState({
-                       peoples: response.data,
-                     
+                       peoples: response.data.result,
+                        searchPageCount:response.data.totalpages,
                        onSuccess: true
                    })
                } else {
@@ -71,6 +95,18 @@ class People extends Component{
                })
            });
     }
+    handlePageClick = (data) => {
+      //  let value = {}
+      /*   value = {
+            state: this.state.state,
+            industry: this.state.industry,
+            jobTitle: this.state.jobTitle,
+            jobType: this.state.jobType,
+            experience: this.state.experience
+        } */
+        this.SearchHandler(data.selected + 1)
+    };
+
     onWithdraw(connection_email,e){
         console.log(connection_email)
         axios.defaults.withCredentials=true;
@@ -105,27 +141,23 @@ class People extends Component{
             connection_email:connection_email
         }})
         .then((response=>{
-            window.location.reload()
+           
             if(response.status==400){
                 this.setState({
                     isReqFail:true
                 })
             }
+            window.location.reload()
 
         }))
     }
-    viewConnection(people,e){
-        axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/viewProfile',people)
-        .then((response)=>{
-            //window.location.reload()
-            if(response.status==400){
-                this.setState({
-                    isProfileGet:true
-                })
-            }
-            
-        })
+   viewConnection(people,e){
+       this.props.history.push({
+           pathname:'/viewprofile',
+           state:{
+               email:people
+           }
+       })   
     }
     render(){
        console.log(this.state.peoples)
@@ -174,7 +206,7 @@ Button1=(<div class='pull-right btn-group-md' >
                             </a>
                         </div> */}
                         <div class='info'>
-                            <h4>{peoples.email}</h4>
+                            <a onClick={this.viewConnection.bind(this,peoples.email)}><h4>{peoples.fName}  {peoples.lName}</h4></a>
                             <p class='text-muted'>Occupation</p>
                         </div>
                         <div class="clearfix"></div>
@@ -182,7 +214,7 @@ Button1=(<div class='pull-right btn-group-md' >
                          </div>
 
                         </div>
-
+                     
                     </div>
 
                 </div>
@@ -222,8 +254,9 @@ Button1=(<div class='pull-right btn-group-md' >
                     <div class='col-md-4' id='middle-container' style={{padding:'30px',marginLeft:'20px'}}>
             <div class='search-panel'>
             <div class='input-group' id='group1' style={{width:'320px',height:'10px'}}>
-                                <textarea type='text' maxLength = "30"  name='searchinput' class='form-control' placeholder='Search' onChange={this.searchtextHandler.bind(this)}/>                                <span class='input-group-btn'>
-                                    <button type='button' id='searchbutton' class='btn btn-effect-ripple btn-primary' ><i class='fa fa-search' onClick={this.SearchHandler.bind(this)}> Search</i></button>
+                                <textarea type='text' maxLength = "30"  name='searchinput' class='form-control' placeholder='Search' onChange={this.searchtextHandler.bind(this)}/>   
+                                 <span class='input-group-btn'>
+                                    <button type='button' id='searchbutton' class='btn btn-effect-ripple btn-primary' ><i class='fa fa-search' onClick={this.SearchHandler.bind(this,this.state.searchPageCount)}> Search</i></button>
                                    </span>
                                 </div>
             <div class='row' style={{marginTop:'25px'}}>
@@ -232,6 +265,19 @@ Button1=(<div class='pull-right btn-group-md' >
                         <div class='panel-body p-t-0'>
                        
                                 {searchResults}
+                                <div style={{ margin: "auto", textAlign: "center" }}>
+                    <ReactPaginate previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={<a href="">...</a>}
+                        breakClassName={"break-me"}
+                        pageCount={this.state.searchPageCount}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={this.handlePageClick}
+                        containerClassName={"pagination"}
+                        subContainerClassName={"pages pagination"}
+                        activeClassName={"active"} />
+                </div>
                                 {this.state.q}
                        
                         </div>

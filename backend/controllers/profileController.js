@@ -198,15 +198,16 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    client.get(`profile:${req.query}`, (err, result) => {
-        // If that key exist in Redis store
-        if (result) {
-            console.log("if");
-            const resultJSON = JSON.parse(result);
-            return res.status(200).json(resultJSON);
-        } else {
-            console.log("else");
-            return kafka.make_request('user_profile_display', req.query, function (err, user) {
+    // client.get(`profile:${req.query}`, (err, result) => {
+    //     // If that key exist in Redis store
+    //     if (result) {
+    //         console.log("if");
+    //         const resultJSON = JSON.parse(result);
+    //         return res.status(200).json(resultJSON);
+    //     } else {
+    //         console.log("else");
+            // return 
+            kafka.make_request('user_profile_display', req.query, function (err, user) {
                 console.log('in result');
                 console.log(JSON.stringify(user));
                 console.log(user);
@@ -218,7 +219,7 @@ module.exports.profileDisplay = function (req, res) {
                     })
                 } else {
                     if (Object.keys(user).length != 0) {
-                        client.setex(`profile:${req.query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        // client.setex(`profile:${req.query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
                         res.writeHead(200, {
                             'Content-Type': 'application/json'
                         })
@@ -232,9 +233,26 @@ module.exports.profileDisplay = function (req, res) {
                 }
             })
         }
-    })
-}
-
+   /* +
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   */
 module.exports.addskills = function (req, res) {
             console.log(req.body);
             var data = {

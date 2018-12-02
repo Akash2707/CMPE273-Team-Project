@@ -36,16 +36,19 @@ class ViewProfile extends Component {
     }
 
     componentDidMount() {
+        var email=this.props.location.state.email;
+        console.log(email)
         axios.get('http://localhost:3001/recruiter/profile',
             {
                 //  headers: { Authorization: localStorage.getItem('token') },
                 params: {
-                    email: localStorage.getItem('email'),
+                    email: email
 
                 }
             })
             .then((response) => {
                 console.log(response)
+
                 //update the state with the response data
                 this.setState({
                     profile: response.data,
@@ -69,6 +72,7 @@ class ViewProfile extends Component {
                     getProfileMessage: error.response.data.error
                 })
             });
+            console.log(this.state.userLocation)
     }
 
     isConnected(){
