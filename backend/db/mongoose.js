@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://root:12345678@ec2-18-220-185-16.us-east-2.compute.amazonaws.com:27017/databaseLinkedIn', { useNewUrlParser: true , poolSize : 100});
+mongoose.connect('mongodb://root:root12345678@ds249583.mlab.com:49583/homeaway', { useNewUrlParser: true , poolSize : 100});
 
 var db = mongoose.connection
 

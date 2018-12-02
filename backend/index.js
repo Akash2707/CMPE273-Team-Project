@@ -113,9 +113,16 @@ app.get('/download/:file(*)', (req, res) => {
     var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
     var params = { Bucket: 'linkedin-bucket', Key: file };
     s3Bucket.getObject(params, function (err, data) {
+        if(data){
         res.writeHead(200, { 'Content-Type': 'image/jpeg' });
         res.write(data.Body, 'binary');
         res.end(null, 'binary');
+        }else{
+            res.status(400).json({
+                success: false,
+                message: "System Error, Try Again."
+            })
+        }
     });
 });
 app.listen(3001);
