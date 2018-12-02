@@ -198,15 +198,15 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    client.get(`profile:${req.query.email}`, (err, result) => {
-        // If that key exist in Redis store
-        if (result) {
-            console.log("if");
-            const resultJSON = JSON.parse(result);
-            return res.status(200).json(resultJSON);
-        } else {
-            console.log("else");
-            return kafka.make_request('user_profile_display', req.query, function (err, user) {
+    // client.get(`profile:${req.query.email}`, (err, result) => {
+    //     // If that key exist in Redis store
+    //     if (result) {
+    //         console.log("if");
+    //         const resultJSON = JSON.parse(result);
+    //         return res.status(200).json(resultJSON);
+    //     } else {
+    //         console.log("else");
+                kafka.make_request('user_profile_display', req.query, function (err, user) {
                 console.log('in result');
                 console.log(JSON.stringify(user));
                 console.log(user);
@@ -231,8 +231,8 @@ module.exports.profileDisplay = function (req, res) {
                     }
                 }
             })
-        }
-    })
+    //     }
+    // })
 }
 
 module.exports.addskills = function (req, res) {

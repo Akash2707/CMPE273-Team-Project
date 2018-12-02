@@ -18,13 +18,13 @@ module.exports.getJobs = function (req, res) {
         'jobTitle': req.query.jobTitle,
         'industry': req.query.industry
     }
-    client.get(`jobs:${req.query.state}`, (err, result) => {
-        // If that key exist in Redis store
-        if (result) {
-            console.log("if");
-            const resultJSON = JSON.parse(result);
-            return res.status(200).json(resultJSON);
-        } else {
+    // client.get(`jobs:${req.query.state}`, (err, result) => {
+    //     // If that key exist in Redis store
+    //     if (result) {
+    //         console.log("if");
+    //         const resultJSON = JSON.parse(result);
+    //         return res.status(200).json(resultJSON);
+    //     } else {
             kafka.make_request('get_jobs', data, function (err, jobs) {
                 if (err) {
                     res.status(400);
@@ -39,6 +39,6 @@ module.exports.getJobs = function (req, res) {
                 }
 
             })
-        }
-    })
+    //     }
+    // })
 }
