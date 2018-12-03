@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import './People.css';
 import ReactPaginate from 'react-paginate';
+//import { connect } from 'http2';
 
 class People extends Component{
     constructor(props){
@@ -16,7 +17,10 @@ class People extends Component{
             connectionlist:[],
             q:'',
             searchPageCount:1,
-            recommendPeople:[]
+            recommendPeople:[],
+            connected:[],
+            sentReq:[],
+            hasReq:[],
             
         }
         this.onConnect=this.onConnect.bind(this)
@@ -32,6 +36,7 @@ class People extends Component{
            email: localStorage.getItem('email')
        }})
         .then((response)=>{
+            console.log(' response from Recommend users :')
             console.log(response.data)
             this.setState({
                 recommendPeople:response.data
@@ -74,11 +79,16 @@ class People extends Component{
     
        }})
            .then(response => {
-               console.log("Status Code : ", response);
+               console.log(" response from search user : ", response);
+               console.log(' The result : ', response.data.result)
+               console.log(' The totalpages : ', response.data.totalpages)
                if (response.status === 200) {
                    this.setState({
                        peoples: response.data.result,
-                        searchPageCount:response.data.totalpages,
+                       searchPageCount:response.data.totalpages,
+                       connected:response.data.connect,
+                       sentReq:response.data.sentReq,
+                       hasReq:response.data.hasReq,
                        onSuccess: true
                    })
                } else {
@@ -162,21 +172,27 @@ class People extends Component{
     render(){
        console.log(this.state.peoples)
         let searchResults=this.state.peoples.map(peoples=>{
-            let Button1=null;
-            if(peoples.requests.sendrequest.includes(localStorage.getItem('email'))){
+             let Button1=null;
+            
+            //if(peoples.requests.sendrequest.includes(localStorage.getItem('email'))){
+                if(this.state.hasReq.includes(peoples.email)){
                 Button1=(<div class='pull-right btn-group-md' >
                 <a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect1' onClick={this.onAccept.bind(this,peoples.email)}>
                     <i class='fa fa-handshake-o'>Accept</i>
                 </a>
             </div>
-)}else if(peoples.requests.receiverequest.includes(localStorage.getItem('email'))){
+)}
+//else if(peoples.requests.receiverequest.includes(localStorage.getItem('email'))){
+else if(this.state.sentReq.includes(peoples.email)){
 Button1=(<div class='pull-right btn-group-md' >
 <a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect' onClick={this.onWithdraw.bind(this,peoples.email)}>
     <i class='fa fa-handshake-o'>Withdraw</i>
 </a>
 </div>)
 
-}else if(peoples.requests.connectionlistlist.includes(localStorage.getItem('email'))){
+}
+else if(this.state.connected.includes(peoples.email)){
+//else if(peoples.requests.connectionlistlist.includes(localStorage.getItem('email'))){
     Button1=(<div class='pull-right btn-group-md' >
 <a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect1' onClick={this.viewConnection.bind(this,peoples.email)}>
     <i class='fa fa-handshake-o'>View Profile</i>
@@ -188,7 +204,7 @@ Button1=(<div class='pull-right btn-group-md' >
         <i class='fa fa-handshake-o'>Connect</i>
     </a>
     </div>)
-}
+} 
             
             return(
                 <div class='row'>

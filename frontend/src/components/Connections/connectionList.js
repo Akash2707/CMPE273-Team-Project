@@ -47,24 +47,23 @@ class ConnectionList extends Component{
        params: {
            email: localStorage.getItem('email')
        }})
-        .then((response)=>{
+        .then(response=>{
+            console.log(' The result', response.data)
             this.setState({
-                connections:this.state.connections.concat(response.data)
+                connections:response.data
             });
+        }).catch(err=>{
+            console.log(err)
         });
      }
-    viewConnection(people,e){
-        axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/viewProfile',people)
-        .then((response)=>{
-            if(response.status==400){
-                this.setState({
-                    isProfileGet:false
-                })
+     viewConnection(people,e){
+        this.props.history.push({
+            pathname:'/viewprofile',
+            state:{
+                email:people
             }
-            
-        })
-    }
+        })   
+     }
  /*    removeConnection(people,e){
         axios.defaults.withCredentials=true;
         axios.get('http://localhost:3001/removeConnection',people)
@@ -87,8 +86,8 @@ class ConnectionList extends Component{
         </a>
 
         <div class='info'>
-            <h4>{connections}</h4>
-            <p class='text-muted'>Occupation</p>
+            <h4>{connections.fName} {connections.lName}</h4>
+            <p class='text-muted'>{connections.occupation}</p>
             <a onClick={this.viewConnection.bind(this,connections)} style={{position:'relative',left:'550px',bottom:'60px'}} class='btn btn-default tooltips' data-toggle='tooltip' data-original-title='Connect' >
                  <i class='far fa-handshake'>Message</i>
             </a>

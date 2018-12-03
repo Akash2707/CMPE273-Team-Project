@@ -68,7 +68,7 @@ class SearchPeople extends Component{
                     isReqFail:true
                 })
             }
-
+            
         }))
     }
     render(){

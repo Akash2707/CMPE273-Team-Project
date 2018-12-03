@@ -24,12 +24,12 @@ class receivedRequest extends Component{
             });
         });
     }
-    onAccept(connection_email,e){
+    onAccept(email,e){
         axios.defaults.withCredentials=true;
         axios.post('http://localhost:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
-            connection_email:connection_email
+            connection_email:email
         }})
         .then((response=>{
             if(response.status==400){
@@ -69,14 +69,14 @@ class receivedRequest extends Component{
                         <div class="col-md-5 px-3" >
                         <div class="card-block px-3" style={{marginLeft:'-45px'}}>
                         <div>
-                            <h5 class="card-title" style={{fontSize:'14px'}}>First Name:{requests}</h5>
-                                                <p class="card-text">Post information</p>                   
+                            <h5 class="card-title" style={{fontSize:'14px'}}>{requests.fName} {requests.lName}</h5>
+                                                <p class="card-text">{requests.occupation}</p>                   
                         </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'15px'}} type='button' class='btn btn-primary'onClick={this.onAccept.bind(this,requests)}>Accept</button>
-                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'10px'}}type='button' class='btn btn-primary'onClick={this.onDeny.bind(this,requests)}>Deny</button>
+                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'15px'}} type='button' class='btn btn-primary'onClick={this.onAccept.bind(this,requests.email)}>Accept</button>
+                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'10px'}}type='button' class='btn btn-primary'onClick={this.onDeny.bind(this,requests.email)}>Deny</button>
                         </div>
                        
                     </div>

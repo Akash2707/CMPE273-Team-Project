@@ -9,7 +9,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
 // graph end
 
 function handle_request(msg, callback){
-    msg.email = 'ravan@gmail.com'
+   
     console.log("In handle request:"+ JSON.stringify(msg));
     console.log(msg.email)
     console.log(msg.page)
@@ -19,7 +19,33 @@ function handle_request(msg, callback){
     query.skip = size * (pageNo - 1)
     query.limit = size
     //var totalPages=0
- 
+
+    // get all connections 
+                // graph start
+        console.log(' My email : ', msg.email)
+            session = driver.session();
+        // hasRequest
+        var resultPromise = session.run(
+            'match(n:User {email: $mail}),(d:User) where (n)-[:connected]->(d) return (d)',
+                {mail : msg.email } 
+        )
+        var data = []
+            resultPromise.then(result1 => {
+            session.close();
+                console.log()
+            var array = result1.records
+            
+            for(var i = 0 ; i < array.length; i++){
+                //console.log(array[i].get(0).properties)
+                data.push(array[i].get(0).properties)
+            }
+            console.log(data)
+            callback(null,data)
+                
+            driver.close();
+        })
+    }
+exports.handle_request = handle_request;
    /* UserProfile.count({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]},
     function(err, totalCount){
         if(err){
@@ -29,6 +55,8 @@ function handle_request(msg, callback){
             totalPages = Math.ceil(totalCount / size)
         }})
    */
+
+   /*
  
     UserProfile.find({
         email:msg.email 
@@ -40,31 +68,10 @@ function handle_request(msg, callback){
            // console.log(result[0].requests.connectionlistlist)
             console.log(result)
          //  console.log(k)
-
-            // get all connections 
-                // graph start
-                console.log(' My email : ', msg.email)
-                 session = driver.session();
-                // hasRequest
-                var resultPromise = session.run(
-                    'match(n:User {email: $mail}),(d:User) where (n)-[:connected]->(d) return (d)',
-                       {mail : 'jivan@gmail.com' } 
-                )
-                var data = []
-                 resultPromise.then(result1 => {
-                    session.close();
-                     console.log()
-                    var array = result1.records
-                    
-                    for(var i = 0 ; i < array.length; i++){
-                        console.log(array[i].get(0).properties)
-                        data.push(array[i].get(0).properties)
-                    }
-                    console.log(data)
-                   callback(null,data)
-                        
-                    driver.close();
-                })
+        }
+    })
+      
+    */
                 // graph end
  // changed due to graph
 // from
@@ -74,8 +81,4 @@ function handle_request(msg, callback){
 // to
           // callback(null,result[0].requests.connectionlistlist);
 
-        }
-    })
-}
 
-exports.handle_request = handle_request;

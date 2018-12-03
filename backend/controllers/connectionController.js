@@ -22,7 +22,7 @@ module.exports.getpeople=function(req,res){
             res.status(400);
             res.send(err);
         }else{
-            console.log(searchresults)
+            console.log(' The result ' + searchresults)
             res.writeHead(200,{'Content-Type':'application/json'});
             res.end(JSON.stringify(searchresults));
         }
@@ -54,10 +54,8 @@ module.exports.sendrequest=function(req,res){
   //  console.log('sender_email',req.body.params.sender_email,
   //  'reciever_email',req.body.params.reciever_email)
     var request={
-    //    'sender_email':req.body.params.sender_email,
-    //    'reciever_email':req.body.params.reciever_email
-        'sender_email' : 'jivan@gmail.com',
-        'receiver_email' : 'ravan@gmail.com'
+        'sender_email':req.body.params.sender_email,
+        'reciever_email':req.body.params.reciever_email
     }
     kafka.make_request('sendrequest',request,function(err,result){
         if(err){
@@ -74,10 +72,10 @@ module.exports.sendrequest=function(req,res){
 }
 
 module.exports.getrequest=function(req,res){
-    console.log(req)
+   // console.log(req)
     var request={
-       // 'user_email':req.query.email
-        'user_email' : 'ravan@gmail.com'
+        'user_email':req.query.email
+       
     }
     kafka.make_request('getallrequest',request,function(err,allrequests){
         if(err){
@@ -92,10 +90,9 @@ module.exports.getrequest=function(req,res){
     })
 }
 module.exports.getsentrequest=function(req,res){
-    console.log(req)
+    //console.log(req)
     var request={
-      //  'user_email':req.query.email
-        'user_email' : 'jivan@gmail.com'
+        'user_email':req.query.email
     }
     kafka.make_request('getallsentrequest',request,function(err,allsentrequests){
         if(err){
@@ -112,7 +109,7 @@ module.exports.getsentrequest=function(req,res){
 
 
 module.exports.acceptrequest=function(req,res){
-    console.log(req)
+    //console.log(req)
     kafka.make_request('accept_request',req.body.params,function(err,result){
         if(err){
             res.status(400);
@@ -125,8 +122,8 @@ module.exports.acceptrequest=function(req,res){
     })
 }
 module.exports.denyrequest=function(req,res){
-    console.log(req)
-    kafka.make_request('deny_request',req.body,function(err,result){
+    //console.log(req)
+    kafka.make_request('deny_request',req.body.params,function(err,result){
         if(err){
             res.status(400);
             res.send(err);
@@ -138,7 +135,7 @@ module.exports.denyrequest=function(req,res){
     })
 }
 module.exports.withdrawrequest=function(req,res){
-    console.log(req)
+    //console.log(req)
 
     kafka.make_request('withdraw_request',req.body.params,function(err,result){
         if(err){

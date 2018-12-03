@@ -9,6 +9,53 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
 // graph end
 
     function handle_request(msg, callback){
+
+            // Request accepting and make relation called 'connected'
+            // graph start
+              console.log(' My email : ', msg.user_email)
+              console.log(' Accepting request from : ', msg.connection_email)
+        
+            session = driver.session();
+            // delete relationship called 'sent' 
+            var resultPromise = session.run(
+                'match(n: User {email: $others}) -[r:sent]-> (d: User {email: $my}) delete r',
+                    {my : msg.user_email, others : msg.connection_email}
+            )
+            // delete relationship called 'hasRequest' 
+            resultPromise = session.run(
+                'match(n: User {email: $my}) -[r:hasRequest]->(d: User {email: $others}) delete r',
+                    {my : msg.user_email, others : msg.connection_email}
+            )
+            session.close()
+            session = driver.session()
+            // create connection from 'me' to 'other' 
+            resultPromise = session.run(
+                'match(n: User {email: $my}),(d:User {email: $others})  Create (n)-[:connected]->(d) return d',
+                    {my : msg.user_email, others : msg.connection_email}
+            )
+            // create connection from 'other' to 'me' 
+            resultPromise = session.run(
+                'match(n: User {email: $others}),(d:User {email: $my})  Create (n)-[:connected]->(d)',
+                    {my : msg.user_email, others : msg.connection_email}
+            )
+            var data = []
+            resultPromise.then(result1 => {
+                session.close();
+                console.log()
+                
+            //   data = result1.records.get(0).properties
+                data = result1.records
+                console.log(data)
+                callback(null,data)
+                    
+                driver.close();
+            })
+            // graph end
+            // deleted for graph from
+            // callback(null,result);
+            // to    
+
+        /*
         //console.log("In handle request:"+ JSON.stringify(msg));
 
         UserProfile.findOneAndUpdate({
@@ -36,52 +83,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                 upsert:true,multi:true
             }).then((result)=> {
                 console.log("Updated Document:",result);
-
-                
-               // Request accepting and make relation called 'connected'
-                // graph start
-              //  console.log(' My email : ', msg.user_email)
-              //  console.log(' Accepting request from : ', msg.connection_email)
-                sender = 'jivan@gmail.com'
-                recevier = 'ravan@gmail.com'
-                 session = driver.session();
-                // delete relationship called 'sent' 
-                var resultPromise = session.run(
-                    'match(n: User {email: $my}) -[r:sent]-> (d: User {email: $others}) delete r',
-                        {my : sender, others : recevier}
-                )
-                // delete relationship called 'hasRequest' 
-                resultPromise = session.run(
-                    'match(n: User {email: $others}) -[r:hasRequest]->(d: User {email: $my}) delete r',
-                        {my : sender, others : recevier}
-                )
-                // create connection from 'me' to 'other' 
-                resultPromise = session.run(
-                    'match(n: User {email: $my}),(d:User {email: $others})  Create (n)-[:connected]->(d) return d',
-                        {my : sender, others : recevier}
-                )
-                // create connection from 'other' to 'me' 
-                resultPromise = session.run(
-                    'match(n: User {email: $others}),(d:User {email: $my})  Create (n)-[:connected]->(d)',
-                        {my : sender, others : recevier}
-                )
-                var data = []
-                 resultPromise.then(result1 => {
-                    session.close();
-                     console.log()
-                    
-                 //   data = result1.records.get(0).properties
-                    data = result1.records
-                     console.log(data)
-                 //    callback(null,data)
-                        
-                    driver.close();
-                })
-                // graph end
-                // deleted for graph from
-               // callback(null,result);
-                // to                
-
+            
                 callback(null,result);
     
             },(err)=>{
@@ -99,6 +101,10 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
             console.log("Error Creating Book");
             callback(null,[]);
         })
+        */
+    }
+
+exports.handle_request = handle_request;
       
       /*  PeopleConnect.findOneAndUpdate({
             'email':msg.user_email
@@ -204,6 +210,3 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         })*/
 
 
-}
-
-exports.handle_request = handle_request;

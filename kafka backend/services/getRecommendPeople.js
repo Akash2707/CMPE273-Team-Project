@@ -13,7 +13,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         session = driver.session();
         var data = []
         var resultPromise = session.run(
-            'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p)',
+            'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
                 {mail : msg.email }  
         )
                 resultPromise.then(result => {
@@ -22,10 +22,8 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                 var array = result.records
                 //console.log()
                 for(var i = 0 ; i < array.length; i++){
-                   console.log(array[i].get(0).properties)
                     data.push(array[i].get(0).properties)
                 }
-                console.log(data)
                 callback(null,data)
                 driver.close();
         })

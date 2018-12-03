@@ -9,16 +9,11 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
 // graph end
 
     function handle_request(msg, callback){
-        msg.user_email = 'jivan@gmail.com'
+        
         console.log("In handle request:"+ JSON.stringify(msg));
-        UserProfile.find({
-            email:msg.user_email 
-        },{_id:0,'requests.sendrequest':1}, function (err, result) {
-            if (err) {
-                console.log(err);
-                callback(err,[]);
-            } else {
-                                // I have sent request to these emails
+
+
+         // I have sent request to these emails
                 // graph start
                 console.log(' My email : ', msg.user_email)
                  session = driver.session();
@@ -38,13 +33,29 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                         data.push(array[i].get(0).properties)
                     }
                     console.log(data)
-                  //  callback(null,data)
+                    callback(null,data)
                         
                     driver.close();
                 })
                 // graph end
+    }
+exports.handle_request = handle_request;            
+
+        /*
+        UserProfile.find({
+            email:msg.user_email 
+        },{_id:0,'requests.sendrequest':1}, function (err, result) {
+            if (err) {
+                console.log(err);
+                callback(err,[]);
+            } else {
 
                 console.log(result[0].requests.sendrequest)
+                callback(null,result[0].requests.sendrequest);
+            
+            }
+
+        */
              //   k=[]
                // k=k.concat(result[0].requests.sendrequest)
               //  for(a in result){
@@ -58,15 +69,11 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                            console.log(err);
                            callback(err,[]);
                        } else {*/
-                           console.log(result)
-                           
-                           callback(null,result[0].requests.sendrequest);
-               
-                       }
-                   })
+                         
+          
                // callback(null,result);
     
-            }
+            
         //})  
         /*     console.log("In handle request:"+ JSON.stringify(msg));
         PeopleConnect.updateOne({
@@ -95,4 +102,3 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
 */
     //}
 
-exports.handle_request = handle_request;

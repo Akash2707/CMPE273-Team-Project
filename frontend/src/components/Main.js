@@ -30,7 +30,7 @@ class Main extends Component {
                 <Route path="/jobs/view" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>
                 <Route path="/jobs/search" component={SearchJobDisplay}/>
-                <Route path="/login" component={Login} />
+                <Route exact path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
                 <Route path="/applicantHome" component={ViewProfileApplicant}/>
                 <Route path="/recruiterHome" component={ViewProfileRecruiter}/>
