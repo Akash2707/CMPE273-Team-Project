@@ -45,28 +45,31 @@ class Navbar extends Component {
 
     deleteAccountHandler = () => {
 
-        axios.delete('http://localhost:3001/deleteAnAccount', {
-        params: {
-           email: localStorage.getItem('email')
-        }})
-        .then(()=>{
-            let afterDeleted = null
-            afterDeleted = this.props.history.push({
-                pathname: "/login",
-                state: {}
-            })
-        });
-
-        localStorage.removeItem('token')
-        localStorage.removeItem('email')
-        localStorage.removeItem('id')
-        localStorage.removeItem('isRecruiter')
-        let detailPage = null
-        detailPage = this.props.history.push({
-            pathname: "/login",
-            state: {
-            }
-        })
+        if(window.confirm(" Are you sure to delete your account ? ")){
+            axios.delete('http://localhost:3001/deleteAnAccount', {
+                params: {
+                   email: localStorage.getItem('email')
+                }})
+                .then(()=>{
+                    let afterDeleted = null
+                    afterDeleted = this.props.history.push({
+                        pathname: "/login",
+                        state: {}
+                    })
+                });
+        
+                localStorage.removeItem('token')
+                localStorage.removeItem('email')                                                                     
+                localStorage.removeItem('id')
+                localStorage.removeItem('isRecruiter')
+                let detailPage = null
+                detailPage = this.props.history.push({
+                    pathname: "/login",
+                    state: {
+                    }
+                })
+        
+        }
     }
 
     render() {
