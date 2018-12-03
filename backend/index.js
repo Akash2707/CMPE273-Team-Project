@@ -75,6 +75,7 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 var connectionController = require('./controllers/connectionController')
+var recruiterController = require('./controllers/RecruiterController')
 
 
 app.post('/login', loginController.authenticate);
@@ -105,7 +106,15 @@ app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
 
 app.get('/getRecommendPeople',connectionController.getRecommendPeople);
-
+app.get('/getSavedApplicationGraph',recruiterController.getSavedApplicationGraph);
+app.post('/updatejobCount',recruiterController.updateJobCount);
+app.get('/getjobsviewcount',recruiterController.getJobsViewCount);
+app.get('/getlessnoofapplicants',recruiterController.getLessNoOfApplicants);
+app.get('/getjobstitle',recruiterController.getJobsTitle);
+app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
+app.post('/updateLogs',recruiterController.updateLogs);
+app.get('/traceUsers',recruiterController.getTraceUsers);
+app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

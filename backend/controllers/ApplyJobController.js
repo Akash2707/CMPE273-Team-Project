@@ -45,6 +45,7 @@ module.exports.easyApply = function (req, res) {
                 "lName": req.body.lName,
                 "email": req.body.email,
                 "phone": req.body.phone,
+                "address": req.body.address,
                 "resume": resumeName,
                 "companyName": req.body.companyName,
                 "created_at": today.toISOString().slice(0, 10),
