@@ -32,6 +32,10 @@ var getsentrequest=require('./services/getsentRequests')
 
 var getRecommendPeople=require('./services/getRecommendPeople')
 
+var checkConversation = require('./services/checkConversation')
+var message = require('./services/message')
+var messageView = require('./services/messagesView')
+
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
     var consumer = connection.getConsumer(topic_name);
@@ -95,3 +99,7 @@ handleTopicRequest("withdraw_request",requestwithdraw)
 handleTopicRequest("getallsentrequest",getsentrequest)
 
 handleTopicRequest("recommend_people",getRecommendPeople)
+
+handleTopicRequest("check_conversation",checkConversation)
+handleTopicRequest("message" , message)
+handleTopicRequest("messagesView", messageView)

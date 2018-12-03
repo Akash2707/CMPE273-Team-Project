@@ -61,7 +61,7 @@ module.exports.update = function (req, res) {
 }
 
 module.exports.addExperience = function (req, res) {
-    console.log(req.body);
+    console.log("hellllllooooo" + req.body);
     if (req.body.isExpNew == true) {
         var data = {
             email: req.query.email,
@@ -120,9 +120,10 @@ module.exports.addEducation = function (req, res) {
     }
     else {
         var data = {
+            email: req.query.email,
             education: req.body.education,
             isEduNew: req.body.isEduNew
-        }
+        } 
     }
 
 
@@ -188,7 +189,7 @@ module.exports.imageUpload = function (req, res) {
                 } else {
                     res.json({
                         status: 200,
-                        message: ' Profile Photo was added successfully'
+                        message: ' Profile Photo uploaded successfully'
                     })
                 }
             });
@@ -198,15 +199,16 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    client.get(`profile:${req.query.email}`, (err, result) => {
-        // If that key exist in Redis store
-        if (result) {
-            console.log("if");
-            const resultJSON = JSON.parse(result);
-            return res.status(200).json(resultJSON);
-        } else {
-            console.log("else");
-            return kafka.make_request('user_profile_display', req.query, function (err, user) {
+    // client.get(`profile:${req.query.email}`, (err, result) => {
+    //     // If that key exist in Redis store
+    //     if (result) {
+    //         console.log("if");
+    //         const resultJSON = JSON.parse(result);
+    //         return res.status(200).json(resultJSON);
+    //     } else {
+    //         console.log("else");
+    //         return
+             kafka.make_request('user_profile_display', req.query, function (err, user) {
                 console.log('in result');
                 console.log(JSON.stringify(user));
                 console.log(user);
@@ -218,7 +220,7 @@ module.exports.profileDisplay = function (req, res) {
                     })
                 } else {
                     if (Object.keys(user).length != 0) {
-                        client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        // client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
                         res.writeHead(200, {
                             'Content-Type': 'application/json'
                         })
@@ -232,8 +234,8 @@ module.exports.profileDisplay = function (req, res) {
                 }
             })
         }
-    })
-}
+//     })
+// }
 
 module.exports.addskills = function (req, res) {
             console.log(req.body);

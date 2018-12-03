@@ -75,7 +75,8 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 var connectionController = require('./controllers/connectionController')
-
+var conversationController = require('./controllers/conversationController')
+var messageController = require('./controllers/messageController')
 
 app.post('/login', loginController.authenticate);
 app.post('/signup', signupController.register);
@@ -105,7 +106,9 @@ app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
 
 app.get('/getRecommendPeople',connectionController.getRecommendPeople);
-
+app.get('/conversation' ,conversationController.checkConversation);
+app.post('/message', messageController.message);
+app.get('/viewmessages',messageController.messagesView)
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

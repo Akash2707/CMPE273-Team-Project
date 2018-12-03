@@ -18,12 +18,14 @@ module.exports.authenticate = function (req, res) {
             })
         } else{
         
-            console.log(' authenticated ...  ', user.id)
+            console.log(' authenticated ...  ', user.uResult.id)
             var data = {
-                id: user.id,
-                email: user.email,
-                isRecruiter: user.isRecruiter == 1 ? 'true' : 'false',
-                state: user.state
+                id: user.uResult.id,
+                email: user.uResult.email,
+                isRecruiter: user.uResult.isRecruiter == 1 ? 'true' : 'false',
+                state: user.uResult.state,
+                name : user.uResult.fName + " " + user.uResult.lName,
+                profileImage : user.uProf
             };
 
             var token = jwt.sign(data, config.secret, {
@@ -34,7 +36,7 @@ module.exports.authenticate = function (req, res) {
                 status: 200,
                 success : true,
                 message: 'successfully authenticated',
-                isRecruiter: user.isRecruiter,
+                isRecruiter: user.uResult.isRecruiter,
                 token : "JWT " + token
             })
         }res.end()

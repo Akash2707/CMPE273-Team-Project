@@ -50,7 +50,12 @@ class Profile extends Component {
             expMessage: "",
             eduMessage: "",
             isWorking: false,
-            getProfileMessage: ""
+            getProfileMessage: "",
+            listExperience: [],
+            listEducation: [],
+            skillchecked : false,
+            educhecked : false,
+            expCheck : false
 
         }
         this.onChangeSkillsFunction = this.onChangeSkillsFunction.bind(this);
@@ -108,14 +113,17 @@ class Profile extends Component {
             });
     }
 
-    expChangeHandler() {
+    expChangeHandler(experience) {
         this.setState({
-            expCheck: false
+            expCheck: false,
+            listExperience: experience
         })
     }
-    expAddHandler() {
+    expAddHandler(education) {
         this.setState({
-            expCheck: true
+            expCheck: true,
+            listEducation: education
+
         })
     }
     eduChangeHandler() {
@@ -199,6 +207,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     ImageMessage: response.data.message,
+                    
                 })
             }).catch(error => {
                 console.log("else")
@@ -224,6 +233,7 @@ class Profile extends Component {
             summary: this.state.summary,
             resume: "",
         }
+        console.log(data);
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/update', data,
             {
@@ -247,8 +257,8 @@ class Profile extends Component {
             });
     }
 
-    experienceUpdate = (e) => {
-        e.preventDefault();
+    experienceUpdate = (index) => {
+        // e.preventDefault();
         if (this.state.expCheck == true) {
             var data = {
                 position: this.state.title,
@@ -258,11 +268,11 @@ class Profile extends Component {
                 from: this.state.cfMonth + " " + this.state.cfYear,
                 isWorking: this.state.isWorking,
                 to: this.state.ctMonth + " " + this.state.ctYear,
-                isExpNew: this.state.expCheck
+                isExpNew: this.state.expCheck,
             }
         } else {
             var data = {
-                experience: this.state.position.experience,
+                experience: this.state.profile.experience[index],
                 isExpNew: this.state.expCheck
             }
         }
@@ -281,6 +291,8 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     expMessage: response.data.message,
+                    expchecked : true,
+                    profile: response.data,
                 })
             }).catch(error => {
                 console.log("else")
@@ -305,7 +317,7 @@ class Profile extends Component {
             }
         } else {
             var data = {
-                experience: this.state.position.education,
+                education: this.state.profile.education,
                 isEduNew: this.state.eduCheck
             }
         }
@@ -324,6 +336,8 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     eduMessage: response.data.message,
+                    educhecked : true,
+                    profile: response.data,
                 })
             }).catch(error => {
                 console.log("else")
@@ -354,6 +368,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     skillMessage: response.data.message,
+                    skillchecked : true
                 })
             }).catch(error => {
                 console.log("else")
@@ -365,10 +380,15 @@ class Profile extends Component {
 
 
     render() {
-        console.log(this.state.expCheck);
+        console.log(this.state.headline);
         var dropdown = null;
         var expdropDown = null;
+        var dismiss = null;
 
+        if(this.state.expCheck == true){
+            console.log("true");
+            dismiss = "modal";
+        }
 
         if (this.state.isWorking == false) {
             expdropDown = <div className="col-md-6">
@@ -447,7 +467,7 @@ class Profile extends Component {
         let experiences = null;
         if (this.state.profile.experience != null) {
             experiences = this.state.profile.experience.map((experience, index) => {
-                console.log(experience.company);
+                console.log(this.state.listExperience.compDescription)
                 return (
                     <div>
                         <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
@@ -459,12 +479,12 @@ class Profile extends Component {
                                     </div>
                                     <div className="col-md-2" style={{ textAlign: "center" }}>
                                         <div class="pv-entity__actions">
-                                            <a data-control-name="edit_position" data-toggle="modal" data-target="#editExp" id="ember371" onClick={this.expChangeHandler} class="pv-profile-section__edit-action pv-profile-section__hoverable-action ember-view">
+                                            <button data-control-name="edit_position" data-toggle="modal" data-target="#editExp" id="ember371" onClick={() => { this.expChangeHandler(experience) }} class="pv-profile-section__edit-action pv-profile-section__hoverable-action ember-view">
                                                 <li-icon aria-hidden="true" type="pencil-icon"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false">
                                                     <path d="M21.71,5L19,2.29a1,1,0,0,0-1.41,0L4,15.85,2,22l6.15-2L21.71,6.45A1,1,0,0,0,22,5.71,1,1,0,0,0,21.71,5ZM6.87,18.64l-1.5-1.5L15.92,6.57l1.5,1.5ZM18.09,7.41l-1.5-1.5,1.67-1.67,1.5,1.5Z" class="large-icon" style={{ fill: "currentColor" }}></path>
                                                 </svg>
                                                 </li-icon>
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -499,7 +519,7 @@ class Profile extends Component {
 
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <div className="row">
+                                            <div className="col-md-12">
                                                 <div className="col-md-6">
                                                     <h4 class="modal-title .t-black--light pop-up" >Edit Experience</h4>
                                                 </div>
@@ -509,24 +529,24 @@ class Profile extends Component {
                                             </div>
                                         </div>
                                         <div class="modal-body">
-                                            <form name="editExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
+                                            <form name="editExp" style={{ marginTop: "10px" }} onSubmit={() => this.experienceUpdate(index)}>
                                                 <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                                     <label>Title</label>
-                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.position} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={this.state.listExperience.position} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
                                                 </div>
 
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Company</label>
-                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.company} className="form-control" name="company" placeholder="Ex. Microsoft" required />
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={this.state.listExperience.company} className="form-control" name="company" placeholder="Ex. Microsoft" required />
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Location</label>
-                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compLocation} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
+                                                    <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={this.state.listExperience.compLocation} className="form-control" name="compLocation" placeholder="Ex.London,United Kingdom" required />
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up" >
                                                     <div className="col-md-6" style={{ padding: "0px" }}>
                                                         <label>From:</label>
-                                                        <select name="cfMonth" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.from} className="form-control" style={{ width: "100%" }}>
+                                                        <select name="cfMonth" onChange={(e) => this.onExpChangeHandle(e, index)} value={this.state.listExperience.from} className="form-control" style={{ width: "100%" }}>
                                                             <option value="month">Month</option>
                                                             <option value="january">January</option>
                                                             <option value="february">February</option>
@@ -541,7 +561,7 @@ class Profile extends Component {
                                                             <option value="november">November</option>
                                                             <option value="december">December</option>
                                                         </select>
-                                                        <select name="cfYear" onChange={(e) => this.onExpChangeHandle(e, index)} value={experience.to} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
+                                                        <select name="cfYear" onChange={(e) => this.onExpChangeHandle(e, index)} value={this.state.listExperience.to} className="form-control" style={{ width: "100%", marginTop: "10px" }}>
                                                             <option value="year">Year</option>
                                                             <option value="1980">1980</option>
                                                             <option value="1981">1981</option>
@@ -595,11 +615,11 @@ class Profile extends Component {
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Description</label>
-                                                    <textarea className="form-control" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={experience.compDescription} name="cDescription" placeholder="Description" rows="8" cols="8" required />
+                                                    <textarea className="form-control" onChange={(e) => this.onExpChangeHandle(e, index)} value={this.state.listExperience.compDescription} name="cDescription" placeholder="Description" rows="8" cols="8" required />
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <input class="btn btn-primary " type="submit" value="Submit" />
+                                                    <input class="btn btn-primary " type="submit" value="Submit" data-dismiss = {dismiss}/>
                                                     <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
                                                 </div>
                                             </form>
@@ -622,13 +642,13 @@ class Profile extends Component {
                         <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
                         <ul>
                             <div class="pv-entity__summary-info pv-entity__summary-info--background-section mb2">
-                                <div className="row" >
+                                <div className="col-md-12" >
                                     <div className="col-md-10">
                                         <h4 class="t-16 t-black t-bold">{education.school}</h4>
                                     </div>
                                     <div className="col-md-2" style={{ textAlign: "center" }}>
                                         <div class="pv-entity__actions">
-                                            <a data-control-name="edit_position" id="ember371" data-toggle="modal" data-target="#editEdu" onClick={this.eduChangeHandler} class="pv-profile-section__edit-action pv-profile-section__hoverable-action ember-view">
+                                            <a data-control-name="edit_position" id="ember371" data-toggle="modal" data-target="#editEdu" onClick={() => { this.eduChangeHandler(education) }} class="pv-profile-section__edit-action pv-profile-section__hoverable-action ember-view">
                                                 <li-icon aria-hidden="true" type="pencil-icon"><svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="artdeco-icon" focusable="false">
                                                     <path d="M21.71,5L19,2.29a1,1,0,0,0-1.41,0L4,15.85,2,22l6.15-2L21.71,6.45A1,1,0,0,0,22,5.71,1,1,0,0,0,21.71,5ZM6.87,18.64l-1.5-1.5L15.92,6.57l1.5,1.5ZM18.09,7.41l-1.5-1.5,1.67-1.67,1.5,1.5Z" class="large-icon" style={{ fill: "currentColor" }}></path>
                                                 </svg>
@@ -667,25 +687,25 @@ class Profile extends Component {
                                             <form name="editEdu" style={{ marginTop: "10px" }} onSubmit={this.educationUpdate}>
                                                 <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                                     <label>School</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.school} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
+                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.school} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
                                                 </div>
 
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Degree</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.degree} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
+                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.degree} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Field of Study</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.field} className="form-control" name="field" placeholder="Ex. Business" />
+                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.field} className="form-control" name="field" placeholder="Ex. Business" />
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Grade</label>
-                                                    <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.grade} className="form-control" name="grade" />
+                                                    <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.grade} className="form-control" name="grade" />
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <div className="col-md-5" style={{ padding: "0px" }}>
                                                         <label>From Year</label>
-                                                        <select name="efYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.fromYear} className="form-control" style={{ width: "100%" }}>
+                                                        <select name="efYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.fromYear} className="form-control" style={{ width: "100%" }}>
                                                             <option value="year">Year</option>
                                                             <option value="1980">1980</option>
                                                             <option value="1981">1981</option>
@@ -732,7 +752,7 @@ class Profile extends Component {
                                                     <div className="col-md-2"></div>
                                                     <div className="col-md-5" style={{ padding: "0px" }}>
                                                         <label>To Year</label>
-                                                        <select name="etYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.toYear} className="form-control" style={{ width: "100%" }}>
+                                                        <select name="etYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.toYear} className="form-control" style={{ width: "100%" }}>
                                                             <option value="year">Year</option>
                                                             <option value="1980">1980</option>
                                                             <option value="1981">1981</option>
@@ -779,7 +799,7 @@ class Profile extends Component {
                                                 </div>
                                                 <div className="col-md-12 form-group pop-up">
                                                     <label>Description</label>
-                                                    <textarea className="form-control" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={education.eduDescription} name="eDescription" placeholder="Description" rows="8" cols="8" required />
+                                                    <textarea className="form-control" onChange={(e) => this.onEduChangeHandle(e, index)} value={this.state.listEducation.eduDescription} name="eDescription" placeholder="Description" rows="8" cols="8" required />
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -841,7 +861,8 @@ class Profile extends Component {
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.profileUpdate} >
+                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit = {() => {this.profileUpdate}} >
+                                        <p style = {{textAlign : "center", padding : "0px"}}> {this.state.ImageMessage} </p>
                                         <div className="col-md-12 form-group" style={{ marginTop: "20px" }}>
                                             <div style={{ margin: "auto", textAlign: "center" }}>
                                                 <img id="img" alt="Avatar" src={this.state.profilePhoto} style={{ width: "200px", height: "200px", borderRadius: "50%" }}></img>
@@ -876,7 +897,7 @@ class Profile extends Component {
                                             <div className="col-md-2"></div>
                                             <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
                                                 <label>Zip code</label>
-                                                <input type="number" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" required />
+                                                <input type="number" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" />
                                             </div>
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
@@ -889,11 +910,11 @@ class Profile extends Component {
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
                                             <label>Phone</label>
-                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.phone} name="phone" placeholder="Phone" required />
+                                            <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.phone} name="phone" placeholder="Phone" />
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
                                             <label>Address</label>
-                                            <textarea type="text" className="form-control" onChange={this.onChangeHandle} value={this.state.address} name="address" placeholder="Address" rows="3" required />
+                                            <textarea type="text" className="form-control" onChange={this.onChangeHandle} value={this.state.address} name="address" placeholder="Address" rows="3" />
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
                                             <label>Summary</label>
