@@ -34,3 +34,13 @@ module.exports.register = function(req, res){
     }); 
 }
         
+module.exports.deleteTheAccount = function(req, res){
+//console.log(req)
+    kafka.make_request('delete_account', req.query, function (err, user) {
+        console.log('in result');
+        console.log(JSON.stringify(user));
+        console.log(user);
+
+        res.end()
+    }); 
+}

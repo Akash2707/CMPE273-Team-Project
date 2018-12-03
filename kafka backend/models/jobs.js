@@ -47,16 +47,16 @@ var Jobs = mongoose.model('job',{
         type: Boolean
     },
 	totalApplicants: {
-		type: String
+		type: Number
 	},
 	totalViews: {
-		type: String
+		type: Number
 	},
 	created_at: {
-		type: String
+		type: Date
     },
     updated_at: {
-		type: String
+		type: Date
     }
 });
 

@@ -19,8 +19,8 @@ var checkEasyApply = require('./services/CheckEasyApply');
 var checkApplication = require('./services/CheckApplication');
 var saveJob = require('./services/SaveJob')
 var checkSavedJob = require('./services/CheckSavedJob')
-
-
+var getSavedJob = require('./services/GetSaveJob')
+var getPostedJob = require('./services/GetPostedJob')
 var getRequests=require('./services/getRequests')
 var requestaccept=require('./services/requestaccept')
 var searchPeople = require('./services/searchpeople')
@@ -32,9 +32,27 @@ var getsentrequest=require('./services/getsentRequests')
 
 var getRecommendPeople=require('./services/getRecommendPeople')
 
+
 var checkConversation = require('./services/checkConversation')
 var message = require('./services/message')
 var messageView = require('./services/messagesView')
+
+var removeConnection = require('./services/removeConnect')
+
+var deleteTheAccount = require('./services/deleteTheAccount')
+var savedJobsGraph = require('./services/SavedJobsGraph')
+var updateJobCount = require('./services/UpdateJobCount')
+var getJobsViewCount = require('./services/GetJobsViewCount')
+var getLessNoOfApplicants = require('./services/GetLessNoOfApplicants')
+var getJobsTitle = require('./services/GetJobsTitle')
+var getApplicationByCity = require('./services/GetApplicantsByCity')
+var updateLogs = require('./services/UpdateLogs')
+var traceUsers = require('./services/TraceUsers')
+var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
+var editJob = require('./services/EditJob')
+var getApplicants = require('./services/GetApplicants')
+
+
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -87,8 +105,8 @@ handleTopicRequest("check_easyapply", checkEasyApply)
 handleTopicRequest("check_application",checkApplication)
 handleTopicRequest("save_job",saveJob)
 handleTopicRequest("check_savedJob",checkSavedJob)
-
-
+handleTopicRequest("get_saved_jobs",getSavedJob)
+handleTopicRequest("get_posted_jobs",getPostedJob)
 handleTopicRequest("getallrequest",getRequests)
 handleTopicRequest("accept_request",requestaccept)
 handleTopicRequest("deny_request",requestdeny)
@@ -100,6 +118,22 @@ handleTopicRequest("getallsentrequest",getsentrequest)
 
 handleTopicRequest("recommend_people",getRecommendPeople)
 
+
 handleTopicRequest("check_conversation",checkConversation)
 handleTopicRequest("message" , message)
 handleTopicRequest("messagesView", messageView)
+
+handleTopicRequest("remove_connect",removeConnection)
+
+handleTopicRequest("delete_account", deleteTheAccount)
+handleTopicRequest("get_savedapplicationGraph",savedJobsGraph)
+handleTopicRequest("update_jobcount",updateJobCount)
+handleTopicRequest("get_jobsViewCount",getJobsViewCount)
+handleTopicRequest("get_lessNoOfApplicants",getLessNoOfApplicants)
+handleTopicRequest("get_jobsTitle",getJobsTitle)
+handleTopicRequest("get_applicantsByCity",getApplicationByCity)
+handleTopicRequest("update_logs",updateLogs)
+handleTopicRequest("get_traceUsers",traceUsers)
+handleTopicRequest("get_topTenNoOfApplicants",getTopTenNoOfApplicants)
+handleTopicRequest("edit_job",editJob)
+handleTopicRequest("get_applicants",getApplicants)

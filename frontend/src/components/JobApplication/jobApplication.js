@@ -44,7 +44,8 @@ class JobApplication extends React.Component {
       jobCompanyName: "",
       jobCompanyLogo: "",
       jobLocation: "",
-      jobTitle: ""
+      jobTitle: "",
+      recruiterId: ""
     };
     this.dataStore = {
       fName: "",
@@ -78,6 +79,7 @@ class JobApplication extends React.Component {
         jobCompanyLogo: this.props.location.state.companyLogo,
         jobLocation: this.props.location.state.city,
         jobTitle: this.props.location.state.title,
+        recruiterId: this.props.location.state.recruiterId,
       })
       this.dataStore.jobId = this.props.location.state.jobId
       this.dataStore.jobCompanyName = this.props.location.state.companyName
@@ -90,6 +92,35 @@ class JobApplication extends React.Component {
         }
       })
     }
+  }
+
+  componentWillUnmount() {
+    let log = {
+      'userId': localStorage.getItem('email'),
+      'jobId': this.state.jobId,
+      'recruiterId': this.state.recruiterId,
+      'location': localStorage.getItem('state'),
+      'created_at': new Date(),
+    }
+
+    if (this.props.jobApplied) {
+      log['activity'] = 'Applied'
+    } else if (this.dataStore.fName != "") {
+      log['activity'] = 'Half-Filled'
+    } else {
+      log['activity'] = 'OnlyViewed'
+    }
+
+    axios.defaults.withCredentials = true;
+    axios.post('http://localhost:3001/updateLogs', log, {
+      headers: { Authorization: localStorage.getItem('token') },
+    })
+      .then(response => {
+        console.log("Status Code : ", response);
+      })
+      .catch(error => {
+        console.log("Error : ", error);
+      });
   }
 
   getStepContent(step) {

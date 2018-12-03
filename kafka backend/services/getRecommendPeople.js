@@ -12,24 +12,38 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         console.log("In handle request:"+ JSON.stringify(msg));
         session = driver.session();
         var data = []
+        var count=0
         var resultPromise = session.run(
-            'match(n: User), (p: User {email : $mail}) where n.location = p.location and n.email <> p.email return (n)',
-                {mail : msg.email } 
+            'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
+                {mail : msg.email }
         )
                 resultPromise.then(result => {
-                session.close();
-                console.log()
+
+              //  console.log()
                 var array = result.records
-                console.log()
+                //console.log()
                 for(var i = 0 ; i < array.length; i++){
-                   console.log(array[i].get(0).properties)
                     data.push(array[i].get(0).properties)
                 }
-                console.log(data)
-                callback(null,data)
-                driver.close();
+            })
+                var resultPromise = session.run(
+                    'match(n: User {email : $mail}), (p: User) where (n)-[:connected]->(p) return (p)',
+                        {mail : msg.email }
+                )
+                        resultPromise.then(result => {
+                        session.close();
+
+                        count = result.records.length
+                        var details={data:data,count:count}
+                      //  console.log()
+                      //  var array = result.records
+                        //console.log()
+                        // for(var i = 0 ; i < array.length; i++){
+                        //     data.push(array[i].get(0).properties)
+                        callback(null,details)
+
         })
-       
+
         /*
         console.log(msg.q)
      UserProfile.find({
@@ -41,7 +55,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                 callback(err,[]);
             } else {
                 console.log(result)
-    
+
 UserProfile.find({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]}
 , function (err, searchresult) {
     if (err) {
@@ -50,12 +64,10 @@ UserProfile.find({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]
     } else {
         console.log(searchresult)
         callback(null,searchresult);
-
     }
-})       
+})
             }
         })
         */
 }
-
 exports.handle_request = handle_request;

@@ -4,9 +4,11 @@ var { Users } = require('../models/User')
 var { UserProfile } = require('../models/UserProfile')
 function handle_request(msg, callback) {
 
-    var mail = msg.email.toLowerCase()
+    // var mail = msg.email.toLowerCase()
 
-    connection.query('SELECT * FROM users WHERE email = ?', [mail], function (error, results, fields) {
+
+    connection.query('SELECT * FROM users WHERE email = ?',[msg.email], function (error, results, fields) {
+
         if (error) {
             callback(error, " User does not exist ... ")
         } else {
@@ -54,18 +56,18 @@ exports.handle_request = handle_request;
 function handle_request(msg, callback){
 
     console.log(' This is kafka backend login ... ')
-    
+
     var sql = `select * from login where email='${msg.email}' AND password='${msg.password}'`;
     console.log(" fetch query : " + sql);
-    
-    
+
+
 
     conn.query(sql, function(err,user){
         if(err || user === ''){
             console.log(" Result = " + user)
             console.log(" Error = " + error)
             callback(null,[]);
-        } else{ 
+        } else{
             console.log(" Result = " + user)
             callback(null,user);
         }

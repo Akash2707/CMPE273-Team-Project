@@ -1,13 +1,15 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 class sentRequest extends Component{
     constructor(props){
         super(props);
         this.state={
             requests:[],
-            isReqFail:false
+            isReqFail:false,
+            count:0
         }
     }
     componentDidMount(){
@@ -18,11 +20,21 @@ class sentRequest extends Component{
            email: localStorage.getItem('email')
        }})
         .then((response)=>{
+            console.log(' result', response.data)
             this.setState({
-                requests:this.state.requests.concat(response.data)
+                requests:response.data.data,
+                count:response.data.count
             });
         });
     }
+    viewConnection(people,e){
+        this.props.history.push({
+            pathname:'/viewprofile',
+            state:{
+                email:people
+            }
+        })   
+     }
     
     onWithdraw(connection_email,e){
         axios.defaults.withCredentials=true;
@@ -37,6 +49,7 @@ class sentRequest extends Component{
                     isReqFail:true
                 })
             }
+            window.location.reload()
 
         }))
     }
@@ -50,13 +63,14 @@ class sentRequest extends Component{
                         <div class="col-md-5 px-3" >
                         <div class="card-block px-3" style={{marginLeft:'-45px'}}>
                         <div>
-                            <h5 class="card-title" style={{fontSize:'14px'}}>First Name:{requests}</h5>
-                                                <p class="card-text">Post information</p>                   
+                        <a onClick={this.viewConnection.bind(this,requests.email)}>
+                            <h5 class="card-title" style={{fontSize:'14px'}}>{requests.fName} {requests.lName}</h5></a>
+                                                <p class="card-text">{requests.occupation}</p>                   
                         </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'10px'}}type='button' class='btn btn-primary'onClick={this.onWithdraw.bind(this,requests)}>Withdraw</button>
+                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'10px'}}type='button' class='btn btn-primary'onClick={this.onWithdraw.bind(this,requests.email)}>Withdraw</button>
                         </div>
                        
                     </div>
@@ -67,7 +81,7 @@ class sentRequest extends Component{
         })
         return(
             <div class="container" style={{marginTop:'55px'}}>
-                <h3>Tabs</h3>
+                <h3>Sent Requests: {this.state.count}</h3>
              <ul class="nav nav-tabs">
                 <li ><a href="/getRequests">Received Requests</a></li>
                 <li class="active"><a href="/sentrequest">Sent Requests</a></li>

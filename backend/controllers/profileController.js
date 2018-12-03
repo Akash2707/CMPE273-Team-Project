@@ -123,7 +123,7 @@ module.exports.addEducation = function (req, res) {
             email: req.query.email,
             education: req.body.education,
             isEduNew: req.body.isEduNew
-        } 
+        }
     }
 
 
@@ -207,8 +207,7 @@ module.exports.profileDisplay = function (req, res) {
     //         return res.status(200).json(resultJSON);
     //     } else {
     //         console.log("else");
-    //         return
-             kafka.make_request('user_profile_display', req.query, function (err, user) {
+                kafka.make_request('user_profile_display', req.query, function (err, user) {
                 console.log('in result');
                 console.log(JSON.stringify(user));
                 console.log(user);
@@ -233,9 +232,9 @@ module.exports.profileDisplay = function (req, res) {
                     }
                 }
             })
-        }
-//     })
-// }
+    //     }
+    // })
+}
 
 module.exports.addskills = function (req, res) {
             console.log(req.body);
@@ -264,6 +263,3 @@ module.exports.addskills = function (req, res) {
                 }
             })
         }
-
-
-

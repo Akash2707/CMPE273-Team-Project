@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../App.css';
+
 import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
@@ -40,6 +40,36 @@ class Navbar extends Component {
             state: {
             }
         })
+    }
+
+
+    deleteAccountHandler = () => {
+
+        if(window.confirm(" Are you sure to delete your account ? ")){
+            axios.delete('http://localhost:3001/deleteAnAccount', {
+                params: {
+                   email: localStorage.getItem('email')
+                }})
+                .then(()=>{
+                    let afterDeleted = null
+                    afterDeleted = this.props.history.push({
+                        pathname: "/login",
+                        state: {}
+                    })
+                });
+        
+                localStorage.removeItem('token')
+                localStorage.removeItem('email')                                                                     
+                localStorage.removeItem('id')
+                localStorage.removeItem('isRecruiter')
+                let detailPage = null
+                detailPage = this.props.history.push({
+                    pathname: "/login",
+                    state: {
+                    }
+                })
+        
+        }
     }
 
     render() {
@@ -89,7 +119,7 @@ class Navbar extends Component {
                 <div className="nav-main__content full-height display-flex align-items-center">
                     <div class="nav-main__inbug-container fl mr3">
                         <div id="inbug-nav-item" class="nav-item--inbug" lang="en">
-                            <a href="/feed/" data-alias="" data-link-to="feed" data-resource="feed/badge" data-control-name="" class = "nav-item__link js-nav-item-link active">
+                            <a href="/jobs/search/" data-alias="" data-link-to="feed" data-resource="feed/badge" data-control-name="" class = "nav-item__link js-nav-item-link active">
                                 <span class="nav-item__icon nav-item__icon--inbug" lang="en" aria-role="presentation">
                                     <li-icon aria-hidden="true" type="linkedin-bug" size="34dp" color="brand">
                                         <svg preserveAspectRatio="xMinYMin meet" focusable="false" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +136,7 @@ class Navbar extends Component {
                     </div>
                     <ul className="nav-main nav-container display-flex full-height" role="navigation" aria-label="Primary">
                         <li id="mynetwork-nav-item" class="nav-item nav-item--mynetwork" style={{ opacity: "1" }} lang="en">
-                            <a href="/mynetwork/" data-alias="relationships" data-link-to="mynetwork" data-resource="voyagerCommunicationsTabBadges" data-control-name="" class={networkClass}>
+                            <a href="/Mynetwork/" data-alias="relationships" data-link-to="mynetwork" data-resource="voyagerCommunicationsTabBadges" data-control-name="" class={networkClass}>
                                 <span id="mynetwork-tab-icon" class="nav-item__icon" lang="en" aria-role="presentation">
                                     <li-icon aria-hidden="true" type="nav-small-people-icon" color="true">
                                         <svg viewBox="0 0 24 24" width="24px" height="24px" x="0" y="0" preserveAspectRatio="xMinYMin meet" class="nav-icon" focusable="false" xmlns="http://www.w3.org/2000/svg">
@@ -179,7 +209,8 @@ class Navbar extends Component {
                                             </div>
                                         </a>
                                     </li>
-                                    <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
+
+                                     <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
                                         <ul class="nav-settings__dropdown-items">
                                             <li class="nav-dropdown__item nav-settings__dropdown-item nav-dropdown__action t-14 t-black t-bold">
                                                 <a data-control-name="nav.settings_signout" onClick={() => this.handleLogout()} id="ember9108" class="block ember-view" style={{fontSize: "80%"}}>              Sign out
@@ -187,6 +218,16 @@ class Navbar extends Component {
                                             </li>
                                         </ul>
                                     </li>
+
+                                     <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
+                                        <ul class="nav-settings__dropdown-items">
+                                            <li class="nav-dropdown__item nav-settings__dropdown-item nav-dropdown__action t-14 t-black t-bold">
+                                                <a data-control-name="nav.settings_signout" onClick={() => this.deleteAccountHandler()} id="ember9108" class="block ember-view" style={{fontSize: "80%"}}>        Delete an Account
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                   
                                 </ul>
                             </div>
                         </li>

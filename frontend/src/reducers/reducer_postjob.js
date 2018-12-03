@@ -22,6 +22,18 @@ export default function(state = initialStore,action){
             jobAdded : false
         }
     }
+    if(action.type === "EDITJOB" && action.payload.status == 200){
+        return {
+            ...state,
+            jobAdded : true
+        }
+    }
+    if(action.type === "EDITJOB" && action.statusCode == 400){
+        return {
+            ...state,
+            jobAdded : false
+        }
+    }
     
     return state;
 }
