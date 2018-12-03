@@ -21,6 +21,7 @@ class People extends Component{
             connected:[],
             sentReq:[],
             hasReq:[],
+            connectcount:0
             
         }
         this.onConnect=this.onConnect.bind(this)
@@ -39,7 +40,8 @@ class People extends Component{
             console.log(' response from Recommend users :')
             console.log(response.data)
             this.setState({
-                recommendPeople:response.data
+                recommendPeople:response.data.data,
+                connectcount:response.data.count
             });
         });
     }
@@ -171,6 +173,18 @@ class People extends Component{
     }
     render(){
        console.log(this.state.peoples)
+       let RecommendResults=this.state.recommendPeople.map(recommend=>{
+           return(
+        <div class="card" style={{width:'200px',height:'150px'}}>
+        <img class="card-img-top"  style={{width:'40px',height:'40px',borderRadius:'20px'}}src="https://bootdey.com/img/Content/user_1.jpg" alt="Card image"/>
+        <div class="card-body">
+          <h2 class="card-title">{recommend.fName} {recommend.lName}</h2>
+          <p class="card-text" style={{fontSize:'10px'}}>{recommend.location}</p>
+          <p class="card-text"  style={{fontSize:'10px'}}>{recommend.occupation}</p>
+          <a onclick={this.viewConnection.bind(this,recommend.email)} class="btn btn-primary"  style={{width:'50px',height:'30px' ,fontSize:'10px'}}>See Profile</a>
+        </div>
+      </div>)
+       })
         let searchResults=this.state.peoples.map(peoples=>{
              let Button1=null;
             
@@ -246,7 +260,7 @@ else if(this.state.connected.includes(peoples.email)){
                         <div id='connectionview' class='mn-connections-summary'>
                             <div class='pt4'style={{margin:'center',paddingTop:'70px'}}>
                                 <a id='connectioncount' style={{textAlign:'center',paddingTop:10}} class='link-without-hover-state' href='/peoples'>
-                                    <h3 class='mn-connections-summary_count t-32 t-black t-normal mt3' aria-label='Your connections'>{this.state.connectionlist.length}</h3>
+                                    <h3 class='mn-connections-summary_count t-32 t-black t-normal mt3' aria-label='Your connections'>{this.state.connectcount}</h3>
                                 </a>
                                     <h5 class='mn-connections-summary_title t-16 t-black t-bold mt2 ph3' style={{textAlign:'center',paddingTop:10}} aria-hidden='true'>Your Connections</h5>
                                 <a id='connectionlist'  style={{textAlign:'center',paddingTop:10}} class='mn-connections-summary_see-all t-14 t-black t-bold inline-block mt1 mb4 ph3 ' href='/peoples'>
@@ -279,8 +293,9 @@ else if(this.state.connected.includes(peoples.email)){
                 <div class='col-md-12'>
                     <div class='panel panel-default'>
                         <div class='panel-body p-t-0'>
-                       
+                                {RecommendResults}
                                 {searchResults}
+
                                 <div style={{ margin: "auto", textAlign: "center" }}>
                     <ReactPaginate previousLabel={"previous"}
                         nextLabel={"next"}

@@ -8,7 +8,8 @@ class sentRequest extends Component{
         super(props);
         this.state={
             requests:[],
-            isReqFail:false
+            isReqFail:false,
+            count:0
         }
     }
     componentDidMount(){
@@ -21,10 +22,19 @@ class sentRequest extends Component{
         .then((response)=>{
             console.log(' result', response.data)
             this.setState({
-                requests:response.data
+                requests:response.data.data,
+                count:response.data.count
             });
         });
     }
+    viewConnection(people,e){
+        this.props.history.push({
+            pathname:'/viewprofile',
+            state:{
+                email:people
+            }
+        })   
+     }
     
     onWithdraw(connection_email,e){
         axios.defaults.withCredentials=true;
@@ -53,7 +63,8 @@ class sentRequest extends Component{
                         <div class="col-md-5 px-3" >
                         <div class="card-block px-3" style={{marginLeft:'-45px'}}>
                         <div>
-                            <h5 class="card-title" style={{fontSize:'14px'}}>{requests.fName} {requests.lName}</h5>
+                        <a onClick={this.viewConnection.bind(this,requests.email)}>
+                            <h5 class="card-title" style={{fontSize:'14px'}}>{requests.fName} {requests.lName}</h5></a>
                                                 <p class="card-text">{requests.occupation}</p>                   
                         </div>
                         </div>
@@ -70,7 +81,7 @@ class sentRequest extends Component{
         })
         return(
             <div class="container" style={{marginTop:'55px'}}>
-                <h3>Tabs</h3>
+                <h3>Sent Requests: {this.state.count}</h3>
              <ul class="nav nav-tabs">
                 <li ><a href="/getRequests">Received Requests</a></li>
                 <li class="active"><a href="/sentrequest">Sent Requests</a></li>

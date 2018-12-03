@@ -134,6 +134,20 @@ module.exports.denyrequest=function(req,res){
         }
     })
 }
+module.exports.removeconnect=function(req,res){
+    //console.log(req)
+    kafka.make_request('remove_connect',req.body.params,function(err,result){
+        if(err){
+            res.status(400);
+            res.send(err);
+        }else{
+            console.log(result)
+            res.status(200);
+            res.send('remove');
+        }
+    })
+}
+
 module.exports.withdrawrequest=function(req,res){
     //console.log(req)
 

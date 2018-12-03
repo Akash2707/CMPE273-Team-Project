@@ -31,6 +31,9 @@ var requestwithdraw=require('./services/requestwithdraw')
 var getsentrequest=require('./services/getsentRequests')
 
 var getRecommendPeople=require('./services/getRecommendPeople')
+var removeConnection = require('./services/removeConnect')
+
+var deleteTheAccount = require('./services/deleteTheAccount')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -95,3 +98,6 @@ handleTopicRequest("withdraw_request",requestwithdraw)
 handleTopicRequest("getallsentrequest",getsentrequest)
 
 handleTopicRequest("recommend_people",getRecommendPeople)
+handleTopicRequest("remove_connect",removeConnection)
+
+handleTopicRequest("delete_account", deleteTheAccount)

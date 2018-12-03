@@ -12,20 +12,36 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         console.log("In handle request:"+ JSON.stringify(msg));
         session = driver.session();
         var data = []
+        var count=0
         var resultPromise = session.run(
             'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
                 {mail : msg.email }  
         )
                 resultPromise.then(result => {
-                session.close();
+        
               //  console.log()
                 var array = result.records
                 //console.log()
                 for(var i = 0 ; i < array.length; i++){
                     data.push(array[i].get(0).properties)
                 }
-                callback(null,data)
-                driver.close();
+            })
+                var resultPromise = session.run(
+                    'match(n: User {email : $mail}), (p: User) where (n)-[:connected]->(p) return (p)',
+                        {mail : msg.email }  
+                )
+                        resultPromise.then(result => {
+                        session.close();
+
+                        count = result.records.length
+                        var details={data:data,count:count}
+                      //  console.log()
+                      //  var array = result.records
+                        //console.log()
+                        // for(var i = 0 ; i < array.length; i++){
+                        //     data.push(array[i].get(0).properties)
+                        callback(null,details)
+               
         })
        
         /*

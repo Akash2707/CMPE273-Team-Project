@@ -10,7 +10,8 @@ class ConnectionList extends Component{
             connections:[],
             isConnectionGet:false,
             isProfileGet:false,
-            searchPageCount:1
+            searchPageCount:1,
+            connectcount:0
         }
      //   this.handlePageClick=this.handlePageClick.bind(this)
     }
@@ -50,7 +51,8 @@ class ConnectionList extends Component{
         .then(response=>{
             console.log(' The result', response.data)
             this.setState({
-                connections:response.data
+                connections:response.data.data,
+                connectcount:response.data.count
             });
         }).catch(err=>{
             console.log(err)
@@ -64,18 +66,23 @@ class ConnectionList extends Component{
             }
         })   
      }
- /*    removeConnection(people,e){
+     onRemove(connection_email,e){
         axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/removeConnection',people)
-        .then((response)=>{
+        axios.post('http://localhost:3001/removeconnect', {headers: { Authorization: localStorage.getItem('token')},
+        params: {
+            user_email:localStorage.getItem('email'),
+            connection_email:connection_email
+        }})
+        .then((response=>{
             if(response.status==400){
                 this.setState({
-                    isProfileGet:true
+                    isReqFail:true
                 })
             }
-            
-        })
-    } */
+            window.location.reload()
+
+        }))
+    } 
     render(){
         let connections=this.state.connections.map(connections=>{
             return(
@@ -86,14 +93,15 @@ class ConnectionList extends Component{
         </a>
 
         <div class='info'>
-            <h4>{connections.fName} {connections.lName}</h4>
+        <a onClick={this.viewConnection.bind(this,connections.email)}>
+                            <h5 class="card-title" style={{fontSize:'14px'}}>{connections.fName} {connections.lName}</h5></a>
             <p class='text-muted'>{connections.occupation}</p>
-            <a onClick={this.viewConnection.bind(this,connections)} style={{position:'relative',left:'550px',bottom:'60px'}} class='btn btn-default tooltips' data-toggle='tooltip' data-original-title='Connect' >
+            <a onClick={this.viewConnection.bind(this,connections.email)} style={{position:'relative',left:'550px',bottom:'60px'}} class='btn btn-default tooltips' data-toggle='tooltip' data-original-title='Connect' >
                  <i class='far fa-handshake'>Message</i>
             </a>
-{/*             <a onClick={this.removeConnection.bind(this,connections)} style={{position:'relative',left:'600px',bottom:'60px'}} class='btn btn-danger tooltips' data-toggle='tooltip' data-original-title='Connect' >
-                <i class='far fa-handshake'>Remove connection</i>
-            </a> */}
+             <a onClick={this.onRemove.bind(this,connections.email)} style={{position:'relative',left:'600px',bottom:'60px'}} class='btn btn-danger tooltips' data-toggle='tooltip' data-original-title='Connect' >
+                <i class='far fa-handshake'>Remove</i>
+            </a> 
         </div>
         <div class="clearfix" style={{marginTop:'-20px'}}></div>
         <hr/>
@@ -109,10 +117,10 @@ class ConnectionList extends Component{
                         <section id='connections mb4 artdeco-card ember-view'>
                             <header class='mn-connections_header' style={{marginTop:'20px'}}>
                                 <h2 class='t-18 t-black t-normal'>
-                                    183 connections
+                                    {this.state.connectcount}
                                 </h2>
                             </header>
-                        <div class='mn-connections_actions-container ph5 pb3' style={{marginTop:'20px'}}>
+{/*                         <div class='mn-connections_actions-container ph5 pb3' style={{marginTop:'20px'}}>
                             <div id='searchconnect' class='mn-connections_search-container t-14 t-black--light t-normal ember-view'>
                             <div class='input-group' id='group1' style={{width:'520px',height:'1px'}}>
                                 <input type='text' id='searchbar' name='searchinput' class='form-control' placeholder='Search'></input>
@@ -121,7 +129,7 @@ class ConnectionList extends Component{
                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div class='panel-body p-t-10'>
                         {connections}
                         </div>

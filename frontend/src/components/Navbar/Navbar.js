@@ -42,6 +42,33 @@ class Navbar extends Component {
         })
     }
 
+
+    deleteAccountHandler = () => {
+
+        axios.delete('http://localhost:3001/deleteAnAccount', {
+        params: {
+           email: localStorage.getItem('email')
+        }})
+        .then(()=>{
+            let afterDeleted = null
+            afterDeleted = this.props.history.push({
+                pathname: "/login",
+                state: {}
+            })
+        });
+
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        localStorage.removeItem('id')
+        localStorage.removeItem('isRecruiter')
+        let detailPage = null
+        detailPage = this.props.history.push({
+            pathname: "/login",
+            state: {
+            }
+        })
+    }
+
     render() {
         let homeClass = null;
         let networkClass = null;
@@ -179,7 +206,8 @@ class Navbar extends Component {
                                             </div>
                                         </a>
                                     </li>
-                                    <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
+
+                                     <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
                                         <ul class="nav-settings__dropdown-items">
                                             <li class="nav-dropdown__item nav-settings__dropdown-item nav-dropdown__action t-14 t-black t-bold">
                                                 <a data-control-name="nav.settings_signout" onClick={() => this.handleLogout()} id="ember9108" class="block ember-view" style={{fontSize: "80%"}}>              Sign out
@@ -187,6 +215,16 @@ class Navbar extends Component {
                                             </li>
                                         </ul>
                                     </li>
+
+                                     <li class="nav-settings__dropdown-options--actions nav-settings__no-hover">
+                                        <ul class="nav-settings__dropdown-items">
+                                            <li class="nav-dropdown__item nav-settings__dropdown-item nav-dropdown__action t-14 t-black t-bold">
+                                                <a data-control-name="nav.settings_signout" onClick={() => this.deleteAccountHandler()} id="ember9108" class="block ember-view" style={{fontSize: "80%"}}>        Delete an Account
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                   
                                 </ul>
                             </div>
                         </li>

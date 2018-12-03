@@ -27,13 +27,14 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                     session.close();
                      console.log()
                     var array = result1.records
-                    
+                    var count=array.length
                     for(var i = 0 ; i < array.length; i++){
                         console.log(array[i].get(0).properties)
                         data.push(array[i].get(0).properties)
                     }
                     console.log(data)
-                    callback(null,data)
+                    var details={data:data,count:count}
+                    callback(null,details)
                         
                     driver.close();
                 })

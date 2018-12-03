@@ -103,9 +103,10 @@ app.post('/requestaccept', connectionController.acceptrequest);
 app.post('/requestdeny', connectionController.denyrequest);
 app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
+app.post('/removeconnect',connectionController.removeconnect);
 
 app.get('/getRecommendPeople',connectionController.getRecommendPeople);
-
+app.delete('/deleteAnAccount',signupController.deleteTheAccount);
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

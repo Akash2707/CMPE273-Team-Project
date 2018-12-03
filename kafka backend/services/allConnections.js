@@ -18,6 +18,7 @@ function handle_request(msg, callback){
     var query = {}
     query.skip = size * (pageNo - 1)
     query.limit = size
+    var count=0
     //var totalPages=0
 
     // get all connections 
@@ -40,10 +41,28 @@ function handle_request(msg, callback){
                 data.push(array[i].get(0).properties)
             }
             console.log(data)
-            callback(null,data)
+           // callback(null,data)
                 
-            driver.close();
+            //driver.close();
         })
+        var resultPromise = session.run(
+            'match(n: User {email : $mail}), (p: User) where (n)-[:connected]->(p) return (p)',
+                {mail : msg.email }  
+        )
+                resultPromise.then(result => {
+                session.close();
+
+                count = result.records.length
+                var details={data:data,count:count}
+              //  console.log()
+              //  var array = result.records
+                //console.log()
+                // for(var i = 0 ; i < array.length; i++){
+                //     data.push(array[i].get(0).properties)
+                callback(null,details)
+       driver.close()
+})
+
     }
 exports.handle_request = handle_request;
    /* UserProfile.count({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]},
