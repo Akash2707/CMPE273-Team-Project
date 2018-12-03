@@ -49,8 +49,10 @@ module.exports.addJob = function (req, res) {
                 "education": req.body.education,
                 "companyLogo": imageName,
                 "allowEasyApply": req.body.allowEasyApply,
+                "totalViews": 0,
+                "totalApplicants": 0,
                 "created_at": today.toISOString().slice(0, 10),
-                "updated_at": today
+                "updated_at": today.toISOString().slice(0, 10)
             }
 
             kafka.make_request('post_job', job, function (err, addedJob) {

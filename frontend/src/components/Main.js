@@ -19,6 +19,7 @@ import ConnectionList from './Connections/connectionList';
 import sentRequest from './Connections/sentRequest'
 import receivedRequest from './Connections/receivedRequest';
 import People from './Connections/Peoples'; 
+import RecruiterHome from './Homepage/RecruiterHome';
 class Main extends Component {
     render(){
         return(
@@ -34,7 +35,7 @@ class Main extends Component {
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
                 <Route path="/applicantHome" component={ViewProfileApplicant}/>
-                <Route path="/recruiterHome" component={ViewProfileRecruiter}/>
+                <Route path="/recruiterHome" component={RecruiterHome}/>
                 <Route path= "/" component = {Navbar}/>
                 <Route path="/job-posting" component={PostJobMain}/>
                 {/* <Route path="/applicantlogin" component={ApplicantLogin}/> */}

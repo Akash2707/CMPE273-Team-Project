@@ -74,6 +74,7 @@ class DisplayJobDetail extends Component {
         data.append("phone", this.state.phone)
         data.append("resume", this.state.resume)
         data.append("companyName", this.state.job.companyName)
+        data.append("address", localStorage.getItem('state'))
         console.log(data)
 
         this.props.submitApplication(data)
@@ -84,7 +85,7 @@ class DisplayJobDetail extends Component {
         let data = {}
         data = {
             "userId": localStorage.getItem("email"),
-            "recruiterId": this.state.job.recruiterId,
+            "recruiterId": this.state.job.recruiterEmail,
             "jobId": this.state.job._id,
             "companyName": this.state.job.companyName,
             "companyLogo": this.state.job.companyLogo,
@@ -107,6 +108,7 @@ class DisplayJobDetail extends Component {
                 companyLogo: this.state.job.companyLogo,
                 city: this.state.job.city,
                 title: this.state.job.title,
+                recruiterId: this.state.job.recruiterEmail,
             }
         })
     }
@@ -191,7 +193,25 @@ class DisplayJobDetail extends Component {
                 .catch(error => {
                     console.log("Error : ", error);
                 });
-            
+
+            axios.defaults.withCredentials = true;
+            //make a post request with the user data
+
+
+            const jobViewCount = {
+                email: localStorage.getItem('email'),
+                jobId: this.props.location.state.job._id,
+            }
+            axios.post('http://localhost:3001/updatejobCount',jobViewCount, {
+                headers: { Authorization: localStorage.getItem('token') },
+            })
+                .then(response => {
+                    console.log("Status Code : ", response);
+                })
+                .catch(error => {
+                    console.log("Error : ", error);
+                });
+
         } catch (e) {
             this.setState({
                 job: {},
@@ -203,7 +223,7 @@ class DisplayJobDetail extends Component {
 
     componentWillReceiveProps() {
         console.log(this.props.jobApplied)
-        
+
     }
 
     render() {
@@ -250,7 +270,7 @@ class DisplayJobDetail extends Component {
 
         let save = (
             <div className="col-md-2" style={{ margin: "0px", padding: "0px" }}>
-                <button type="button" class="btn btn-outline-secondary btn-lg" style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} onClick={this.handleSaveJob}>Save</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg" style={{ marginTop: "20px", border: "1px solid #B8BDBE" }} onClick={this.handleSaveJob}>Save</button>
             </div>
         )
 
