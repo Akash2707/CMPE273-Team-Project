@@ -19,8 +19,8 @@ var checkEasyApply = require('./services/CheckEasyApply');
 var checkApplication = require('./services/CheckApplication');
 var saveJob = require('./services/SaveJob')
 var checkSavedJob = require('./services/CheckSavedJob')
-
-
+var getSavedJob = require('./services/GetSaveJob')
+var getPostedJob = require('./services/GetPostedJob')
 var getRequests=require('./services/getRequests')
 var requestaccept=require('./services/requestaccept')
 var searchPeople = require('./services/searchpeople')
@@ -40,6 +40,8 @@ var getApplicationByCity = require('./services/GetApplicantsByCity')
 var updateLogs = require('./services/UpdateLogs')
 var traceUsers = require('./services/TraceUsers')
 var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
+var editJob = require('./services/EditJob')
+var getApplicants = require('./services/GetApplicants')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -92,8 +94,8 @@ handleTopicRequest("check_easyapply", checkEasyApply)
 handleTopicRequest("check_application",checkApplication)
 handleTopicRequest("save_job",saveJob)
 handleTopicRequest("check_savedJob",checkSavedJob)
-
-
+handleTopicRequest("get_saved_jobs",getSavedJob)
+handleTopicRequest("get_posted_jobs",getPostedJob)
 handleTopicRequest("getallrequest",getRequests)
 handleTopicRequest("accept_request",requestaccept)
 handleTopicRequest("deny_request",requestdeny)
@@ -113,3 +115,5 @@ handleTopicRequest("get_applicantsByCity",getApplicationByCity)
 handleTopicRequest("update_logs",updateLogs)
 handleTopicRequest("get_traceUsers",traceUsers)
 handleTopicRequest("get_topTenNoOfApplicants",getTopTenNoOfApplicants)
+handleTopicRequest("edit_job",editJob)
+handleTopicRequest("get_applicants",getApplicants)

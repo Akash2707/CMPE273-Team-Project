@@ -13,13 +13,15 @@ import ViewProfileApplicant from './ViewProfileApplicant'
 import ViewProfileRecruiter from './ViewProfileRecruiter'
 import Navbar from './Navbar/Navbar'
 import PostJobMain from './PostJob/PostJobMain';
-
+import PostedJobs from './Job/jobPosted';
 import ConnectionList from './Connections/connectionList';
 //import SearchPeople from './Connections/searchPeople';
 import sentRequest from './Connections/sentRequest'
 import receivedRequest from './Connections/receivedRequest';
 import People from './Connections/Peoples'; 
 import RecruiterHome from './Homepage/RecruiterHome';
+import EditPostJobMain from './EditPostJob/EditPostJobMain';
+import ViewApplicants from './ViewApplicants/ViewApplicants';
 class Main extends Component {
     render(){
         return(
@@ -30,6 +32,7 @@ class Main extends Component {
                 <Route path="/jobapplication" component={JobApplication}/>
                 <Route path="/jobs/view" component={DisplayJobDetail}/>
                 <Route path="/savedjobs" component={SavedJobs}/>
+                <Route path="/postedjobs" component={PostedJobs}/>
                 <Route path="/jobs/search" component={SearchJobDisplay}/>
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
@@ -43,6 +46,8 @@ class Main extends Component {
                 <Route path='/getRequests' component={receivedRequest}></Route>
                 <Route path='/Mynetwork' component={People}></Route>
                 <Route path='/sentrequest' component={sentRequest}></Route>
+                <Route path='/edit/job-posting' component={EditPostJobMain}></Route>
+                <Route path='/jobApplicants' component={ViewApplicants}></Route>
             </div>
         )
     }

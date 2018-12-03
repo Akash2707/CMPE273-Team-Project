@@ -124,8 +124,8 @@ margin: 0px;
 }
 
 .savedJobsBanner{
-  background-color: #506B71;
-  height: 80px;
+  background-color: #116F95;
+  height: 50px;
   width: 100%;
   color: #ffffff;
   padding:10px;
@@ -138,36 +138,48 @@ margin: 0px;
   margin: auto;
   margin-top: 10px;
   padding:5px 0px 5px 0px;
-  -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
-  -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  -moz-box-shadow: 1px 1px 1px rgba(209, 208, 208, 0.5);
+  -webkit-box-shadow: 1px 1px 1px rgba(209, 208, 208, 0.5);
+  box-shadow: 1px 1px 1px rgba(209, 208, 208, 0.5);
 }
 
 .savedJobsCards{
-  border-bottom:1px solid #B8BDBE;
+  border:1px solid transparent;
   width:97%;
   height:170px;
-  margin: 10px;
+  margin: 0px 10px 0px 10px;
   padding: 5px 0px 5px 0px;
 }
 
+.applicantsCards{
+  border:1px solid transparent;
+  width:97%;
+  height:170px;
+  margin: 0px 10px 0px 10px;
+  padding: 5px 0px 5px 0px;
+}
+
+.bottom-border-jobs{
+  border-bottom:1px solid #B8BDBE;
+
+}
 
 .savedJobsCards:hover {
   background-color: rgba(152,216,244,.25);
 }
 
 .savedJobsLogo{
-  border:1px transparent #B8BDBE;
+  border:1px solid #B8BDBE;
   width:80px;
   height:80px;
-  margin: 40px 25px;
+  margin: 15px 25px;
 }
 
 .savedJobsDetails{
   border:1px solid transparent;
   width:90%;
   height:125px;
-  margin: 17px 0px 0px 30px;
+  margin: 0px 0px 20px 30px;
   padding: 5px 0px 5px 0px;
 }
 .appliedJobsBox{
@@ -254,6 +266,7 @@ margin: 0px;
   padding: 0;
   margin-bottom: 50px;
   margin-top: 20px;
+  float: right;
 }
 
 .step-progress .multi-step .btn-next{
@@ -267,6 +280,7 @@ margin: 0px;
   padding: 0;
   margin-bottom: 50px;
   margin-top: 20px;
+  float: left;
 }
 
 ol.progtrckr {
@@ -646,12 +660,25 @@ ol.progtrckr li.progtrckr-done:hover:before {
   margin-top: 10px;
 }
 
-.react-paginate ul {
+.pagination ul {
   display: inline-block;
   padding-left: 15px;
   padding-right: 15px;
 }
 
-.react-paginate li {
+.pagination li {
   display: inline-block;
+  padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2px
 }
+
+.pagination{
+  display: flex
+}
+

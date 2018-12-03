@@ -75,6 +75,8 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 var connectionController = require('./controllers/connectionController')
+var savedJobsController = require('./controllers/SavedJobsController')
+var postedJobsController = require('./controllers/PostedJobController')
 var recruiterController = require('./controllers/RecruiterController')
 
 
@@ -94,7 +96,8 @@ app.put('/recruiter/profile/education', updateProfile.addEducation);
 app.put('/recruiter/profile/imageupload', updateProfile.imageUpload);
 app.get('/recruiter/profile', updateProfile.profileDisplay);
 app.put('/recruiter/profile/skills', updateProfile.addskills);
-
+app.get('/jobs/saved/', savedJobsController.getSaveJobs);
+app.get('/recruiter/jobs/posted/', postedJobsController.getPostedJobs);
 //app.post('/travelerlogin',applicantLoginController.authenticate);
 app.get('/searchpeople', connectionController.getpeople);
 app.put('/sendrequest', connectionController.sendrequest);
@@ -115,6 +118,8 @@ app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
 app.post('/updateLogs',recruiterController.updateLogs);
 app.get('/traceUsers',recruiterController.getTraceUsers);
 app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
+app.put('/edit/job',addJobController.editJob)
+app.get('/job/applicants', postedJobsController.getApplicants)
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");
@@ -127,5 +132,18 @@ app.get('/download/:file(*)', (req, res) => {
         res.end(null, 'binary');
     });
 });
+
+app.get('/resume/:file(*)', (req, res) => {
+    console.log("Inside download file");
+    var file = req.params.file;
+    var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
+    var params = { Bucket: 'linkedin-bucket', Key: file };
+    
+    res.attachment(file);
+    var fileStream = s3Bucket.getObject(params).createReadStream();
+    fileStream.pipe(res);
+    
+});
+
 app.listen(3001);
 console.log("Server Listening on port 3001");
