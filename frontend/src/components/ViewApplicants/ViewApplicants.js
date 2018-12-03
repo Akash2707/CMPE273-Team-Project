@@ -3,37 +3,61 @@ import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import PDFReader from "react-pdf-reader";
+import "react-pdf-reader/dist/TextLayerBuilder.css";
 
-class JobsPosted extends Component {
+class ViewApplicants extends Component {
 
     constructor(props) {
 
         super(props);
 
         this.state = {
-            postedJobs: [],
+            applicants: [],
             totalPages: "",
-            noPostedJobs: "",
-            errormsg: ""
+            noApplicants: "",
+            errormsg: "",
+            id: "",
+            allowEasyApply: ""
         }
-        this.jobEditPage = this.jobEditPage.bind(this);
-        this.jobApplicants = this.jobApplicants.bind(this);
     }
 
     componentDidMount() {
-        this.getPostedJobs(1)
+        try{
+            this.setState({
+            id: this.props.location.state.jobId,
+            allowEasyApply: this.props.location.state.allowEasyApply
+            })
+            this.getApplicants(1)
+        }catch (e){
+            this.setState({
+            noApplicants: "Error while fetching Applicants",
+            applicants: []
+            })
+        }
     }
 
-    getPostedJobs(page) {
+    getApplicants(page) {
         this.setState({
-            noPostedJobs: ""
+            noApplicants: ""
         })
-        axios.get('http://localhost:3001/recruiter/jobs/posted',
+        var jobId = ""
+        var allowEasyApply = false
+        if(this.state.id == ""){
+            jobId = this.props.location.state.jobId
+            allowEasyApply= this.props.location.state.allowEasyApply
+        }else{
+            jobId = this.state.id
+            allowEasyApply = this.state.allowEasyApply
+        }
+        axios.get('http://localhost:3001/job/applicants',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
                     pageNo: page,
+                    id: jobId,
+                    allowEasyApply: allowEasyApply
                 }
             })
             .then((response) => {
@@ -41,21 +65,21 @@ class JobsPosted extends Component {
                 //update the state with the response data
                 if (response.status === 200) {
                     this.setState({
-                        postedJobs: response.data.jobs,
+                        applicants: response.data.applications,
                         totalPages: response.data.totalPages
                     })
                     if (response.data.jobs.length == 0) {
                         this.setState({
 
-                            noPostedJobs: "No Posted Jobs",
-                            postedJobs: []
+                            noApplicants: "No Posted Jobs",
+                            applicants: []
                         })
                     }
                     console.log(response)
                 }
                 else {
                     this.setState({
-                        postedJobs: []
+                        applicants: []
                     })
                 }
             })
@@ -64,6 +88,7 @@ class JobsPosted extends Component {
                     errormsg: error.response
                 })
             });
+        
     }
 
     handlePageClick = (data) => {
@@ -71,56 +96,33 @@ class JobsPosted extends Component {
         // this.setState({
         //     currentPage: selected
         // })
-        this.getPostedJobs(selected)
+        this.getApplicants(selected)
 
     }
 
-    jobEditPage(job) {  
-            let detailPage = null
-            detailPage = this.props.history.push({
-                pathname: "/edit/job-posting",
-                state: {
-                    jobInfo: job
-                }
-            })
-    }
 
-    jobApplicants(job) {  
-        let detailPage = null
-        detailPage = this.props.history.push({
-            pathname: "/jobApplicants",
-            state: {
-                jobId: job._id,
-                allowEasyApply: job.allowEasyApply
-            }
-        })
-}
 
     render() {
-        console.log(this.state.noPostedJobs)
+        console.log(this.state.noApplicants)
         
-        let displayPostedJobs = this.state.postedJobs.map(jobs => {
+        let displayApplicants = this.state.applicants.map(applicant => {
             return (
                 
-                    <div className="col-md-12 savedJobsCards">
-                        <div className="col-md-2 ">
-                            <img height="100px" width="100px" style={{marginTop: "15px"}} src={jobs.companyLogo}></img>
-                        </div>
-                        <div className="col-md-10 bottom-border-jobs">
-                        <div className="col-md-7 savedJobsDetails">
+                    <div className="col-md-12 applicantsCards bottom-border-jobs">
+                        
+                        <div className="col-md-12 savedJobsDetails">
 
-                            <h5><b>{jobs.title}</b> - <span> {jobs.employmentType}</span></h5> 
-                            
-                            <h6>{jobs.companyName}</h6>
-                            <br/>
-                            <p>{jobs.city}</p>
-                            
+                            <h5><b>Name: {applicant.fName} {applicant.lName}</b></h5> 
+                            <h6>Email: {applicant.email}</h6>
+                            <h6>City: {applicant.address}</h6>
+                            <h6>Phone: {applicant.phone}</h6>
+                            <PDFReader
+                                file={applicant.resume}
+                                renderType="canvas"
+                            />
                         </div>
-                        <div align="right" class="col-md-2">
-                            <button type="button" class="btn btn-primary" onClick={() => { this.jobEditPage(jobs) }} style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} >Edit Job</button>
-                            <button type="button" class="btn btn-primary" onClick={() => { this.jobApplicants(jobs) }} style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} >View Applicants</button>
-                        </div>
-                        </div>   
+                        
+                        
                     </div>
                
             )
@@ -138,10 +140,10 @@ class JobsPosted extends Component {
                     <div className="col-md-2"></div>
                     <div className="col-md-8 savedJobsBox" style={{paddingTop:"0px"}}>
                     <div className="col-md-12 savedJobsBanner">
-                     <h4 > Jobs Posted</h4>
+                     <h4 > Applicants</h4>
                     </div>
                        
-                        {displayPostedJobs}
+                        {displayApplicants}
                         
                     </div>
                     </div>
@@ -171,4 +173,4 @@ class JobsPosted extends Component {
     }
 }
 
-export default JobsPosted;
+export default ViewApplicants;

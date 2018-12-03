@@ -40,6 +40,8 @@
     "react-load-script": "0.0.6",
     "react-native": "^0.57.0",
     "react-paginate": "^5.2.4",
+    "react-pdf": "^4.0.0",
+    "react-pdf-reader": "^0.1.8",
     "react-places-autocomplete": "^7.2.0",
     "react-popup": "^0.9.3",
     "react-popupbox": "^2.0.8",

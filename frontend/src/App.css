@@ -150,6 +150,15 @@ margin: 0px;
   margin: 0px 10px 0px 10px;
   padding: 5px 0px 5px 0px;
 }
+
+.applicantsCards{
+  border:1px solid transparent;
+  width:97%;
+  height:170px;
+  margin: 0px 10px 0px 10px;
+  padding: 5px 0px 5px 0px;
+}
+
 .bottom-border-jobs{
   border-bottom:1px solid #B8BDBE;
 

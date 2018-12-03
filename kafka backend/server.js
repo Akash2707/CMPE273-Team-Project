@@ -41,6 +41,7 @@ var updateLogs = require('./services/UpdateLogs')
 var traceUsers = require('./services/TraceUsers')
 var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
 var editJob = require('./services/EditJob')
+var getApplicants = require('./services/GetApplicants')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -115,3 +116,4 @@ handleTopicRequest("update_logs",updateLogs)
 handleTopicRequest("get_traceUsers",traceUsers)
 handleTopicRequest("get_topTenNoOfApplicants",getTopTenNoOfApplicants)
 handleTopicRequest("edit_job",editJob)
+handleTopicRequest("get_applicants",getApplicants)
