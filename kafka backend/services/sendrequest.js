@@ -2,6 +2,12 @@ var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
 var { UserProfile} = require('../models/UserProfile')
 
+var session = require('express-session')
+const neo4j = require('neo4j-driver').v1;
+
+const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.com:7687', neo4j.auth.basic('neo4j', '12345678'));
+
+
 
 // for graph
 var session = require('express-session')
@@ -19,32 +25,32 @@ const neo4j = require('neo4j-driver').v1;
         // make connection send relationships
             // graph start
             console.log(' sender and receiver ', msg.sender_email + ' ' + msg.reciever_email)
-            
+
             session = driver.session();
             // sent
             var resultPromise = session.run(
                 'match(n:User {email: $send}),(d:User {email: $receive})  Create(n)-[:sent]-> (d) return n,d',
-                    {send : msg.sender_email, receive : msg.reciever_email } 
+                    {send : msg.sender_email, receive : msg.reciever_email }
             )
-            
+
             // hasRequest
             resultPromise = session.run(
                 'match(n:User {email: $receive}),(d:User {email: $send})  Create(n)-[:hasRequest]-> (d) return n,d',
-                    {send : msg.sender_email, receive : msg.reciever_email } 
+                    {send : msg.sender_email, receive : msg.reciever_email }
             )
             resultPromise.then(result1 => {
                 session.close();
-            
+
                 console.log(result1)
 
                 callback(null,result1);
-            
+
                 driver.close()
 
             })
         //    callback(null,result);
 
-            // graph end 
+            // graph end
     }
 exports.handle_request = handle_request;
         /*
@@ -75,7 +81,7 @@ exports.handle_request = handle_request;
             }).then((result)=> {
                 console.log("Updated Document:",result);
 
-    
+
             },(err)=>{
                 console.log(err);
                 console.log("Error Creating Book");
@@ -95,7 +101,7 @@ exports.handle_request = handle_request;
 
      /*   PeopleConnect.update({'email':msg.sender_email},{$push:{'requests.sendrequest':msg.reciever_email}},{multi:true})
         .then((err)=>{
-           
+
             console.log(err);
                 callback(err,[]);
         },
@@ -108,13 +114,13 @@ exports.handle_request = handle_request;
 
                 },
                 (m)=>{
-                    
+
                         console.log('here',u,m)
                         callback(null,m);
 
-                    
+
                 })
-            
-                   
+
+
             })
             */

@@ -1,6 +1,7 @@
 var crypt = require('../crypt');
 var { mongoose } = require('../db/mongoose');
 var { UserProfile } = require('../models/UserProfile')
+
 var {Users } = require('../models/User')
 var connection = require('./../db/connection');
 
@@ -9,10 +10,11 @@ const neo4j = require('neo4j-driver').v1;
 
 const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.com:7687', neo4j.auth.basic('neo4j', '12345678'));
 
+
 function handle_request(msg, callback){
 
 
- 
+
     console.log(" in handle request : "+ JSON.stringify(msg));
     var today = new Date();
     let users = {
@@ -52,7 +54,7 @@ function handle_request(msg, callback){
                 var imageUrl = 'http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png'
                 var occupation = 'Software Engineer'
 
-           
+
                 var resultPromise = session.run(
                     'create(n: User {email : $mail, location : $loc, recruiter : $isRecruiter, fName : $fname, lName : $lname, imageUrl: $image, occupation: $occup}) return n',
                     {mail : msg.email, loc : msg.state, isRecruiter : users.isRecruiter, fname : msg.fName, lname : msg.lName, image : imageUrl, occup : occupation}
@@ -60,10 +62,10 @@ function handle_request(msg, callback){
                    console.log(msg.fName);
                     resultPromise.then(result => {
                     session.close();
-                    console.log("if");  
+                    console.log("if");
                     const singleRecord = result.records[0];
                     console.log('graph : ', singleRecord.get(0))
-                
+
                     users.isRecruiter = msg.isRecruiter
                     callback(null,users)
 
@@ -75,7 +77,7 @@ function handle_request(msg, callback){
          })
        }
        else {
-        callback(error,"Email address is already in use.");  
+        callback(error,"Email address is already in use.");
        }
      }
    });
@@ -88,10 +90,10 @@ function handle_request(msg, callback){
     //         callback(err," Error in Singnup or user is already exist ... ");
     //     } else if(user){
     //         console.log("Email address is already in use.")
-    //         callback(err,"Email address is already in use.");  
+    //         callback(err,"Email address is already in use.");
     //     }else {
     //             console.log(' The input password ... ', msg.password )
-    //             crypt.createHash(msg.password, function(pass){       
+    //             crypt.createHash(msg.password, function(pass){
 
     //                 var mail = msg.email.toLowerCase()
 
@@ -108,7 +110,7 @@ function handle_request(msg, callback){
 
     //              /*   var sql = `insert into login values(null, '${msg.email}', '${pass}', '${flag}')`;
     //                 console.log(' insert query : ' + sql);
-                    
+
     //                 conn.query(sql, function(err,result){
     //                     console.log(err, ' ', result)
     //                 })      */
@@ -129,14 +131,14 @@ function handle_request(msg, callback){
     //             }, (err) => {
     //                 callback(err,[])
     //                 })
-    //         }       
+    //         }
     // })
-} 
+}
 
 
 /*
 function handle_request(msg, callback){
- 
+
     console.log(" in handle request : "+ JSON.stringify(msg));
     var today = new Date();
 
@@ -157,17 +159,17 @@ function handle_request(msg, callback){
                     var flag = false;
                     if(msg.recruiter == "yes")
                         flag = true;
-    
+
                     var sql = `insert into login values(null, '${msg.email}', '${msg.password}', '${flag}')`;
                     console.log(' insert query : ' + sql);
-                    
+
                     conn.query(sql, function(err,result){
                         if(err || result === ' '){
                             console.log(" result " + result);
                             console.log(" error " + err);
                             callback(err," Error in Server");
                         } else{
-                                
+
                             var profile = new Profile({
                                 fname : msg.fname,
                                 lname : msg.lname,
@@ -177,7 +179,7 @@ function handle_request(msg, callback){
                                 created_at : today,
                                 updated_at : today
                             })
-    
+
                             profile.save().then( (user) => {
                                 console.log(" user from profile : " + user)
                                 callback(null,user)
@@ -185,9 +187,9 @@ function handle_request(msg, callback){
                                 callback(err,[])
                             })
                         }
-                    })  
+                    })
                     // })
-                }       
+                }
                 }
             })
 } */

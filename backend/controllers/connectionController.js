@@ -48,7 +48,6 @@ module.exports.getRecommendPeople=function(req,res){
          }
      })
  }
-
 //done
 module.exports.sendrequest=function(req,res){
   //  console.log('sender_email',req.body.params.sender_email,
@@ -65,7 +64,7 @@ module.exports.sendrequest=function(req,res){
             console.log(result)
             res.status(200);
             res.send('Successful send request!');
-            
+
         }
 
     })
@@ -75,7 +74,7 @@ module.exports.getrequest=function(req,res){
    // console.log(req)
     var request={
         'user_email':req.query.email
-       
+
     }
     kafka.make_request('getallrequest',request,function(err,allrequests){
         if(err){
@@ -172,7 +171,7 @@ module.exports.getConnections=function(req,res){
             console.log(connection_result)
             res.writeHead(200,{'Content-Type':'application/json'});
             res.end(JSON.stringify(connection_result));
-            
+
         }
     })
 }

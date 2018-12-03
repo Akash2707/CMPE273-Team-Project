@@ -192,12 +192,12 @@ class Peoples extends Component {
                 else if (this.state.sentReq.includes(peoples.email)) {
 
                     ButtonDisplay =  ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-secondary" onClick={this.onWithdraw.bind(this, peoples.email)}>Withdraw</button>
-                   
+
                 }
                 else if (this.state.connected.includes(peoples.email)) {
                     //else if(peoples.requests.connectionlistlist.includes(localStorage.getItem('email'))){
                     ButtonDisplay = ButtonDisplay =  ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-warning" onClick={this.viewConnection.bind(this, peoples.email)}>View Profile</button>
-                   
+
                 } else {
                     ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-primary" onClick={this.onConnect.bind(this, peoples.email)}>Connect</button>
                 }

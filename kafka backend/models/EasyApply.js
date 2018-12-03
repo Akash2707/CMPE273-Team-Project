@@ -37,7 +37,13 @@ var EasyApply = mongoose.model('easyApply', {
 	},
 	companyName: {
 		type: String
-	}
+	},
+	address: {
+		type: String
+	},
+	created_at: {
+		type: Date
+    },
 });
 
 module.exports = { EasyApply };

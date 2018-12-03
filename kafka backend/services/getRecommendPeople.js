@@ -15,10 +15,10 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         var count=0
         var resultPromise = session.run(
             'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
-                {mail : msg.email }  
+                {mail : msg.email }
         )
                 resultPromise.then(result => {
-        
+
               //  console.log()
                 var array = result.records
                 //console.log()
@@ -28,7 +28,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
             })
                 var resultPromise = session.run(
                     'match(n: User {email : $mail}), (p: User) where (n)-[:connected]->(p) return (p)',
-                        {mail : msg.email }  
+                        {mail : msg.email }
                 )
                         resultPromise.then(result => {
                         session.close();
@@ -41,9 +41,9 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                         // for(var i = 0 ; i < array.length; i++){
                         //     data.push(array[i].get(0).properties)
                         callback(null,details)
-               
+
         })
-       
+
         /*
         console.log(msg.q)
      UserProfile.find({
@@ -55,7 +55,7 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
                 callback(err,[]);
             } else {
                 console.log(result)
-    
+
 UserProfile.find({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]}
 , function (err, searchresult) {
     if (err) {
@@ -65,7 +65,7 @@ UserProfile.find({$and:[{email:{$ne:msg.email}},{email:{$regex:'^'+msg.q+'.*'}}]
         console.log(searchresult)
         callback(null,searchresult);
     }
-})       
+})
             }
         })
         */
