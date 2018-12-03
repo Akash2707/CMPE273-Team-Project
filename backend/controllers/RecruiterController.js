@@ -113,3 +113,54 @@ module.exports.getApplicantsByCity = function (req, res){
     });
 }
 
+module.exports.updateLogs = function (req, res){
+  kafka.make_request('update_logs', req.body, function (err, logsSaved) {
+      if (err) {
+        res.status(400);
+        res.send(err);
+      } else {
+        console.log(logsSaved)
+        res.json({
+          status: 200,
+          message: `logs updated successfully`
+          })
+      }
+  
+    });
+}
+
+module.exports.getTraceUsers = function (req, res){
+  
+    kafka.make_request('get_traceUsers', req.query, function (err, jobs) {
+      if (err) {
+        res.status(400);
+        res.send(err);
+      } else {
+        console.log(jobs)
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify(jobs));
+      }
+  
+    });
+}
+
+module.exports.getTopTenNoOfApplicants = function (req, res){
+  var data = {
+      "recruiterEmail": req.query.email,
+    }
+    kafka.make_request('get_topTenNoOfApplicants', data, function (err, jobs) {
+      if (err) {
+        res.status(400);
+        res.send(err);
+      } else {
+        console.log(jobs)
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify(jobs));
+      }
+  
+    });
+}

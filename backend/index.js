@@ -112,6 +112,9 @@ app.get('/getjobsviewcount',recruiterController.getJobsViewCount);
 app.get('/getlessnoofapplicants',recruiterController.getLessNoOfApplicants);
 app.get('/getjobstitle',recruiterController.getJobsTitle);
 app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
+app.post('/updateLogs',recruiterController.updateLogs);
+app.get('/traceUsers',recruiterController.getTraceUsers);
+app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

@@ -37,6 +37,9 @@ var getJobsViewCount = require('./services/GetJobsViewCount')
 var getLessNoOfApplicants = require('./services/GetLessNoOfApplicants')
 var getJobsTitle = require('./services/GetJobsTitle')
 var getApplicationByCity = require('./services/GetApplicantsByCity')
+var updateLogs = require('./services/UpdateLogs')
+var traceUsers = require('./services/TraceUsers')
+var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -107,3 +110,6 @@ handleTopicRequest("get_jobsViewCount",getJobsViewCount)
 handleTopicRequest("get_lessNoOfApplicants",getLessNoOfApplicants)
 handleTopicRequest("get_jobsTitle",getJobsTitle)
 handleTopicRequest("get_applicantsByCity",getApplicationByCity)
+handleTopicRequest("update_logs",updateLogs)
+handleTopicRequest("get_traceUsers",traceUsers)
+handleTopicRequest("get_topTenNoOfApplicants",getTopTenNoOfApplicants)

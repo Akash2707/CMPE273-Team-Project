@@ -108,6 +108,7 @@ class DisplayJobDetail extends Component {
                 companyLogo: this.state.job.companyLogo,
                 city: this.state.job.city,
                 title: this.state.job.title,
+                recruiterId: this.state.job.recruiterEmail,
             }
         })
     }
