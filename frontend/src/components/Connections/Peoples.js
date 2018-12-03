@@ -268,7 +268,7 @@ class Peoples extends Component {
 
                 <div className="col-md-6">
                 <div className="col-md-12" style={{marginLeft: "50px"}}>
-                    <input type="text" name="search" placeholder="Search.." onChange={this.searchtextHandler.bind(this)} />
+                    <input  className="connection" type="text" name="search" placeholder="Search.." onChange={this.searchtextHandler.bind(this)} />
                     <button style={{ margin: "5px" }} type="button" class="btn btn-primary" onClick={this.SearchHandler.bind(this, this.state.searchPageCount)}>Search</button>
                 </div>
 

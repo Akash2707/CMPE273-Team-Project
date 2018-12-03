@@ -80,7 +80,7 @@
    overflow: hidden;
 }
 
-input{
+.connection input{
 width: 500px;
 box-sizing: border-box;
 border: 2px solid #ccc;
@@ -95,6 +95,6 @@ transition: width 0.4s ease-in-out;
 
 }
 
-input[type=text]:focus {
+.connection input[type=text]:focus {
     width: 550px;
 }
