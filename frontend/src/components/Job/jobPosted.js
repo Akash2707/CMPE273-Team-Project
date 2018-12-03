@@ -16,6 +16,7 @@ class JobsPosted extends Component {
             noPostedJobs: "",
             errormsg: ""
         }
+        this.jobEditPage = this.jobEditPage.bind(this);
     }
 
     componentDidMount() {
@@ -73,6 +74,16 @@ class JobsPosted extends Component {
 
     }
 
+    jobEditPage(job) {  
+            let detailPage = null
+            detailPage = this.props.history.push({
+                pathname: "/edit/job-posting",
+                state: {
+                    jobInfo: job
+                }
+            })
+    }
+
     render() {
         console.log(this.state.noPostedJobs)
         
@@ -80,8 +91,8 @@ class JobsPosted extends Component {
             return (
                 
                     <div className="col-md-12 savedJobsCards">
-                        <div className="col-md-2 savedJobsLogo">
-
+                        <div className="col-md-2 ">
+                            <img height="100px" width="100px" src={jobs.companyLogo}></img>
                         </div>
                         <div className="col-md-10 bottom-border-jobs">
                         <div className="col-md-7 savedJobsDetails">
@@ -94,7 +105,7 @@ class JobsPosted extends Component {
                             
                         </div>
                         <div align="right" class="col-md-2">
-                            <button type="button" class="btn btn-outline-secondary" style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} >Edit Job</button>
+                            <button type="button" class="btn btn-outline-secondary" onClick={() => { this.jobEditPage(jobs) }} style={{ marginTop: "20px", border: "1px solid #B8BDBE"}} >Edit Job</button>
 
                         </div>
                        

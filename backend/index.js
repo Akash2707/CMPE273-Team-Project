@@ -118,6 +118,7 @@ app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
 app.post('/updateLogs',recruiterController.updateLogs);
 app.get('/traceUsers',recruiterController.getTraceUsers);
 app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
+app.put('/edit/job',addJobController.editJob)
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

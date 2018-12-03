@@ -20,6 +20,7 @@ import sentRequest from './Connections/sentRequest'
 import receivedRequest from './Connections/receivedRequest';
 import People from './Connections/Peoples'; 
 import RecruiterHome from './Homepage/RecruiterHome';
+import EditPostJobMain from './EditPostJob/EditPostJobMain';
 class Main extends Component {
     render(){
         return(
@@ -44,6 +45,7 @@ class Main extends Component {
                 <Route path='/getRequests' component={receivedRequest}></Route>
                 <Route path='/Mynetwork' component={People}></Route>
                 <Route path='/sentrequest' component={sentRequest}></Route>
+                <Route path='/edit/job-posting' component={EditPostJobMain}></Route>
             </div>
         )
     }
