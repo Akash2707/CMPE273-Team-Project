@@ -1,0 +1,100 @@
+.your-connection-box{
+    height:400px;
+   margin:5px 5px 5px 40px;
+
+    border:1px solid transparent;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.connection-box{
+    height:auto;
+    margin:5px 40px 5px 40px;
+    border:1px solid transparent;
+    text-align: center; 
+    padding-bottom: 30px;
+}
+
+.invitation-box{
+    height:200px;
+    margin:5px;
+    border:1px solid transparent;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    background-color: #ffffff;
+}
+.people-box{
+    height: 300px;
+    border: 1px solid #B6B6B9;
+    padding:"0px 5px 0px 5px";
+    display: inline-block;
+    background-color: #ffffff;
+}
+
+.search-result-box{
+    height: 120px;
+    border: 1px solid #B6B6B9;
+    padding:"5px";
+    display: inline-block;
+    background-color: #ffffff;
+}
+
+.image-box{
+    border:1px solid #E9EEF0;
+    height:120px;
+    width:120px;
+    border-radius: 120px;
+    margin:auto;
+   margin-left:35px;
+   margin-top: 30px;
+   text-align: center;
+   padding: 0px;
+}
+
+.search-image-box{
+    border:1px solid #E9EEF0;
+    height:100px;
+    width:100px;
+    border-radius: 100px;
+    margin:auto;
+    text-align: center;
+    padding: 0px;
+    top:5px;
+}
+
+.search-image-person{
+    border:1px solid #E9EEF0;
+    height:100px;
+    width:100px;
+    border-radius: 100px;
+    margin:auto;
+   overflow: hidden;
+}
+.image-person{
+    border:1px solid #E9EEF0;
+    height:120px;
+    width:120px;
+    border-radius: 120px;
+    margin:auto;
+   overflow: hidden;
+}
+
+.connection input{
+width: 500px;
+box-sizing: border-box;
+border: 2px solid #ccc;
+border-radius: 4px;
+font-size: 16px;
+background-color: white;
+background-position: 10px 10px; 
+background-repeat: no-repeat;
+padding: 12px 20px 12px 40px;
+-webkit-transition: width 0.4s ease-in-out;
+transition: width 0.4s ease-in-out;
+
+}
+
+.connection input[type=text]:focus {
+    width: 550px;
+}

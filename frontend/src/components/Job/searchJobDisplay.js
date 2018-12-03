@@ -149,7 +149,7 @@ class SearchJobDisplay extends Component {
                         <p>{job.city}</p>
                         <p className="block-ellipsis">{job.description}</p>
                         <div class="col-md-12" style={{ marginTop: "10px" }}>
-                            <div className="col-md-3"> {job.created_at}
+                            <div className="col-md-3"> {job.created_at.slice(0, 10)}
                             </div>
                             {easyApply}
                         </div>

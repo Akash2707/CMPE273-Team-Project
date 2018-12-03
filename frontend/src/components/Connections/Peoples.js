@@ -1,286 +1,303 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
-import './People.css';
-
-class People extends Component{
-    constructor(props){
+import { Redirect } from 'react-router';
+import './../../connection.css'
+class Peoples extends Component {
+    constructor(props) {
         super(props);
-        this.state={
-            
-            peoples:[],
-            isReqFail:false,
-            onSuccess:false,
-            errorMessage:'',
-            connectionlist:[],
-            recommendPeople:[],
-            q:''
+        this.state = {
+            peoples: [],
+            isReqFail: false,
+            onSuccess: false,
+            errorMessage: '',
+            connectionlist: [],
+            q: '',
+            searchPageCount: 1,
+            recommendPeople: [],
+            connected: [],
+            sentReq: [],
+            hasReq: [],
+            connectcount: 0
         }
-        this.onConnect=this.onConnect.bind(this)
-    }
+        this.onConnect = this.onConnect.bind(this)
+        // this.searchPageCount=this.searchPageCount.bind(this)
+        this.handlePageClick = this.handlePageClick.bind(this)
 
-    componentDidMount(){
-        axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/getRecommendPeople', {headers: { Authorization: localStorage.getItem('token')},
-       params: {
-           email: localStorage.getItem('email')
-       }})
-        .then((response)=>{
-            console.log(response.data)
-            this.setState({
-                recommendPeople:this.state.recommendPeople.concat(response.data)
+    }
+    componentDidMount() {
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/getRecommendPeople', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                email: localStorage.getItem('email')
+            }
+        })
+            .then((response) => {
+                console.log(' response from Recommend users :')
+                console.log(response.data)
+                this.setState({
+                    recommendPeople: response.data.data,
+                    connectcount: response.data.count
+                });
             });
-        });
     }
 
-
-    searchtextHandler(e){
+    searchtextHandler(e) {
         this.setState({
-            q:e.target.value
+            q: e.target.value
         })
     }
-    onConnect(email,e){
+    onConnect(email, e) {
         //   var data={sender_email:localStorage.getItem('email'),reciever_email:email}
-           axios.defaults.withCredentials=true;
-           axios.put('http://localhost:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
-           params: {
-               sender_email: localStorage.getItem('email'),
-               reciever_email:email
-           }})
-           .then((response=>{
-            window.location.reload()
-               if(response.status==400){
-                   this.setState({
-                       isReqFail:true
-                   })
-               }
-   
-           }))
-       }
-    SearchHandler(e){
-        e.preventDefault();
-        axios.defaults.withCredentials =true;
+        axios.defaults.withCredentials = true;
+        axios.put('http://localhost:3001/sendrequest', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                sender_email: localStorage.getItem('email'),
+                reciever_email: email
+            }
+        })
+            .then((response => {
+                window.location.reload()
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+
+            }))
+    }
+    SearchHandler(pageNo = 1) {
+        // e.preventDefault();
+        axios.defaults.withCredentials = true;
         console.log("hii")
-       axios.get('http://localhost:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
-       params: {
-           email: localStorage.getItem('email'),
-           q:this.state.q
-       }})
-           .then(response => {
-               console.log("Status Code : ", response);
-               if (response.status === 200) {
-                   this.setState({
-                       peoples: response.data,
-                     
-                       onSuccess: true
-                   })
-               } else {
-                   this.setState({
-                       onSuccess: false,
-                       errorMessage: response.data.message
-                   })
-               }    
-           })
-           .catch(error => {
-               this.setState({
-                   onSuccess: false,
-                   errorMessage: error.data
-               })
-           });
-    }
-    onWithdraw(connection_email,e){
-        console.log(connection_email)
-        axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/requestwithdraw', {headers: { Authorization: localStorage.getItem('token')},
-        params: {
-            user_email:localStorage.getItem('email'),
-            connection_email:connection_email
-        }})
-        .then((response=>{
-            window.location.reload()
-            console.log(response)
-            if(response.status==400){
-                this.setState({
-                    isReqFail:true
-                })
-            }
+        axios.get('http://localhost:3001/searchpeople', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                email: localStorage.getItem('email'),
+                q: this.state.q,
+                page: pageNo
 
-        }))
-        .catch(error => {
-            console.log('error',error)
-            this.setState({
-                onSuccess: false,
-                errorMessage: error.data
+            }
+        })
+            .then(response => {
+                console.log(" response from search user : ", response);
+                console.log(' The result : ', response.data.result)
+                console.log(' The totalpages : ', response.data.totalpages)
+                if (response.status === 200) {
+                    this.setState({
+                        peoples: response.data.result,
+                        searchPageCount: response.data.totalpages,
+                        connected: response.data.connect,
+                        sentReq: response.data.sentReq,
+                        hasReq: response.data.hasReq,
+                        onSuccess: true
+                    })
+                } else {
+                    this.setState({
+                        onSuccess: false,
+                        errorMessage: response.data.message
+                    })
+                }
             })
+            .catch(error => {
+                this.setState({
+                    onSuccess: false,
+                    errorMessage: error.data
+                })
+            });
+    }
+    handlePageClick = (data) => {
+        //  let value = {}
+        /*   value = {
+              state: this.state.state,
+              industry: this.state.industry,
+              jobTitle: this.state.jobTitle,
+              jobType: this.state.jobType,
+              experience: this.state.experience
+          } */
+        this.SearchHandler(data.selected + 1)
+    };
+
+    onWithdraw(connection_email, e) {
+        console.log(connection_email)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/requestwithdraw', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                user_email: localStorage.getItem('email'),
+                connection_email: connection_email
+            }
+        })
+            .then((response => {
+                window.location.reload()
+                console.log(response)
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+
+            }))
+            .catch(error => {
+                console.log('error', error)
+                this.setState({
+                    onSuccess: false,
+                    errorMessage: error.data
+                })
+            })
+    }
+    onAccept(connection_email, e) {
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/requestaccept', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                user_email: localStorage.getItem('email'),
+                connection_email: connection_email
+            }
+        })
+            .then((response => {
+
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+                window.location.reload()
+
+            }))
+    }
+    viewConnection(people, e) {
+        this.props.history.push({
+            pathname: '/viewprofile',
+            state: {
+                email: people
+            }
         })
     }
-    onAccept(connection_email,e){
-        axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
-        params: {
-            user_email:localStorage.getItem('email'),
-            connection_email:connection_email
-        }})
-        .then((response=>{
-            window.location.reload()
-            if(response.status==400){
-                this.setState({
-                    isReqFail:true
-                })
-            }
 
-        }))
-    }
-    viewConnection(people,e){
-        axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/viewProfile',people)
-        .then((response)=>{
-            //window.location.reload()
-            if(response.status==400){
-                this.setState({
-                    isProfileGet:true
-                })
-            }
-            
-        })
-    }
-    render(){
-       console.log(this.state.peoples)
-        let searchResults=this.state.peoples.map(peoples=>{
-            let Button1=null;
-            if(peoples.requests.sendrequest.includes(localStorage.getItem('email'))){
-                Button1=(<div class='pull-right btn-group-md' >
-                <a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect1' onClick={this.onAccept.bind(this,peoples.email)}>
-                    <i class='fa fa-handshake-o'>Accept</i>
-                </a>
-            </div>
-)}else if(peoples.requests.receiverequest.includes(localStorage.getItem('email'))){
-Button1=(<div class='pull-right btn-group-md' >
-<a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect' onClick={this.onWithdraw.bind(this,peoples.email)}>
-    <i class='fa fa-handshake-o'>Withdraw</i>
-</a>
-</div>)
+    render() {
 
-}else if(peoples.requests.connectionlistlist.includes(localStorage.getItem('email'))){
-    Button1=(<div class='pull-right btn-group-md' >
-<a class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect1' onClick={this.viewConnection.bind(this,peoples.email)}>
-    <i class='fa fa-handshake-o'>View Profile</i>
-</a>
-</div>)
-}else{
-    Button1=(<div class='pull-right btn-group-md' >
-    <a  class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect' onClick={this.onConnect.bind(this,peoples.email)}>
-        <i class='fa fa-handshake-o'>Connect</i>
-    </a>
-    </div>)
-}
-            
-            return(
-                <div class='row'>
-                <div col='col-md-10'>
-                    <div class='panel'>
-                        <div class='panel-body p-t-10'>
-                         <div class='media-main'>
-                            <a class='pull-left'  href='#'>
-                                <img class='thumb-lg img-circle bx-s' src='https://bootdey.com/img/Content/user_1.jpg' alt='hello'></img>
-                            </a>
-                            {Button1}
-                       {/*  <div class='pull-right btn-group-md' >
-                            <a href='#' class='btn btn-success tooltips' data-placement='top' data-toggle='tooltip' data-original-title='Connect' onClick={this.onConnect.bind(this,peoples.email)}>
-                                <i class='fa fa-handshake-o'></i>
-                            </a>
-                        </div> */}
-                        <div class='info'>
-                            <h4>{peoples.email}</h4>
-                            <p class='text-muted'>Occupation</p>
+        let searchResults = null;
+        if (this.state.peoples.length != 0) {
+            searchResults = this.state.peoples.map(peoples => {
+
+                let ButtonDisplay = null
+                if (this.state.hasReq.includes(peoples.email)) {
+
+                    ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-success" onClick={this.onAccept.bind(this, peoples.email)}>Connect</button>
+                }
+                //else if(peoples.requests.receiverequest.includes(localStorage.getItem('email'))){
+                else if (this.state.sentReq.includes(peoples.email)) {
+
+                    ButtonDisplay =  ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-secondary" onClick={this.onWithdraw.bind(this, peoples.email)}>Withdraw</button>
+
+                }
+                else if (this.state.connected.includes(peoples.email)) {
+                    //else if(peoples.requests.connectionlistlist.includes(localStorage.getItem('email'))){
+                    ButtonDisplay = ButtonDisplay =  ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-warning" onClick={this.viewConnection.bind(this, peoples.email)}>View Profile</button>
+
+                } else {
+                    ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-primary" onClick={this.onConnect.bind(this, peoples.email)}>Connect</button>
+                }
+                return (
+                    <div className="col-md-12 search-result-box">
+                        <div className="col-md-3 search-image-box">
+                            <img className="search-image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
                         </div>
-                        <div class="clearfix"></div>
-                    <hr/>
-                         </div>
-
+                        <div className="col-md-6">
+                            <h4 style={{ marginTop: "20px", textAlign: "left", color: "#042B89", marginLeft: "20px" }}>{peoples.fName}  {peoples.lName}</h4>
+                            <p style={{ textAlign: "left", fontSize: "15px", marginLeft: "20px" }}>occupation</p>
                         </div>
-
+                        <div className="col-md-3">
+                            {ButtonDisplay}
+                        </div>
                     </div>
+                )
 
+            })
+        } else {
+            searchResults = null;
+        }
+
+
+
+        console.log(this.state.peoples)
+        let RecommendResults = this.state.recommendPeople.map(recommend => {
+            return (
+                <div className="col-md-4 people-box">
+                    <div className="col-md-12 image-box">
+                        <img className="image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                    </div>
+                    <div className="col-md-12">
+                        <h5 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{recommend.fName} {recommend.lName}</h5>
+                        <p style={{ textAlign: "center", fontSize: "15px" }}>{recommend.occupation}</p>
+                        {/* <button onclick={this.viewConnection.bind(this,recommend.email)} >See Profile</button> */}
+                        <button style={{ margin: "10px 5px 0px 35px" }} type="button" class="btn btn-primary">Connect</button>
+                    </div>
                 </div>
-
-            </div>
             )
         })
-        return(
-            <div style={{marginTop:'65px'}}>
-                <div class='container'>
-                    <div class='col-md-3'>
-                    <div class='left-container' style={{height:'300px'}}>
-                        <div id='connectionview' class='mn-connections-summary'>
-                            <div class='pt4'style={{margin:'center',paddingTop:'70px'}}>
-                                <a id='connectioncount' style={{textAlign:'center',paddingTop:10}} class='link-without-hover-state' href='/peoples'>
-                                    <h3 class='mn-connections-summary_count t-32 t-black t-normal mt3' aria-label='Your connections'>{this.state.connectionlist.length}</h3>
-                                </a>
-                                    <h5 class='mn-connections-summary_title t-16 t-black t-bold mt2 ph3' style={{textAlign:'center',paddingTop:10}} aria-hidden='true'>Your Connections</h5>
-                                <a id='connectionlist'  style={{textAlign:'center',paddingTop:10}} class='mn-connections-summary_see-all t-14 t-black t-bold inline-block mt1 mb4 ph3 ' href='/peoples'>
-                                           <h6> See all</h6> 
-                                </a>
-                                <a id='facepile'  style={{textAlign:'center',paddingTop:10}} class='mn-connections-summary_facepile link-without-hover-state ph3'>
-                                    <div class='mn-social-proof'>
-                                        <div class='mn-social-proof_facepiles'>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{borderColor:'white', borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{marginLeft:-16,borderColor:'white',borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{marginLeft:-16,borderColor:'white',borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                       
 
-                    </div>
-                    <div class='col-md-4' id='middle-container' style={{padding:'30px',marginLeft:'20px'}}>
-            <div class='search-panel'>
-            <div class='input-group' id='group1' style={{width:'320px',height:'10px'}}>
-                                <textarea type='text' maxLength = "30"  name='searchinput' class='form-control' placeholder='Search' onChange={this.searchtextHandler.bind(this)}/>                                <span class='input-group-btn'>
-                                    <button type='button' id='searchbutton' class='btn btn-effect-ripple btn-primary' ><i class='fa fa-search' onClick={this.SearchHandler.bind(this)}> Search</i></button>
-                                   </span>
+        return (
+
+
+
+            <div className="col-md-12" style={{ margin: "auto", marginTop: "70px" }} >
+                <div className="col-md-2">
+                <div className="col-md-12 your-connection-box">
+                    <a id='connectioncount' href='/peoples'>
+                        <h1 style={{ marginTop: "50%", textAlign: "center", color: "#042B89" }}>{this.state.connectcount}</h1>
+                    </a>
+                    <p style={{ textAlign: "center", fontSize: "20px" }}>Your Connections</p>
+                    <a id='connectionlist' href='/peoples'>
+                        <a id='facepile' style={{ textAlign: 'center', paddingTop: 10 }} class='mn-connections-summary_facepile link-without-hover-state ph3'>
+                            <div class='mn-social-proof'>
+                                <div class='mn-social-proof_facepiles'>
+                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
+                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ marginLeft: -16, borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
+                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ marginLeft: -16, borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
                                 </div>
-            <div class='row' style={{marginTop:'25px'}}>
-                <div class='col-md-12'>
-                    <div class='panel panel-default'>
-                        <div class='panel-body p-t-0'>
-                       
-                                {searchResults}
-                                {this.state.q}
-                       
-                        </div>
- 
-                                            
-                        </div>
+                            </div>
+                        </a>
+                        <p style={{ textAlign: "center", fontSize: "15px", color: "#0F1AF2", marginTop: "5px", fontWeight: "bold" }}>View All</p>
+                    </a>
                     </div>
                 </div>
-                </div>
-            </div>
-            <div class='col-md-2'>
-                <div class='right-container' style={{height:'150px'}}>
-                <div id='requestview' class='mn-requests-summary'>
-                            <div class='pt4'style={{margin:'center',paddingTop:'20px'}}>
-                                <a id='requestcount' style={{textAlign:'center',paddingTop:10}} class='link-without-hover-state' href='/getRequests'>
-                                    <h3 class='mn-connections-summary_count t-32 t-black t-normal mt3' aria-label='Your connections'>183</h3>
-                                </a>
-                                    <h5 class='mn-connections-summary_title t-16 t-black t-bold mt2 ph3' style={{textAlign:'center',paddingTop:10}} aria-hidden='true'>All Invitations</h5>
-                                <a id='request-list'  style={{textAlign:'center',paddingTop:10}} class='mn-requests-summary_see-all t-14 t-black t-bold inline-block mt1 mb4 ph3 ' href='/getRequests'>
-                                           <h6> Manage all</h6> 
-                                </a>
-                                
-                            </div>
-                        </div>
 
+                <div className="col-md-6">
+                <div className="col-md-12" style={{marginLeft: "50px"}}>
+                    <input  className="connection" type="text" name="search" placeholder="Search.." onChange={this.searchtextHandler.bind(this)} />
+                    <button style={{ margin: "5px" }} type="button" class="btn btn-primary" onClick={this.SearchHandler.bind(this, this.state.searchPageCount)}>Search</button>
+                </div>
+
+                <div className="col-md-12 connection-box">
+
+                    {searchResults}
+                </div>
+                <div className="col-md-12 connection-box">
+                    {/* <div className="col-md-12"> */}
+                        <h2 style={{ fontWeight: "bold", color: "#0C96D2" }}>Connections</h2>
+                        <span style={{ width: "90%", textAlign: "center" }}><hr /></span>
+                        {RecommendResults}
+                    {/* </div> */}
+                </div>
+                </div>
+                <div className= "col-md-1"></div>
+                <div className="col-md-2">
+                <div className="col-md-12 invitation-box">
+                    {/* <a id='requestcount' class='link-without-hover-state' href='/getRequests'>
+                        <h1 style={{ marginTop: "30px", textAlign: "center", color: "#042B89" }}>58</h1>
+                    </a> */}
+                    <p style={{ textAlign: "center", fontSize: "20px" , marginTop:"40px"}}>Your Invitation</p>
+                    <a id='request-list' href='/getRequests'>
+                        <p style={{ textAlign: "center", fontSize: "15px", color: "#0F1AF2", marginTop: "5px", fontWeight: "bold" }}>Manage All</p>
+                    </a>
+                </div>
                 </div>
             </div>
-            </div>
-            </div>
-                
-            
         )
     }
 }
-export default People;
+export default Peoples;

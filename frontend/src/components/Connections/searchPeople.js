@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 
 class SearchPeople extends Component{
     constructor(props){
@@ -26,7 +27,7 @@ class SearchPeople extends Component{
        for(var i in localStorage) {
         console.log(i + ' = ' + localStorage[i]);
     }
-       console.log(localStorage.getItem('semail'))
+       console.log(localStorage.getItem('email'))
        axios.defaults.withCredentials =true;
        axios.get('http://localhost:3001/searchpeople', {headers: { Authorization: localStorage.getItem('token')},
        params: {
@@ -58,7 +59,7 @@ class SearchPeople extends Component{
         axios.defaults.withCredentials=true;
         axios.put('http://localhost:3001/sendrequest', {headers: { Authorization: localStorage.getItem('token')},
         params: {
-            sender_email: localStorage.getItem('decoded_email'),
+            sender_email: localStorage.getItem('email'),
             reciever_email:email
         }})
         .then((response=>{
@@ -67,7 +68,7 @@ class SearchPeople extends Component{
                     isReqFail:true
                 })
             }
-
+            
         }))
     }
     render(){
