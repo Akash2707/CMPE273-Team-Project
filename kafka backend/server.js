@@ -31,6 +31,12 @@ var requestwithdraw=require('./services/requestwithdraw')
 var getsentrequest=require('./services/getsentRequests')
 
 var getRecommendPeople=require('./services/getRecommendPeople')
+var savedJobsGraph = require('./services/SavedJobsGraph')
+var updateJobCount = require('./services/UpdateJobCount')
+var getJobsViewCount = require('./services/GetJobsViewCount')
+var getLessNoOfApplicants = require('./services/GetLessNoOfApplicants')
+var getJobsTitle = require('./services/GetJobsTitle')
+var getApplicationByCity = require('./services/GetApplicantsByCity')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -95,3 +101,9 @@ handleTopicRequest("withdraw_request",requestwithdraw)
 handleTopicRequest("getallsentrequest",getsentrequest)
 
 handleTopicRequest("recommend_people",getRecommendPeople)
+handleTopicRequest("get_savedapplicationGraph",savedJobsGraph)
+handleTopicRequest("update_jobcount",updateJobCount)
+handleTopicRequest("get_jobsViewCount",getJobsViewCount)
+handleTopicRequest("get_lessNoOfApplicants",getLessNoOfApplicants)
+handleTopicRequest("get_jobsTitle",getJobsTitle)
+handleTopicRequest("get_applicantsByCity",getApplicationByCity)
