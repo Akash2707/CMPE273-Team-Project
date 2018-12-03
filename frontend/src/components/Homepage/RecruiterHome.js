@@ -328,7 +328,7 @@ class RecruiterHome extends Component {
                     </div>
                     <div className="col-md-6 card" style={{ marginTop: "52px", padding: "25px", height: '500px' }}>
                         <h4 style={{ marginBottom: "60px" }}>Number of clicks on Job</h4>
-                        <BarChart data={this.state.viewCountGraphData} colors={["#3c92c0"]} />
+                        <BarChart data={this.state.viewCountGraphData} colors={["#3c92c0"]} xtitle="Number of Clicks"/>
                     </div>
                 </div>
                 <div className="col-md-12" >
@@ -362,11 +362,11 @@ class RecruiterHome extends Component {
                 <div className="col-md-12">
                     <div className="col-md-6 card" style={{ padding: "25px", height: '500px' }}>
                         <h5 style={{ marginBottom: "60px" }}>Number of applications of Top 10 job posting</h5>
-                        <ColumnChart data={this.state.viewTop10ApplicantsData} colors={["#b12a00"]} />
+                        <ColumnChart data={this.state.viewTop10ApplicantsData} colors={["#b12a00"]} ytitle="Number of Applicants"/>
                     </div>
                     <div className="col-md-6 card" style={{ padding: "25px", height: '500px' }}>
                         <h5 style={{ marginBottom: "60px" }}>Top 5 job posting with less number of applications</h5>
-                        <ColumnChart data={this.state.viewLessApplicantsData} colors={["#209445"]} />
+                        <ColumnChart data={this.state.viewLessApplicantsData} colors={["#209445"]} ytitle="Number of Applicants"/>
                     </div>
                 </div>
             </div>
