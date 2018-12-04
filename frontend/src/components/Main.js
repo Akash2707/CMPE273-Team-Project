@@ -18,7 +18,9 @@ import ConnectionList from './Connections/connectionList';
 //import SearchPeople from './Connections/searchPeople';
 import sentRequest from './Connections/sentRequest'
 import receivedRequest from './Connections/receivedRequest';
-import People from './Connections/Peoples'; 
+import People from './Connections/Peoples';
+
+import Messaging from './Message/messaging'
 import RecruiterHome from './Homepage/RecruiterHome';
 import EditPostJobMain from './EditPostJob/EditPostJobMain';
 import ViewApplicants from './ViewApplicants/ViewApplicants';
@@ -47,9 +49,15 @@ class Main extends Component {
                 <Route path='/getRequests' component={receivedRequest}></Route>
                 <Route path='/Mynetwork' component={People}></Route>
                 <Route path='/sentrequest' component={sentRequest}></Route>
+
+                <Route path = '/messaging' component={Messaging}></Route>
                 <Route path='/edit/job-posting' component={EditPostJobMain}></Route>
                 <Route path='/jobApplicants' component={ViewApplicants}></Route>
-               
+
+
+
+
+
             </div>
         )
     }

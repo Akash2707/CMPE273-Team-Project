@@ -66,6 +66,15 @@ class ConnectionList extends Component{
             }
         })   
      }
+     Message(name,email,e){
+        this.props.history.push({
+            pathname:'/messaging',
+            state:{
+                name:name,
+                email : email
+            }
+        })   
+     }
      onRemove(connection_email,e){
         axios.defaults.withCredentials=true;
         axios.post('http://localhost:3001/removeconnect', {headers: { Authorization: localStorage.getItem('token')},
@@ -96,7 +105,7 @@ class ConnectionList extends Component{
         <a onClick={this.viewConnection.bind(this,connections.email)}>
                             <h5 class="card-title" style={{fontSize:'14px'}}>{connections.fName} {connections.lName}</h5></a>
             <p class='text-muted'>{connections.occupation}</p>
-            <a onClick={this.viewConnection.bind(this,connections.email)} style={{position:'relative',left:'550px',bottom:'60px'}} class='btn btn-default tooltips' data-toggle='tooltip' data-original-title='Connect' >
+            <a onClick={this.Message.bind(this,connections.fName + " " + connections.lName,connections.email)} style={{position:'relative',left:'550px',bottom:'60px'}} class='btn btn-default tooltips' data-toggle='tooltip' data-original-title='Connect' >
                  <i class='far fa-handshake'>Message</i>
             </a>
              <a onClick={this.onRemove.bind(this,connections.email)} style={{position:'relative',left:'600px',bottom:'60px'}} class='btn btn-danger tooltips' data-toggle='tooltip' data-original-title='Connect' >

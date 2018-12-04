@@ -29,7 +29,7 @@ function handle_request(msg, callback) {
         }
     });
 }else{
-    UserProfile.findOneAndUpdate({ "email": "patelharsh9999@gmail.com" },
+    UserProfile.findOneAndUpdate({ "email":  msg.email },
     {
         $set: { "education": msg.education }
     }, function (err, result) {

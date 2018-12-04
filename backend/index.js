@@ -75,6 +75,9 @@ var searchJobController = require('./controllers/SearchJobsController')
 var applyJobController = require('./controllers/ApplyJobController')
 var saveJobController = require('./controllers/SaveJobController')
 var connectionController = require('./controllers/connectionController')
+
+var conversationController = require('./controllers/conversationController')
+var messageController = require('./controllers/messageController')
 var savedJobsController = require('./controllers/SavedJobsController')
 var postedJobsController = require('./controllers/PostedJobController')
 var recruiterController = require('./controllers/RecruiterController')
@@ -110,6 +113,11 @@ app.get('/getConnections', connectionController.getConnections);
 app.post('/removeconnect',connectionController.removeconnect);
 
 app.get('/getRecommendPeople',connectionController.getRecommendPeople);
+
+app.get('/conversation' ,conversationController.checkConversation);
+app.post('/message', messageController.message);
+app.get('/viewmessages',messageController.messagesView)
+
 app.delete('/deleteAnAccount',signupController.deleteTheAccount);
 app.get('/getSavedApplicationGraph',recruiterController.getSavedApplicationGraph);
 app.post('/updatejobCount',recruiterController.updateJobCount);
@@ -122,7 +130,7 @@ app.get('/traceUsers',recruiterController.getTraceUsers);
 app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
 app.put('/edit/job',addJobController.editJob)
 app.get('/job/applicants', postedJobsController.getApplicants)
-
+app.get('/newconversation', messageController.newMessage)
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

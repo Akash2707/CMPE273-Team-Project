@@ -32,6 +32,11 @@ var getsentrequest=require('./services/getsentRequests')
 
 var getRecommendPeople=require('./services/getRecommendPeople')
 
+
+var checkConversation = require('./services/checkConversation')
+var message = require('./services/message')
+var messageView = require('./services/messagesView')
+
 var removeConnection = require('./services/removeConnect')
 
 var deleteTheAccount = require('./services/deleteTheAccount')
@@ -46,6 +51,8 @@ var traceUsers = require('./services/TraceUsers')
 var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
 var editJob = require('./services/EditJob')
 var getApplicants = require('./services/GetApplicants')
+var newMessage = require('./services/newMessage')
+
 
 
 function handleTopicRequest(topic_name, fname) {
@@ -111,6 +118,12 @@ handleTopicRequest("withdraw_request",requestwithdraw)
 handleTopicRequest("getallsentrequest",getsentrequest)
 
 handleTopicRequest("recommend_people",getRecommendPeople)
+
+
+handleTopicRequest("check_conversation",checkConversation)
+handleTopicRequest("message" , message)
+handleTopicRequest("messagesView", messageView)
+handleTopicRequest("newMessage",newMessage)
 
 handleTopicRequest("remove_connect",removeConnection)
 

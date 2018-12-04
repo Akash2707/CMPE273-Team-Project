@@ -1,0 +1,63 @@
+.card-body {
+  padding: 0px
+}
+
+.hr {
+  padding: 0px
+}
+
+.presence-entity__image {
+  background-size: cover;
+}
+.EntityPhoto-circle-4 {
+  border: 2px solid transparent;
+  border-radius: 49.9%;
+}
+.EntityPhoto-circle-4, .EntityPhoto-circle-4-ghost-person, .EntityPhoto-circle-4-stackedFacepile {
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  background-clip: content-box;
+}
+body {
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Fira Sans",Ubuntu,Oxygen,"Oxygen Sans",Cantarell,"Droid Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Emoji","Segoe UI Symbol","Lucida Grande",Helvetica,Arial,sans-serif;
+}
+.message-image{
+  position: static;
+  clear: both;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  right: auto;
+  border: 3px solid transparent;
+  border-radius: 49.9%;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  background-clip: content-box;
+}
+
+.message-btn{
+  background-color: #0073b1;
+    border: 0;
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.0rem;
+    height: 24px;
+    line-height: 24px;
+    outline-width: 78px;
+    padding: 0 16px;
+    position: relative;
+    transition-duration: 167ms;
+    transition-property: background-color,box-shadow,color;
+    transition-timing-function: cubic-bezier(0,0,.2,1);
+    vertical-align: middle;
+}
+
+div.scrollingDiv
+{
+   overflow:scroll;
+}

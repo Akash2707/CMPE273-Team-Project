@@ -61,7 +61,7 @@ module.exports.update = function (req, res) {
 }
 
 module.exports.addExperience = function (req, res) {
-    console.log(req.body);
+    console.log("hellllllooooo" + req.body);
     if (req.body.isExpNew == true) {
         var data = {
             email: req.query.email,
@@ -120,6 +120,7 @@ module.exports.addEducation = function (req, res) {
     }
     else {
         var data = {
+            email: req.query.email,
             education: req.body.education,
             isEduNew: req.body.isEduNew
         }
@@ -188,7 +189,7 @@ module.exports.imageUpload = function (req, res) {
                 } else {
                     res.json({
                         status: 200,
-                        message: ' Profile Photo was added successfully'
+                        message: ' Profile Photo uploaded successfully'
                     })
                 }
             });
@@ -218,7 +219,7 @@ module.exports.profileDisplay = function (req, res) {
                     })
                 } else {
                     if (Object.keys(user).length != 0) {
-                        // client.setex(`profile:${req.query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        // client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
                         res.writeHead(200, {
                             'Content-Type': 'application/json'
                         })
