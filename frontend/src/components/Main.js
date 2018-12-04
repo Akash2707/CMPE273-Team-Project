@@ -54,6 +54,10 @@ class Main extends Component {
                 <Route path='/edit/job-posting' component={EditPostJobMain}></Route>
                 <Route path='/jobApplicants' component={ViewApplicants}></Route>
 
+
+
+
+
             </div>
         )
     }

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import ReactPaginate from 'react-paginate';
-
+import connectionPic from './connection.png'
 class receivedRequest extends Component{
     constructor(props){
         super(props);
@@ -69,78 +69,58 @@ class receivedRequest extends Component{
 
         }))
     }
+
     render(){
-        let allRequests = this.state.requests.map(requests =>{
+        let allRequests = null;
+        if(this.state.requests !=0){
+         allRequests = this.state.requests.map(requests =>{
             return(
-            <div class="row " style={{margin:'5px',border:'1px solid grey',backgroundColor:'#f7f7f8'}}>
-                                   <div class="col-md-4">
-                        <img src="https://farm3.staticflickr.com/2911/14160612230_c6e33d42bd_k.jpg" class="cards_img" style={{marginTop:'10px',width:'60px',height:'60px',borderRadius:'30px'}}/>
-                        </div>
-                        <div class="col-md-5 px-3" >
-                        <div class="card-block px-3" style={{marginLeft:'-45px'}}>
-                        <div>
-                        <a onClick={this.viewConnection.bind(this,requests.email)}>
-                            <h5 class="card-title" style={{fontSize:'14px'}}>{requests.fName} {requests.lName}</h5></a>
-                                                <p class="card-text">{requests.occupation}</p>                   
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'15px'}} type='button' class='btn btn-primary'onClick={this.onAccept.bind(this,requests.email)}>Accept</button>
-                    <button style={{width:'70px',height:'30px',fontSize:'12px',alignContent:'center',marginTop:'10px'}}type='button' class='btn btn-primary'onClick={this.onDeny.bind(this,requests.email)}>Deny</button>
-                        </div>
-                       
-                    </div>
-                    
-            
-              
+                <div className="col-md-12 request-result-box" onClick={this.viewConnection.bind(this,requests.email)}>
+                <div className="col-md-3 search-image-box">
+                    <img className="search-image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                </div>
+                <div className="col-md-7">
+                    <h4 style={{ marginTop: "20px", textAlign: "left", color: "#042B89", marginLeft: "20px" }}>{requests.fName} {requests.lName}</h4>
+                    <p style={{ textAlign: "left", fontSize: "15px", marginLeft: "20px" }}>{requests.occupation} </p>
+                </div>
+                <div className="col-md-3">
+                    <button style={{ margin: "30px 5px 0px 0px" }} type="button" class="btn btn-secondary" onClick={this.onDeny.bind(this,requests.email)}>Deny</button>
+                    <button style={{ margin: "30px 0px 0px 0px" }} type="button" class="btn btn-primary" onClick={this.onAccept.bind(this,requests.email)}>Accept</button>   
+                </div>
+            </div>
             )
         })
-        return(
-            <div class="container" style={{marginTop:'55px'}}>
-                <h3>Received Requests: {this.state.count}</h3>
-             <ul class="nav nav-tabs">
-                <li class="active"><a href="/getRequests">Received Requests</a></li>
-                <li><a href="/sentrequest">Sent Requests</a></li>
-            </ul>
-
-            <div class='row'>
-            <div class='col-md-6'>
-            <div class="card" style={{width:400}}>
-                {allRequests}
-            </div>
-            </div>
-            <div class='col-md-3'>
-                    <div class='left-container' style={{height:'300px'}}>
-                        <div id='connectionview' class='mn-connections-summary'>
-                            <div class='pt4'style={{margin:'center',paddingTop:'70px'}}>
-                                <a id='connectioncount' style={{textAlign:'center',paddingTop:10}} class='link-without-hover-state' href='/peoples'>
-                                    <h3 class='mn-connections-summary_count t-32 t-black t-normal mt3' aria-label='Your connections'>183</h3>
-                                </a>
-                                    <h5 class='mn-connections-summary_title t-16 t-black t-bold mt2 ph3' style={{textAlign:'center',paddingTop:10}} aria-hidden='true'>Your Connections</h5>
-                                <a id='connectionlist'  style={{textAlign:'center',paddingTop:10}} class='mn-connections-summary_see-all t-14 t-black t-bold inline-block mt1 mb4 ph3 ' href='/peoples'>
-                                           <h6> See all</h6> 
-                                </a>
-                                <a id='facepile'  style={{textAlign:'center',paddingTop:10}} class='mn-connections-summary_facepile link-without-hover-state ph3'>
-                                    <div class='mn-social-proof'>
-                                        <div class='mn-social-proof_facepiles'>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{borderColor:'white', borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{marginLeft:-16,borderColor:'white',borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{marginLeft:-16,borderColor:'white',borderWidth:'10px'}} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c'/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                       
-
-                    </div>
-            </div>
-    
-            </div>
-            
+    }else{
+        allRequests= (
+        <div className="col-md-12" style={{color:"red", textAlign:"center", fontWeight:"bold"}}>
+            <h3>No Request Found</h3>
+        </div>
         )
     }
+
+        return(
+            <div className="col-md-12">
+            <div className="col-md-1"></div>
+            <div className="col-md-8 manage-invitation-box">
+                <h4 style={{ marginTop: "20px",color: "#042B89", fontWeight:"bold" }}>Manage Invitations</h4>
+                <a href="/getRequests"><button style={{ margin: "15px 5px 0px 0px" }} type="button" class="btn btn-primary">Received Requests</button></a>
+                <a href="/sentrequest"><button style={{ margin: "15px 5px 0px 35px" }} type="button" class="btn btn-primary">Sent Requests</button></a>
+                <hr style={{border:"1px solid #C4C8C8"}}/>
+                {allRequests}
+            </div>
+                <div className= "col-md-1"></div>
+                <a href='/peoples'>
+                <div className="col-md-3" >
+                <div className="col-md-12 invitation-box" style={{marginTop:"80px"}}>
+                    <img src={connectionPic} style={{marginTop:"45px"}}/>
+                    <p style={{ textAlign: "center", fontSize: "20px" }}>Your Connections</p>
+                    </div>
+                </div>
+                </a>
+            </div>
+        )
+    }
+
 }
+
 export default receivedRequest;
