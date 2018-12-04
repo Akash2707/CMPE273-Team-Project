@@ -10,11 +10,11 @@ class DisplayJobDetail extends Component {
         super(props);
 
         this.state = {
-            email: "",
+            email: localStorage.getItem("email"),
             phone: "",
             resume: null,
-            fName: "",
-            lName: "",
+            fName: localStorage.getItem("name").split(" ")[0],
+            lName: localStorage.getItem("name").split(" ")[1],
             job: {},
             applied: false,
             isAlreadySaved: false
