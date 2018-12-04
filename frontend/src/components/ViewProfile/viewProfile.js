@@ -36,7 +36,9 @@ class ViewProfile extends Component {
     }
 
     componentDidMount() {
+        try{
         var email=this.props.location.state.email;
+        }catch(e){}
         console.log(email)
         axios.get('http://localhost:3001/recruiter/profile',
             {
@@ -87,6 +89,11 @@ class ViewProfile extends Component {
         console.log(this.state.expCheck);
         var dropdown = null;
         var expdropDown = null;
+        let redirectVar = null;
+
+        if (!localStorage.getItem('email') ) {
+            redirectVar = <Redirect to="/login" />
+        }
 
         let skills = null;
         if (this.state.profile.skills != null) {
@@ -179,6 +186,7 @@ class ViewProfile extends Component {
 
         return (
             <div style={{ margin: "auto", maxWidth: "70%", marginTop: "50px" }}>
+            {redirectVar}
                 <div className="card">
                     <img className="card-img-top" style={{ width: "100%" }} src="http://svgur.com/i/66g.svg" alt="Card image cap" />
                     <div className="pv-top-card-section__profile-photo-container pv-top-card-v2-section__profile-photo-container" >

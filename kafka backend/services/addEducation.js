@@ -29,9 +29,12 @@ function handle_request(msg, callback) {
         }
     });
 }else{
-    UserProfile.findOneAndUpdate({ "email":  msg.email },
+    const data = {
+        education : msg.education
+    }
+    UserProfile.findOneAndUpdate({"email":  msg.email },
     {
-        $set: { "education": msg.education }
+        $set: { "education": data.education }
     }, function (err, result) {
         console.log("result" + result);
 

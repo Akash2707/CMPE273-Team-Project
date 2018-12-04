@@ -346,7 +346,7 @@ class DisplayJobDetail extends Component {
                                                 </div>
                                                 <div className="col-md-12 form-group">
                                                     <label>Resume</label>
-                                                    <input type="file" className="form-control" name="resume" accept=".doc, .docx, .pdf" placeholder="Resume" onChange={this.resumeHandler} />
+                                                    <input type="file" className="form-control" name="resume" accept=".pdf" placeholder="Resume" onChange={this.resumeHandler} />
                                                 </div>
 
 
