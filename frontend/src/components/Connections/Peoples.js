@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import './../../connection.css'
+import connectionPic from './connection.png'
+import invitation from './invitation.png'
 class Peoples extends Component {
     constructor(props) {
         super(props);
@@ -226,12 +228,12 @@ class Peoples extends Component {
         console.log(this.state.peoples)
         let RecommendResults = this.state.recommendPeople.map(recommend => {
             return (
-                <div className="col-md-4 people-box">
+                <div className="col-md-3 people-box">
                     <div className="col-md-12 image-box">
                         <img className="image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
                     </div>
                     <div className="col-md-12">
-                        <h5 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{recommend.fName} {recommend.lName}</h5>
+                        <h6 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{recommend.fName} {recommend.lName}</h6>
                         <p style={{ textAlign: "center", fontSize: "15px" }}>{recommend.occupation}</p>
                         {/* <button onclick={this.viewConnection.bind(this,recommend.email)} >See Profile</button> */}
                         <button style={{ margin: "10px 5px 0px 35px" }} type="button" class="btn btn-primary">Connect</button>
@@ -241,34 +243,31 @@ class Peoples extends Component {
         })
 
         return (
-
-
-
             <div className="col-md-12" style={{ margin: "auto", marginTop: "70px" }} >
+                <a id='connectioncount' href='/peoples'>
                 <div className="col-md-2">
                 <div className="col-md-12 your-connection-box">
-                    <a id='connectioncount' href='/peoples'>
-                        <h1 style={{ marginTop: "50%", textAlign: "center", color: "#042B89" }}>{this.state.connectcount}</h1>
-                    </a>
+                    <img src={connectionPic} style={{marginTop:"45px"}}/>
+                     <h1 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{this.state.connectcount}</h1>
                     <p style={{ textAlign: "center", fontSize: "20px" }}>Your Connections</p>
-                    <a id='connectionlist' href='/peoples'>
-                        <a id='facepile' style={{ textAlign: 'center', paddingTop: 10 }} class='mn-connections-summary_facepile link-without-hover-state ph3'>
-                            <div class='mn-social-proof'>
-                                <div class='mn-social-proof_facepiles'>
-                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
-                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ marginLeft: -16, borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
-                                    <img class='lazy-image mn-social-proof_profile-image  img-circle ' style={{ marginLeft: -16, borderColor: 'white', borderWidth: '10px' }} alt='name' height='40' width='40' src='https://media.licdn.com/dms/image/C5603AQEEkeXAd1Dk_A/profile-displayphoto-shrink_100_100/0?e=1548892800&v=beta&t=me3DWLG-lKs9gpPIBHpNUUhHI9cRQCJaBAA8MpNWN0c' />
-                                </div>
-                            </div>
-                        </a>
-                        <p style={{ textAlign: "center", fontSize: "15px", color: "#0F1AF2", marginTop: "5px", fontWeight: "bold" }}>View All</p>
-                    </a>
-                    </div>
                 </div>
+                </div>
+                </a>
 
-                <div className="col-md-6">
+                <div className="col-md-8">
                 <div className="col-md-12" style={{marginLeft: "50px"}}>
-                    <input  className="connection" type="text" name="search" placeholder="Search.." onChange={this.searchtextHandler.bind(this)} />
+                    <input  type="text" name="search" placeholder="Search.." onChange={this.searchtextHandler.bind(this)}
+                    style={{width: "650px",
+                        boxSizing: "border-box",
+                        border: "2px solid #ccc",
+                        borderRadius: "4px",
+                        fontSize: "16px",
+                        backgroundColor: "white",
+                        backgroundPosition: "10px 10px",
+                         backgroundRepeat: "no-repeat",
+                        padding: "12px 20px 12px 40px",
+                        webkitTransition: "width 0.4s ease-in-out",
+                        transition: "width 0.4s ease-in-out"}}/>
                     <button style={{ margin: "5px" }} type="button" class="btn btn-primary" onClick={this.SearchHandler.bind(this, this.state.searchPageCount)}>Search</button>
                 </div>
 
@@ -278,24 +277,25 @@ class Peoples extends Component {
                 </div>
                 <div className="col-md-12 connection-box">
                     {/* <div className="col-md-12"> */}
-                        <h2 style={{ fontWeight: "bold", color: "#0C96D2" }}>Connections</h2>
-                        <span style={{ width: "90%", textAlign: "center" }}><hr /></span>
+                        <div className="col-md-12" style={{border: "1px solid #B6B6B9", marginBottom:"0px", backgroundColor:"#ffffff", padding:"20px"}}>
+                        <h2 style={{ color: "#0C96D2", textAlign:"left" }}>Connections</h2>
+                        </div>
                         {RecommendResults}
                     {/* </div> */}
                 </div>
                 </div>
-                <div className= "col-md-1"></div>
+               
+                <a id='request-list' href='/getRequests'>
                 <div className="col-md-2">
                 <div className="col-md-12 invitation-box">
-                    {/* <a id='requestcount' class='link-without-hover-state' href='/getRequests'>
-                        <h1 style={{ marginTop: "30px", textAlign: "center", color: "#042B89" }}>58</h1>
-                    </a> */}
-                    <p style={{ textAlign: "center", fontSize: "20px" , marginTop:"40px"}}>Your Invitation</p>
-                    <a id='request-list' href='/getRequests'>
+                <img src={invitation} style={{marginTop:"35px"}}/>
+                    <p style={{ textAlign: "center", fontSize: "20px" , marginTop:"20px"}}>Your Invitation</p>
+                   
                         <p style={{ textAlign: "center", fontSize: "15px", color: "#0F1AF2", marginTop: "5px", fontWeight: "bold" }}>Manage All</p>
-                    </a>
+                 
                 </div>
                 </div>
+                </a>
             </div>
         )
     }
