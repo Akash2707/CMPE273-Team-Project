@@ -51,6 +51,7 @@ var traceUsers = require('./services/TraceUsers')
 var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
 var editJob = require('./services/EditJob')
 var getApplicants = require('./services/GetApplicants')
+var newMessage = require('./services/newMessage')
 
 
 
@@ -122,6 +123,7 @@ handleTopicRequest("recommend_people",getRecommendPeople)
 handleTopicRequest("check_conversation",checkConversation)
 handleTopicRequest("message" , message)
 handleTopicRequest("messagesView", messageView)
+handleTopicRequest("newMessage",newMessage)
 
 handleTopicRequest("remove_connect",removeConnection)
 

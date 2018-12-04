@@ -26,6 +26,7 @@ class Messaging extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.location.state);
         axios.get('http://localhost:3001/conversation', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
@@ -43,7 +44,40 @@ class Messaging extends Component {
 
             })
         });
+        try{
+            var propName = this.props.location.state.name
+            var propEmail = this.props.location.state.email
+        }catch(e){}
+        console.log(propEmail)
+        if(propEmail != null){
+        axios.get('http://localhost:3001/newconversation', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                name1: localStorage.getItem('name'),
+                name2: propName,
+                email1: localStorage.getItem('email'),
+                email2: propEmail,
+                image1: localStorage.getItem("profileImage"),
+                image2: "http://localhost:3001/download/userdefault.png"
+            }
+        }).then((response) => {
+            console.log(response)
+            //update the state with the response data
+            this.setState({
+                listMessage: response.data.messageList.messages,
+                uName :  this.props.location.state.name,
+                uId : response.data.messageList.id
+            })
+        }).catch(error => {
+            console.log("else")
+            this.setState({
+
+            })
+        });
+        console.log(this.state.listConversation);
     }
+}
+
 
     messageChangeHandler = (e) => {
         this.setState({
@@ -56,7 +90,7 @@ class Messaging extends Component {
             uId: idName[0],
             uName: idName[1]
         })
-    
+
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/viewmessages', {
             headers: { Authorization: localStorage.getItem('token') },
@@ -67,7 +101,7 @@ class Messaging extends Component {
             console.log(response)
             //update the state with the response data
             this.setState({
-                listMessage: response.data.messageList
+                listMessage: response.data.messageList,
             })
         }).catch(error => {
             console.log("else")
@@ -89,7 +123,7 @@ class Messaging extends Component {
             params: {
                 email: localStorage.getItem('email'),
                 name: localStorage.getItem('name'),
-                profileImage : localStorage.getItem('profileImage')
+                profileImage: localStorage.getItem('profileImage')
             }
         }).then((response) => {
             console.log(response)
@@ -107,7 +141,8 @@ class Messaging extends Component {
 
 
     render() {
-      
+        console.log(this.state.uId);
+        console.log(this.state.listMessage);
         let conversation = null;
         let conversationDisplay = null;
         let profileDisplay = null;
@@ -127,7 +162,7 @@ class Messaging extends Component {
                         console.log(name);
                     }
                 }
-                var idName = [conversation._id,name]
+                var idName = [conversation._id, name]
                 return (<div>
                     <hr style={{ margin: "0px" }} />
                     <div class="row" style={{ margin: "10px", marginTop: "15px", cursor: "pointer" }} onClick={() => { this.onMessageViewHandler(idName) }}>
@@ -143,27 +178,29 @@ class Messaging extends Component {
                 </div>
                 )
             })
-            messageDisplay = this.state.listMessage.map((message) => {
-                console.log("render ID" + message.timeCreated);
-                return (
-                    <div class="row" style={{ margin: "20px" }}>
-                        <div class="col-md-2" style={{ paddingRight: "0px" }}   >
-                            <div aria-label="Kevin Bell Romero" id="ember1389" class="message-image" style={{ backgroundImage: `url(${message.profileImage})` }}    >
-                                <span class="visually-hidden">Demo Man</span>
+            if (this.state.listMessage != null) {
+                messageDisplay = this.state.listMessage.map((message) => {
+                    console.log("render ID" + message.timeCreated);
+                    return (
+                        <div class="row" style={{ margin: "20px" }}>
+                            <div class="col-md-2" style={{ paddingRight: "0px" }}   >
+                                <div aria-label="Kevin Bell Romero" id="ember1389" class="message-image" style={{ backgroundImage: `url(${message.profileImage})` }}    >
+                                    <span class="visually-hidden">Demo Man</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-8" style={{ paddingLeft: "0px" }}>
-                            <div>
-                                <label style={{ fontWeight: "bold", fontSize: "14px" }}>{message.sender}</label>
+                            <div class="col-md-8" style={{ paddingLeft: "0px" }}>
+                                <div>
+                                    <label style={{ fontWeight: "bold", fontSize: "14px" }}>{message.sender}</label>
+                                </div>
+                                <span>{message.content}
+                                </span>
                             </div>
-                            <span>{message.content}
-                            </span>
+
                         </div>
+                    )
 
-                    </div>
-                )
-
-            })
+                })
+            }
         }
 
         console.log(this.state.listConversation);
@@ -207,21 +244,23 @@ class Messaging extends Component {
                                 <header className="pv-profile-section__card-header">
                                     <div className="row">
                                         <div className="col-md-10">
-                                          <p style={{ padding: "8px", marginBottom: "0px", margin: "0px", fontWeight: "initial", fontSize: "20px", marginLeft: "5px" }}>
-                                              <b>  {this.state.uName} </b>
+                                            <p style={{ padding: "8px", marginBottom: "0px", margin: "0px", fontWeight: "initial", fontSize: "20px", marginLeft: "5px" }}>
+                                                <b>  {this.state.uName} </b>
                                             </p>
                                         </div>
                                     </div>
                                 </header>
                             </div><hr style={{ margin: "0px" }} />
-                            <div style={{overflowY :  "scroll" , height: "340px"}}>
-                           {messageDisplay}
-                        </div>
+                            <div style={{ overflowY: "scroll", height: "340px" }}>
+                                {messageDisplay}
+                            </div>
                             <textarea onChange={this.messageChangeHandler} name="message" placeholder="Write a message" rows="5" cols="90" style={{ marginLeft: "0px" }} required />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <input class="btn message-btn" style={{ marginTop: "600px", marginLeft: "-80px" }} type="submit" onClick={this.onMessageSendHandler} value="Send" />
+                <form onSubmit= {this.onMessageSendHandler}>
+                <button class="btn message-btn" style={{ marginTop: "600px", marginLeft: "-80px" }} type="submit"  value="Send">Send</button>
+                </form>
             </div >
         )
     }

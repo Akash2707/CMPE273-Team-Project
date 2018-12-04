@@ -56,3 +56,31 @@ module.exports.messagesView = function (req, res) {
     })
 }
 
+module.exports.newMessage = function (req, res) {
+    var today = new Date();
+    console.log(req.body);
+    kafka.make_request('newMessage', req.query, function (err, user) {
+        console.log(req.body);
+        console.log('in result');
+        console.log(JSON.stringify(user));
+        console.log(user);
+        if (err) {
+            console.log("Inside err");
+            res.status(400).json({
+                success: false,
+                message: "System Error, Try Again."
+            })
+        } else if(Object.keys(user).length != 0){
+            res.json({
+                status: 200,
+                messageList : user
+            })
+        }else{
+            res.json({
+                status: 200,
+                messageList : []
+            })
+        }
+    })
+}
+

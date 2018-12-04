@@ -130,7 +130,7 @@ app.get('/traceUsers',recruiterController.getTraceUsers);
 app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
 app.put('/edit/job',addJobController.editJob)
 app.get('/job/applicants', postedJobsController.getApplicants)
-
+app.get('/newconversation', messageController.newMessage)
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");
