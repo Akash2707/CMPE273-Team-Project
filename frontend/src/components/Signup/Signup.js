@@ -120,6 +120,7 @@ class Signup extends Component {
 
                             <div id="info1"> Be great at what you do</div>
                             <div id="info2"> Get started - it's free.</div>
+                            <div id="info4"> Already have an Account ?. <a href = '/login'>Sign In.</a></div>
                             <br />
                             <p style={{ "color": "#FF0000" }}> {this.props.message}</p>
                             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>

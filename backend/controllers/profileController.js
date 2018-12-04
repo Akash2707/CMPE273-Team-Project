@@ -289,3 +289,19 @@ module.exports.addskills = function (req, res) {
         }
     })
 }
+
+module.exports.updateProfileCount = function (req, res){
+    kafka.make_request('update_profilecount', req.body, function (err, profileViewed) {
+        if (err) {
+          res.status(400);
+          res.send(err);
+        } else {
+          console.log(profileViewed)
+          res.json({
+            status: 200,
+            message: `Count updated successfully`
+            })
+        }
+    
+      });
+}

@@ -52,6 +52,7 @@ var getTopTenNoOfApplicants = require('./services/GetTopTenNoOfApplicants')
 var editJob = require('./services/EditJob')
 var getApplicants = require('./services/GetApplicants')
 var newMessage = require('./services/newMessage')
+var profileCount = require('./services/profileCount')
 
 
 
@@ -139,3 +140,5 @@ handleTopicRequest("get_traceUsers",traceUsers)
 handleTopicRequest("get_topTenNoOfApplicants",getTopTenNoOfApplicants)
 handleTopicRequest("edit_job",editJob)
 handleTopicRequest("get_applicants",getApplicants)
+
+handleTopicRequest("update_profilecount",profileCount)

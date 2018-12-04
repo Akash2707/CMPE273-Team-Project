@@ -206,7 +206,7 @@ class Peoples extends Component {
                 pathname: '/viewprofile',
                 state: {
                     email: people,
-                    st:3
+                    st:4
 
                 }
             })
@@ -268,7 +268,7 @@ class Peoples extends Component {
             return (
                 <div className="col-md-3 people-box">
                     <div className="col-md-12 image-box" onClick={this.viewConnection.bind(this, recommend.email)}>
-                        <img className="image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                        <img className="image-person" src={recommend.imageUrl} />
                     </div>
                     <div className="col-md-12">
                         <h6 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{recommend.fName} {recommend.lName}</h6>

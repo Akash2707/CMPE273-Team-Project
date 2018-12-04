@@ -47,6 +47,7 @@ class Messaging extends Component {
         try{
             var propName = this.props.location.state.name
             var propEmail = this.props.location.state.email
+            var propImage = this.props.location.state.profilePhoto
         }catch(e){}
         console.log(propEmail)
         if(propEmail != null){
@@ -58,7 +59,7 @@ class Messaging extends Component {
                 email1: localStorage.getItem('email'),
                 email2: propEmail,
                 image1: localStorage.getItem("profileImage"),
-                image2: "http://localhost:3001/download/userdefault.png"
+                image2: propImage
             }
         }).then((response) => {
             console.log(response)
@@ -145,10 +146,11 @@ class Messaging extends Component {
         console.log(this.state.listMessage);
         let conversation = null;
         let conversationDisplay = null;
-        let profileDisplay = null;
+        let imageDisplay = null;
         let messageDisplay = null;
         let id = null;
         let name = "";
+        let image = "";
         let redirectVar = null;
         if (!localStorage.getItem('email') ) {
             redirectVar = <Redirect to="/login" />
@@ -157,7 +159,7 @@ class Messaging extends Component {
             conversationDisplay = this.state.listConversation.map((conversation) => {
                 id = conversation._id
                 let participants = conversation.participants
-                profileDisplay = conversation.participantsImage[1];
+                imageDisplay = conversation.participantsImage;
                 console.log(participants);
                 console.log(participants.length);
                 for (let i = 0; i < participants.length; i++) {
@@ -166,12 +168,18 @@ class Messaging extends Component {
                         console.log(name);
                     }
                 }
-                var idName = [conversation._id, name]
+                for (let i = 0; i < imageDisplay.length; i++) {
+                    if (localStorage.getItem('profileImage') != imageDisplay[i]) {
+                        image = imageDisplay[i]
+                        console.log(image);
+                    }
+                }
+                var idName = [conversation._id, name ]
                 return (<div>
                     <hr style={{ margin: "0px" }} />
                     <div class="row" style={{ margin: "10px", marginTop: "15px", cursor: "pointer" }} onClick={() => { this.onMessageViewHandler(idName) }}>
                         <div class="col-md-2">
-                            <div aria-label="Kevin Bell Romero" id="ember1389" class=" presence-entity__image EntityPhoto-circle-4 ember-view" style={{ backgroundImage: `url(${profileDisplay})` }}    >
+                            <div aria-label="Kevin Bell Romero" id="ember1389" class=" presence-entity__image EntityPhoto-circle-4 ember-view" style={{ backgroundImage: `url(${image})` }}    >
                                 <span class="visually-hidden">Demo Man</span>
                             </div>
                         </div>

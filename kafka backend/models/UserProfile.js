@@ -56,6 +56,9 @@ var UserProfile = mongoose.model('userprofile', {
     profilePhoto: {
         type: String
     },
+    totalViews:{
+        type:Number
+    },
     experience: [{
         position: {
             type: String

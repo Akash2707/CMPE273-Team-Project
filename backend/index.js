@@ -81,7 +81,7 @@ var messageController = require('./controllers/messageController')
 var savedJobsController = require('./controllers/SavedJobsController')
 var postedJobsController = require('./controllers/PostedJobController')
 var recruiterController = require('./controllers/RecruiterController')
-
+var profileCountController = require('./controllers/profileController')
 
 app.post('/login', loginController.authenticate);
 app.post('/signup', signupController.register);
@@ -131,6 +131,7 @@ app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
 app.put('/edit/job',addJobController.editJob)
 app.get('/job/applicants', postedJobsController.getApplicants)
 app.get('/newconversation', messageController.newMessage)
+app.put('/profilecount' , profileCountController.updateProfileCount )
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");

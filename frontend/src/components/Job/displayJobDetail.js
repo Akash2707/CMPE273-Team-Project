@@ -313,7 +313,7 @@ class DisplayJobDetail extends Component {
                             <div className="col-md-9 detailJobCompanyDetail">
                                 <h4>{this.state.job.companyName} </h4>
                                 <p>{this.state.job.city}</p>
-                                <p>{this.state.job.created_at}</p>
+                                <p>{this.state.job.created_at.slice(0, 10)}</p>
                             </div>
                             {save}
                             <div className="col-md-2"></div>
