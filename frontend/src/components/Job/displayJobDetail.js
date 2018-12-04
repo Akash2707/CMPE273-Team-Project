@@ -202,7 +202,7 @@ class DisplayJobDetail extends Component {
                 email: localStorage.getItem('email'),
                 jobId: this.props.location.state.job._id,
             }
-            axios.post('http://localhost:3001/updatejobCount',jobViewCount, {
+            axios.post('http://localhost:3001/updatejobCount', jobViewCount, {
                 headers: { Authorization: localStorage.getItem('token') },
             })
                 .then(response => {
@@ -228,6 +228,10 @@ class DisplayJobDetail extends Component {
 
     render() {
         let page = null;
+        let redirectVar = null;
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+        }
 
         if (this.props.jobApplied) {
 
@@ -295,7 +299,7 @@ class DisplayJobDetail extends Component {
         }
         return (
             <div className="col-md-12" style={{ padding: "0px 0px 80px 0px" }}>
-
+                {redirectVar}
                 <div className="col-md-12 " style={{ padding: "0px" }}>
                     <div className="detailJobBox" style={{ padding: "0px" }}>
                         <div className="col-md-12 detailJobBanner" style={{ backgroundImage: "url(http://svgur.com/i/66g.svg)", backgroundRepeat: "repeat-x" }}>

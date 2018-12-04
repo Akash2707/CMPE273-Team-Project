@@ -84,12 +84,18 @@ class Login extends Component {
     render() {
         const { handleSubmit } = this.props;
         let redirect = null;
+        let redirectVar = null
+        if (localStorage.getItem("isRecruiter") == "true") {
+            redirectVar = <Redirect to="/recruiterHome" />
+        }else if(localStorage.getItem('email') || localStorage.getItem("isRecruiter") == "false"){
+            redirectVar = <Redirect to="/jobs/search" />
+        }
         if (redirect == null && this.props.loginFlag) {
             console.log(' end of login page ... ', this.props.recruiterCheck)
-            if(this.props.recruiterCheck)
+            if(this.props.recruiterCheck && localStorage.getItem('email'))
                 redirect = <Redirect to="/recruiterHome" />
-            else
-                redirect = <Redirect to="/applicantHome" />
+            else if(localStorage.getItem('email'))
+                redirect = <Redirect to="/jobs/search" />
         }
         return (
 
@@ -108,6 +114,7 @@ class Login extends Component {
                 
                     <div class="box">
                         {redirect}
+                        {redirectVar}
                         <div>
                                
                             <div id="info1"> Be great at what you do</div>

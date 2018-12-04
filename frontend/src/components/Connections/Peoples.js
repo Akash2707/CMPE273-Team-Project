@@ -215,7 +215,10 @@ class Peoples extends Component {
     }
 
     render() {
-
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         let searchResults = null;
         if (this.state.peoples.length != 0) {
             searchResults = this.state.peoples.map(peoples => {
@@ -279,6 +282,7 @@ class Peoples extends Component {
 
         return (
             <div className="col-md-12" style={{ margin: "auto", marginTop: "70px" }} >
+                {redirectVar}
                 <a id='connectioncount' href='/peoples'>
                 <div className="col-md-2">
                 <div className="col-md-12 your-connection-box">

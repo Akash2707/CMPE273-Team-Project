@@ -132,6 +132,10 @@ class ViewApplicants extends Component {
 
     render() {
         console.log(this.state.noApplicants)
+        let redirectVar = null;
+        if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == "false") {
+            redirectVar = <Redirect to="/login" />
+        }
         
         // if(this.state.resumeFlag){
         //     resumeDisplay = (
@@ -204,7 +208,7 @@ class ViewApplicants extends Component {
 
         return (
             <div className="containerFluid" style={{ marginTop: "52px" }}>
-                
+                {redirectVar}
                 <div className="col-md-12">
                 <p style={{ color: "red" }}>{this.state.noSavedJobs}</p>
                 <p style={{ color: "red" }}>{this.state.errormsg}</p>

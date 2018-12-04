@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import ApplicantDetail from '../JobApplication/applicantDetial';
 import ApplicantEducation from '../JobApplication/applicantEducation';
 import EqualOpportunity from '../JobApplication/equalOpportunity';
+import { Redirect } from 'react-router';
 
 import { connect } from "react-redux";
 
@@ -209,6 +210,9 @@ class JobApplication extends React.Component {
     const steps = getSteps();
     const { activeStep } = this.state;
     let redirectVar = null;
+    if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == "true") {
+      redirectVar = <Redirect to="/login" />
+    }
     let page = null
     if (this.props.jobApplied) {
 

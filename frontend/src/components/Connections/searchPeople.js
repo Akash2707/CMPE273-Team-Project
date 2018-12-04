@@ -72,6 +72,10 @@ class SearchPeople extends Component{
         }))
     }
     render(){
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         let searchResults = this.state.peoples.map(peoples =>{
             return(
                 <div class="row " style={{margin:'5px',border:'1px solid grey',backgroundColor:'#f7f7f8'}}>
@@ -95,6 +99,7 @@ class SearchPeople extends Component{
         })
         return(
             <div class='container'style={{marginTop:'55px'}}>
+            {redirectVar}
              <div class="card" style={{width:400}}>
              {searchResults}
             </div> 
