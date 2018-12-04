@@ -51,7 +51,7 @@ function handle_request(msg, callback){
 
                 //making a node in graph db
                 session = driver.session();
-                var imageUrl = 'http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png'
+                var imageUrl = 'https://s3.us-east-2.amazonaws.com/linkedin-bucket/userdefault.png'
                 var occupation = 'Software Engineer'
 
 
