@@ -22,6 +22,7 @@ import People from './Connections/Peoples';
 import RecruiterHome from './Homepage/RecruiterHome';
 import EditPostJobMain from './EditPostJob/EditPostJobMain';
 import ViewApplicants from './ViewApplicants/ViewApplicants';
+
 class Main extends Component {
     render(){
         return(
@@ -48,6 +49,7 @@ class Main extends Component {
                 <Route path='/sentrequest' component={sentRequest}></Route>
                 <Route path='/edit/job-posting' component={EditPostJobMain}></Route>
                 <Route path='/jobApplicants' component={ViewApplicants}></Route>
+               
             </div>
         )
     }

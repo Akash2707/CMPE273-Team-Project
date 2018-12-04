@@ -1,16 +1,16 @@
 .your-connection-box{
-    height:400px;
-   margin:5px 5px 5px 40px;
+    height:300px;
+   margin:5px 5px 5px 10px;
 
-    border:1px solid transparent;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border:1px solid #C4C8C8;
+    box-shadow: 1 1px 1px 1 rgba(0, 0, 0, 0.2), 1 1px 1px 1 rgba(0, 0, 0, 0.19);
     text-align: center;
     background-color: #ffffff;
 }
 
 .connection-box{
     height:auto;
-    margin:5px 40px 5px 40px;
+    margin:5px 40px 5px 10px;
     border:1px solid transparent;
     text-align: center; 
     padding-bottom: 30px;
@@ -19,8 +19,8 @@
 .invitation-box{
     height:200px;
     margin:5px;
-    border:1px solid transparent;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border:1px solid #C4C8C8;
+    box-shadow: 1 1px 1px 0 rgba(0, 0, 0, 0.2), 1 1px 1px 1 rgba(0, 0, 0, 0.19);
     text-align: center;
     background-color: #ffffff;
 }
@@ -30,6 +30,7 @@
     padding:"0px 5px 0px 5px";
     display: inline-block;
     background-color: #ffffff;
+   margin-top: 0px;
 }
 
 .search-result-box{
@@ -80,21 +81,17 @@
    overflow: hidden;
 }
 
-.connection input{
-width: 500px;
-box-sizing: border-box;
-border: 2px solid #ccc;
-border-radius: 4px;
-font-size: 16px;
-background-color: white;
-background-position: 10px 10px; 
-background-repeat: no-repeat;
-padding: 12px 20px 12px 40px;
--webkit-transition: width 0.4s ease-in-out;
-transition: width 0.4s ease-in-out;
-
+.manage-invitation-box{
+    height:auto;
+    border: 1px solid #C4C8C8;
+    margin-top:80px;
+    background-color: #ffffff;
+    padding-bottom: 50px;
 }
-
-.connection input[type=text]:focus {
-    width: 550px;
+.request-result-box{
+    height: 120px;
+    border-bottom: 1px solid #E6EBEB;
+    padding:"5px";
+    display: inline-block;
+    background-color: #ffffff;
 }
