@@ -95,9 +95,21 @@ class JobsPosted extends Component {
             }
         })
 }
+    newJob(){
+        let detailPage = null
+        detailPage = this.props.history.push({
+            pathname: "/job-posting",
+            state: {
+            }
+        })
+    }
 
     render() {
         console.log(this.state.noPostedJobs)
+        let redirectVar = null;
+        if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == "false") {
+            redirectVar = <Redirect to="/login" />
+        }
         
         let displayPostedJobs = this.state.postedJobs.map(jobs => {
             return (
@@ -128,7 +140,7 @@ class JobsPosted extends Component {
 
         return (
             <div className="containerFluid" style={{ marginTop: "52px" }}>
-                
+                {redirectVar}
                 <div className="col-md-12">
                 <p style={{ color: "red" }}>{this.state.noSavedJobs}</p>
                 <p style={{ color: "red" }}>{this.state.errormsg}</p>
@@ -137,8 +149,10 @@ class JobsPosted extends Component {
                 <div className="col-md-12">
                     <div className="col-md-2"></div>
                     <div className="col-md-8 savedJobsBox" style={{paddingTop:"0px"}}>
-                    <div className="col-md-12 savedJobsBanner">
-                     <h4 > Jobs Posted</h4>
+                    <div className="col-md-12 savedJobsBanner" >
+                        <div className="col-md-5"><h4 > Jobs Posted</h4> </div>
+                        <div className="col-md-5"></div>
+                        <div className="col-md-2" style={{padding:"0px"}}><button onClick={() => { this.newJob() }} style={{color: "White", marginBottom: "5px"}} className="btn btn-primary">Post a New Job</button></div>
                     </div>
                        
                         {displayPostedJobs}

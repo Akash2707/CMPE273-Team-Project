@@ -3,6 +3,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import ReactPaginate from 'react-paginate';
 import connectionPic from './connection.png'
+import { Redirect } from 'react-router';
 class sentRequest extends Component{
     constructor(props){
         super(props);
@@ -54,6 +55,10 @@ class sentRequest extends Component{
     
 
     render(){
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         let allRequests = null;
         if(this.state.requests !=0){
          allRequests = this.state.requests.map(requests =>{
@@ -83,6 +88,7 @@ class sentRequest extends Component{
 
         return(
             <div className="col-md-12">
+            {redirectVar}
             <div className="col-md-1"></div>
             <div className="col-md-8 manage-invitation-box">
                 <h4 style={{ marginTop: "20px",color: "#042B89", fontWeight:"bold" }}>Manage Send Requests</h4>

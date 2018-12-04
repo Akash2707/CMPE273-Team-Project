@@ -149,6 +149,10 @@ class Messaging extends Component {
         let messageDisplay = null;
         let id = null;
         let name = "";
+        let redirectVar = null;
+        if (!localStorage.getItem('email') ) {
+            redirectVar = <Redirect to="/login" />
+        }
         if (this.state.listConversation != null) {
             conversationDisplay = this.state.listConversation.map((conversation) => {
                 id = conversation._id
@@ -206,6 +210,7 @@ class Messaging extends Component {
         console.log(this.state.listConversation);
         return (
             <div className="col-md-12">
+                {redirectVar}
                 <div className="col-md-4" style={{ padding: "0px" }}>
                     <div style={{ marginLeft: "20px" }}>
                         <div className="card" style={{ marginTop: "70px", height: "520px" }}>

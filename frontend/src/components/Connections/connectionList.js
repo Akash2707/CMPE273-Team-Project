@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import ReactPaginate from 'react-paginate';
+import { Redirect } from 'react-router';
 
 class connectionList extends Component{
     constructor(props){
@@ -68,6 +69,10 @@ class connectionList extends Component{
       } 
       render(){
         let connections = null;
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         if(this.state.connections !=0){
             connections = this.state.connections.map(connections =>{
             return(
@@ -96,6 +101,7 @@ class connectionList extends Component{
     }
           return(
             <div className="col-md-12">
+                {redirectVar}
             <div className="col-md-1"></div>
             <div className="col-md-10 manage-invitation-box">
                 <h3 style={{ marginTop: "20px",color: "#042B89", fontWeight:"bold" }}>Your Connections</h3>

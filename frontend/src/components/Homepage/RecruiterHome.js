@@ -318,9 +318,14 @@ class RecruiterHome extends Component {
 
     }
     render() {
+        let redirectVar = null;
+        if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == 'false') {
+        redirectVar = <Redirect to="/login" />
+        }
 
         return (
             <div className="" style={{ marginTop: "52px" }}>
+                {redirectVar}
                 <div className="col-md-12">
                     <div className="col-md-6 card" style={{ marginTop: "52px", padding: "25px", height: '500px' }}>
                         <h4 style={{ marginBottom: "60px" }}>Saved Applications</h4>
