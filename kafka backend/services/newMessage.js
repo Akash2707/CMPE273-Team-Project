@@ -39,8 +39,12 @@ function handle_request(msg, callback) {
             });
         } else {
             var conversation = new Conversation(data)
-            conversation.save().then((message) => {
-                callback(null, "Conversation saved successfully!");
+            conversation.save().then((messagesData) => {
+                results = {
+                    id: messagesData._id,
+                    messages: messagesData
+                }
+                callback(null, results);
             }, (err) => {
                 callback(err, []);
             })
