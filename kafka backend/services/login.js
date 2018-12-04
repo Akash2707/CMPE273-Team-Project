@@ -26,7 +26,8 @@ function handle_request(msg, callback) {
                                 console.log("Inside login user", user);
                                 user = {
                                     uResult : results[0],
-                                    uProf : user.profilePhoto
+                                    uProf : user.profilePhoto,
+                                    uResume : user.resume
                                     }
                                 console.log(user)
                                 callback(null, user);
