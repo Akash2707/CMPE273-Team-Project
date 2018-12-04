@@ -25,7 +25,8 @@ module.exports.authenticate = function (req, res) {
                 isRecruiter: user.uResult.isRecruiter == 1 ? 'true' : 'false',
                 state: user.uResult.state,
                 name : user.uResult.fName + " " + user.uResult.lName,
-                profileImage : user.uProf
+                profileImage : user.uProf,
+                resume : user.uResume
             };
 
             var token = jwt.sign(data, config.secret, {

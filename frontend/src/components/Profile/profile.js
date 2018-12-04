@@ -14,7 +14,7 @@ class Profile extends Component {
         this.state = {
             profile: {},
             skills: [],
-            profilePhoto: "http://localhost:3001/download/userdefault.png",
+            profilePhoto: "",
             imageURL: "",
             fName: "",
             lName: "",
@@ -53,9 +53,9 @@ class Profile extends Component {
             getProfileMessage: "",
             listExperience: [],
             listEducation: [],
-            skillchecked : false,
-            educhecked : false,
-            expCheck : false
+            skillchecked: false,
+            educhecked: false,
+            expCheck: false
 
         }
         this.onChangeSkillsFunction = this.onChangeSkillsFunction.bind(this);
@@ -71,6 +71,7 @@ class Profile extends Component {
         this.eduChangeHandler = this.eduChangeHandler.bind(this);
         this.eduAddHandler = this.eduAddHandler.bind(this);
         this.onChangeHandle = this.onChangeHandle.bind(this);
+        this.resumeHandler = this.resumeHandler.bind(this);
     }
 
     componentDidMount() {
@@ -105,6 +106,11 @@ class Profile extends Component {
                         profilePhoto: response.data.profilePhoto
                     })
                 }
+                if (response.data.skills) {
+                    this.setState({
+                        skills : response.data.skills.split(',')
+                    })
+                }
             }).catch(error => {
                 console.log("else")
                 this.setState({
@@ -122,13 +128,14 @@ class Profile extends Component {
     expAddHandler(education) {
         this.setState({
             expCheck: true,
-            listEducation: education
+            
 
         })
     }
-    eduChangeHandler() {
+    eduChangeHandler(education) {
         this.setState({
-            eduCheck: false
+            eduCheck: false,
+            listEducation: education
         })
     }
     eduAddHandler() {
@@ -152,6 +159,14 @@ class Profile extends Component {
             [event.target.name]: event.target.value,
         });
     }
+    resumeHandler = (e) => {
+
+        console.log(e.target.files)
+
+        this.setState({
+            resume: e.target.files[0],
+        });
+    }
 
     onExpChangeHandle(event, index) {
         let name = event.target.name
@@ -163,7 +178,7 @@ class Profile extends Component {
     onEduChangeHandle(event, index) {
         let name = event.target.name
         let profile = this.state.profile
-        profile.education[index].event.target.name = event.target.value
+        profile.education[index][event.target.name] = event.target.value
         this.forceUpdate()
     }
 
@@ -207,7 +222,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     ImageMessage: response.data.message,
-                    
+
                 })
             }).catch(error => {
                 console.log("else")
@@ -217,30 +232,46 @@ class Profile extends Component {
             });
     }
 
-    profileUpdate = (e) => {
-        e.preventDefault();
-        var data = {
-            fName: this.state.fName,
-            lName: this.state.lName,
-            headline: this.state.headline,
-            education: this.state.education,
-            country: this.state.country,
-            zipCode: this.state.zipCode,
-            state: this.state.userLocation,
-            industry: this.state.industry,
-            phone: this.state.phone,
-            address: this.state.address,
-            summary: this.state.summary,
-            resume: "",
-        }
-        console.log(data);
+    profileUpdate = () => {
+
+        // var data = {
+        //     fName: this.state.fName,
+        //     lName: this.state.lName,
+        //     headline: this.state.headline,
+        //     education: this.state.education,
+        //     country: this.state.country,
+        //     zipCode: this.state.zipCode,
+        //     state: this.state.userLocation,
+        //     industry: this.state.industry,
+        //     phone: this.state.phone,
+        //     address: this.state.address,
+        //     summary: this.state.summary,
+        //     resume: "",
+        // }
+        // console.log(data);
+
+        let data = new FormData()
+        data.append("fName",this.state.fName)
+        data.append("lName", this.state.lName)
+        data.append("headline", this.state.headline)
+        data.append("education", this.state.education)
+        data.append("country", this.state.country)
+        data.append("zipCode", this.state.zipCode)
+        data.append("state",  this.state.userLocation)
+        data.append("industry", this.state.industry)
+        data.append("phone", this.state.phone)
+        data.append("resume", this.state.resume)
+        data.append("address", this.state.address)
+        data.append("summary",this.state.summary)
+        console.log(data)
+
+
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:3001/recruiter/profile/update', data,
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
-
                 }
             })
             .then((response) => {
@@ -257,7 +288,7 @@ class Profile extends Component {
             });
     }
 
-    experienceUpdate = (index) => {
+    experienceUpdate = () => {
         // e.preventDefault();
         if (this.state.expCheck == true) {
             var data = {
@@ -272,7 +303,7 @@ class Profile extends Component {
             }
         } else {
             var data = {
-                experience: this.state.profile.experience[index],
+                experience: this.state.profile.experience,
                 isExpNew: this.state.expCheck
             }
         }
@@ -291,7 +322,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     expMessage: response.data.message,
-                    expchecked : true,
+                    expchecked: true,
                     profile: response.data,
                 })
             }).catch(error => {
@@ -336,7 +367,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     eduMessage: response.data.message,
-                    educhecked : true,
+                    educhecked: true,
                     profile: response.data,
                 })
             }).catch(error => {
@@ -347,8 +378,7 @@ class Profile extends Component {
             });
     }
 
-    skillUpdate = (e) => {
-        e.preventDefault();
+    skillUpdate = () => {
         let skills = []
         this.state.skills.map(skill => {
             skills.push(skill.name)
@@ -368,7 +398,7 @@ class Profile extends Component {
                 //update the state with the response data
                 this.setState({
                     skillMessage: response.data.message,
-                    skillchecked : true
+                    skillchecked: true
                 })
             }).catch(error => {
                 console.log("else")
@@ -384,12 +414,16 @@ class Profile extends Component {
      }
 
     render() {
-        console.log(this.state.headline);
+        console.log(this.state.listEducation);
         var dropdown = null;
         var expdropDown = null;
         var dismiss = null;
+        let redirectVar = null;
+        if (!localStorage.getItem('email') ) {
+            redirectVar = <Redirect to="/login" />
+        }
 
-        if(this.state.expCheck == true){
+        if (this.state.expCheck == true) {
             console.log("true");
             dismiss = "modal";
         }
@@ -533,7 +567,7 @@ class Profile extends Component {
                                             </div>
                                         </div>
                                         <div class="modal-body">
-                                            <form name="editExp" style={{ marginTop: "10px" }} onSubmit={() => this.experienceUpdate(index)}>
+                                            <form name="editExp" style={{ marginTop: "10px" }} onSubmit={() => this.experienceUpdate()}>
                                                 <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                                     <label>Title</label>
                                                     <input type="text" onChange={(e) => this.onExpChangeHandle(e, index)} defaultValue={this.state.listExperience.position} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
@@ -623,7 +657,7 @@ class Profile extends Component {
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <input class="btn btn-primary " type="submit" value="Submit" data-dismiss = {dismiss}/>
+                                                    <input class="btn btn-primary " type="submit" value="Submit" data-dismiss={dismiss} />
                                                     <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
                                                 </div>
                                             </form>
@@ -641,12 +675,13 @@ class Profile extends Component {
         let educations = null;
         if (this.state.profile.education != null) {
             educations = this.state.profile.education.map((education, index) => {
+                console.log(education);
                 return (
                     <div>
                         <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
                         <ul>
                             <div class="pv-entity__summary-info pv-entity__summary-info--background-section mb2">
-                                <div className="col-md-12" >
+                                <div className="row" >
                                     <div className="col-md-10">
                                         <h4 class="t-16 t-black t-bold">{education.school}</h4>
                                     </div>
@@ -679,139 +714,139 @@ class Profile extends Component {
 
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <div className="row">
+                                        <div className="col-md-12">
                                             <div className="col-md-6">
-                                                <h4 class="modal-title .t-black--light pop-up" >Add Education</h4>
+                                                <h4 class="modal-title .t-black--light pop-up" >Edit Education</h4>
                                             </div>
                                             <div className="col-md-6">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
                                         </div>
-                                        <div class="modal-body">
-                                            <form name="editEdu" style={{ marginTop: "10px" }} onSubmit={this.educationUpdate}>
-                                                <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
-                                                    <label>School</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.school} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
-                                                </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="editEdu" style={{ marginTop: "10px" }} onSubmit = { () => this.educationUpdate()}>
+                                            <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
+                                                <label>School</label>
+                                                <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.school} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
+                                            </div>
 
-                                                <div className="col-md-12 form-group pop-up">
-                                                    <label>Degree</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.degree} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
-                                                </div>
-                                                <div className="col-md-12 form-group pop-up">
-                                                    <label>Field of Study</label>
-                                                    <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.field} className="form-control" name="field" placeholder="Ex. Business" />
-                                                </div>
-                                                <div className="col-md-12 form-group pop-up">
-                                                    <label>Grade</label>
-                                                    <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.grade} className="form-control" name="grade" />
-                                                </div>
-                                                <div className="col-md-12 form-group pop-up">
-                                                    <div className="col-md-5" style={{ padding: "0px" }}>
-                                                        <label>From Year</label>
-                                                        <select name="efYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.fromYear} className="form-control" style={{ width: "100%" }}>
-                                                            <option value="year">Year</option>
-                                                            <option value="1980">1980</option>
-                                                            <option value="1981">1981</option>
-                                                            <option value="1982">1982</option>
-                                                            <option value="1983">1983</option>
-                                                            <option value="1984">1984</option>
-                                                            <option value="1985">1985</option>
-                                                            <option value="1986">1986</option>
-                                                            <option value="1987">1987</option>
-                                                            <option value="1988">1988</option>
-                                                            <option value="1989">1989</option>
-                                                            <option value="1990">1990</option>
-                                                            <option value="1991">1991</option>
-                                                            <option value="1991">1991</option>
-                                                            <option value="1993">1993</option>
-                                                            <option value="1994">1994</option>
-                                                            <option value="1995">1995</option>
-                                                            <option value="1996">1996</option>
-                                                            <option value="1997">1997</option>
-                                                            <option value="1998">1998</option>
-                                                            <option value="1999">1999</option>
-                                                            <option value="2000">2000</option>
-                                                            <option value="2001">2001</option>
-                                                            <option value="2002">2002</option>
-                                                            <option value="2003">2003</option>
-                                                            <option value="2004">2004</option>
-                                                            <option value="2005">2005</option>
-                                                            <option value="2006">2006</option>
-                                                            <option value="2007">2007</option>
-                                                            <option value="2008">2008</option>
-                                                            <option value="2009">2009</option>
-                                                            <option value="2010">2010</option>
-                                                            <option value="2011">2011</option>
-                                                            <option value="2012">2012</option>
-                                                            <option value="2013">2013</option>
-                                                            <option value="2014">2014</option>
-                                                            <option value="2015">2015</option>
-                                                            <option value="2016">2016</option>
-                                                            <option value="2017">2017</option>
-                                                            <option value="2018">2018</option>
-                                                        </select>
+                                            <div className="col-md-12 form-group pop-up">
+                                                <label>Degree</label>
+                                                <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.degree} className="form-control" name="degree" placeholder="Ex. Bachelor's" />
+                                            </div>
+                                            <div className="col-md-12 form-group pop-up">
+                                                <label>Field of Study</label>
+                                                <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.field} className="form-control" name="field" placeholder="Ex. Business" />
+                                            </div>
+                                            <div className="col-md-12 form-group pop-up">
+                                                <label>Grade</label>
+                                                <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.grade} className="form-control" name="grade" />
+                                            </div>
+                                            <div className="col-md-12 form-group pop-up">
+                                                <div className="col-md-5" style={{ padding: "0px" }}>
+                                                    <label>From Year</label>
+                                                    <select name="efYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.fromYear} className="form-control" style={{ width: "100%" }}>
+                                                        <option value="year">Year</option>
+                                                        <option value="1980">1980</option>
+                                                        <option value="1981">1981</option>
+                                                        <option value="1982">1982</option>
+                                                        <option value="1983">1983</option>
+                                                        <option value="1984">1984</option>
+                                                        <option value="1985">1985</option>
+                                                        <option value="1986">1986</option>
+                                                        <option value="1987">1987</option>
+                                                        <option value="1988">1988</option>
+                                                        <option value="1989">1989</option>
+                                                        <option value="1990">1990</option>
+                                                        <option value="1991">1991</option>
+                                                        <option value="1991">1991</option>
+                                                        <option value="1993">1993</option>
+                                                        <option value="1994">1994</option>
+                                                        <option value="1995">1995</option>
+                                                        <option value="1996">1996</option>
+                                                        <option value="1997">1997</option>
+                                                        <option value="1998">1998</option>
+                                                        <option value="1999">1999</option>
+                                                        <option value="2000">2000</option>
+                                                        <option value="2001">2001</option>
+                                                        <option value="2002">2002</option>
+                                                        <option value="2003">2003</option>
+                                                        <option value="2004">2004</option>
+                                                        <option value="2005">2005</option>
+                                                        <option value="2006">2006</option>
+                                                        <option value="2007">2007</option>
+                                                        <option value="2008">2008</option>
+                                                        <option value="2009">2009</option>
+                                                        <option value="2010">2010</option>
+                                                        <option value="2011">2011</option>
+                                                        <option value="2012">2012</option>
+                                                        <option value="2013">2013</option>
+                                                        <option value="2014">2014</option>
+                                                        <option value="2015">2015</option>
+                                                        <option value="2016">2016</option>
+                                                        <option value="2017">2017</option>
+                                                        <option value="2018">2018</option>
+                                                    </select>
 
-                                                    </div>
-                                                    <div className="col-md-2"></div>
-                                                    <div className="col-md-5" style={{ padding: "0px" }}>
-                                                        <label>To Year</label>
-                                                        <select name="etYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.toYear} className="form-control" style={{ width: "100%" }}>
-                                                            <option value="year">Year</option>
-                                                            <option value="1980">1980</option>
-                                                            <option value="1981">1981</option>
-                                                            <option value="1982">1982</option>
-                                                            <option value="1983">1983</option>
-                                                            <option value="1984">1984</option>
-                                                            <option value="1985">1985</option>
-                                                            <option value="1986">1986</option>
-                                                            <option value="1987">1987</option>
-                                                            <option value="1988">1988</option>
-                                                            <option value="1989">1989</option>
-                                                            <option value="1990">1990</option>
-                                                            <option value="1991">1991</option>
-                                                            <option value="1991">1991</option>
-                                                            <option value="1993">1993</option>
-                                                            <option value="1994">1994</option>
-                                                            <option value="1995">1995</option>
-                                                            <option value="1996">1996</option>
-                                                            <option value="1997">1997</option>
-                                                            <option value="1998">1998</option>
-                                                            <option value="1999">1999</option>
-                                                            <option value="2000">2000</option>
-                                                            <option value="2001">2001</option>
-                                                            <option value="2002">2002</option>
-                                                            <option value="2003">2003</option>
-                                                            <option value="2004">2004</option>
-                                                            <option value="2005">2005</option>
-                                                            <option value="2006">2006</option>
-                                                            <option value="2007">2007</option>
-                                                            <option value="2008">2008</option>
-                                                            <option value="2009">2009</option>
-                                                            <option value="2010">2010</option>
-                                                            <option value="2011">2011</option>
-                                                            <option value="2012">2012</option>
-                                                            <option value="2013">2013</option>
-                                                            <option value="2014">2014</option>
-                                                            <option value="2015">2015</option>
-                                                            <option value="2016">2016</option>
-                                                            <option value="2017">2017</option>
-                                                            <option value="2018">2018</option>
-                                                        </select>
+                                                </div>
+                                                <div className="col-md-2"></div>
+                                                <div className="col-md-5" style={{ padding: "0px" }}>
+                                                    <label>To Year</label>
+                                                    <select name="etYear" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.toYear} className="form-control" style={{ width: "100%" }}>
+                                                        <option value="year">Year</option>
+                                                        <option value="1980">1980</option>
+                                                        <option value="1981">1981</option>
+                                                        <option value="1982">1982</option>
+                                                        <option value="1983">1983</option>
+                                                        <option value="1984">1984</option>
+                                                        <option value="1985">1985</option>
+                                                        <option value="1986">1986</option>
+                                                        <option value="1987">1987</option>
+                                                        <option value="1988">1988</option>
+                                                        <option value="1989">1989</option>
+                                                        <option value="1990">1990</option>
+                                                        <option value="1991">1991</option>
+                                                        <option value="1991">1991</option>
+                                                        <option value="1993">1993</option>
+                                                        <option value="1994">1994</option>
+                                                        <option value="1995">1995</option>
+                                                        <option value="1996">1996</option>
+                                                        <option value="1997">1997</option>
+                                                        <option value="1998">1998</option>
+                                                        <option value="1999">1999</option>
+                                                        <option value="2000">2000</option>
+                                                        <option value="2001">2001</option>
+                                                        <option value="2002">2002</option>
+                                                        <option value="2003">2003</option>
+                                                        <option value="2004">2004</option>
+                                                        <option value="2005">2005</option>
+                                                        <option value="2006">2006</option>
+                                                        <option value="2007">2007</option>
+                                                        <option value="2008">2008</option>
+                                                        <option value="2009">2009</option>
+                                                        <option value="2010">2010</option>
+                                                        <option value="2011">2011</option>
+                                                        <option value="2012">2012</option>
+                                                        <option value="2013">2013</option>
+                                                        <option value="2014">2014</option>
+                                                        <option value="2015">2015</option>
+                                                        <option value="2016">2016</option>
+                                                        <option value="2017">2017</option>
+                                                        <option value="2018">2018</option>
+                                                    </select>
 
-                                                    </div>
                                                 </div>
-                                                <div className="col-md-12 form-group pop-up">
-                                                    <label>Description</label>
-                                                    <textarea className="form-control" onChange={(e) => this.onEduChangeHandle(e, index)} value={this.state.listEducation.eduDescription} name="eDescription" placeholder="Description" rows="8" cols="8" required />
-                                                </div>
+                                            </div>
+                                            <div className="col-md-12 form-group pop-up">
+                                                <label>Description</label>
+                                                <textarea className="form-control" onChange={(e) => this.onEduChangeHandle(e, index)} value={this.state.listEducation.eduDescription} name="eDescription" placeholder="Description" rows="8" cols="8" required />
+                                            </div>
 
-                                                <div class="modal-footer">
-                                                    <input class="btn btn-primary " type="submit" value="Submit" />
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            <div class="modal-footer">
+                                                <input class="btn btn-primary " type="submit" value="Submit" />
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -823,6 +858,7 @@ class Profile extends Component {
 
         return (
             <div style={{ margin: "auto", maxWidth: "70%", marginTop: "50px" }}>
+            {redirectVar}
                 <div className="card">
                     <img className="card-img-top" style={{ width: "100%" }} src="http://svgur.com/i/66g.svg" alt="Card image cap" />
                     <div className="pv-top-card-section__profile-photo-container pv-top-card-v2-section__profile-photo-container" >
@@ -865,8 +901,8 @@ class Profile extends Component {
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit = {() => {this.profileUpdate}} >
-                                        <p style = {{textAlign : "center", padding : "0px"}}> {this.state.ImageMessage} </p>
+                                    <form name="addExp" style={{ marginTop: "10px" }} onSubmit={() => this.profileUpdate()}>
+                                        <p style={{ textAlign: "center", padding: "0px" }}> {this.state.ImageMessage} </p>
                                         <div className="col-md-12 form-group" style={{ marginTop: "20px" }}>
                                             <div style={{ margin: "auto", textAlign: "center" }}>
                                                 <img id="img" alt="Avatar" src={this.state.profilePhoto} style={{ width: "200px", height: "200px", borderRadius: "50%" }}></img>
@@ -901,7 +937,7 @@ class Profile extends Component {
                                             <div className="col-md-2"></div>
                                             <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
                                                 <label>Zip code</label>
-                                                <input type="number" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" />
+                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" />
                                             </div>
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
@@ -926,10 +962,10 @@ class Profile extends Component {
                                         </div>
                                         <div className="col-md-12 form-group">
                                             <label>Resume</label>
-                                            <input type="file" onChange={this.onChangeHandle} className="form-control" defaultValue={this.state.profile.resume} name="resume" accept="resume/pdf" placeholder="Resume" />
+                                            <input type="file"  onChange={this.resumeHandler} className="form-control" name="resume" accept=".pdf" placeholder="Resume" />
                                         </div>
                                         <div class="modal-footer">
-                                            <input class="btn btn-primary " type="submit" value="Submit" />
+                                            <button class="btn btn-primary " type="submit" value="Submit">Submit</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal" style={{ border: "1px solid #B8BDBE" }}>Close</button>
                                         </div>
                                     </form>
@@ -943,16 +979,16 @@ class Profile extends Component {
                                 <div className="col-md-8" style={{ padding: "0px" }}>
                                     <div>
                                         <h3>
-                                            {this.state.profile.fName}  {this.state.profile.lName}
+                                            {this.state.fName}  {this.state.lName}
                                         </h3>
                                     </div>
                                     <div>
                                         <span>
-                                            {this.state.profile.headline}
+                                            {this.state.headline}
                                         </span>
                                     </div>
                                     <span className="text-muted">
-                                        {this.state.profile.state}
+                                        {this.state.userLocation}
                                     </span>
                                 </div>
 
@@ -963,7 +999,7 @@ class Profile extends Component {
 
                                         <div className="col-md-10" style={{ padding: "0px" }}>
                                             <button href="#education-section" data-control-name="education_see_more" className="pv-top-card-v2-section__link pv-top-card-v2-section__link-education mb1" data-ember-action="" style={{ marginBottom: "8px" }} data-ember-action-77="77">
-                                                <span id="ember79" className="pv-top-card-v2-section__entity-name pv-top-card-v2-section__school-name text-align-left ml2 t-14 user-prof t-bold lt-line-clamp lt-line-clamp--multi-line ember-view" style={{ WebkitLineClamp: "2" }}>  {this.state.profile.uniEducation}
+                                                <span id="ember79" className="pv-top-card-v2-section__entity-name pv-top-card-v2-section__school-name text-align-left ml2 t-14 user-prof t-bold lt-line-clamp lt-line-clamp--multi-line ember-view" style={{ WebkitLineClamp: "2" }}>  {this.state.education}
                                                 </span>
                                             </button>
                                         </div>
@@ -1014,7 +1050,7 @@ class Profile extends Component {
                             <div id="ember375" class="pv-entity__extra-details ember-view">
                                 <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
                                 <p id="ember377" class="pv-entity__description t-14 t-black t-normal ember-view" style={{ marginRight: "40px", marginLeft: "40px", textAlign: "justify" }}>
-                                    <span class="lt-line-clamp__line">{this.state.profile.summary}</span>
+                                    <span class="lt-line-clamp__line">{this.state.summary}</span>
                                 </p>
                             </div>
                         </div>
@@ -1357,9 +1393,11 @@ class Profile extends Component {
                         </header>
                         <ul>
                             <div class="pv-entity__summary-info pv-entity__summary-info--background-section mb2">
+                            <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
                                 <div className="row" >
+                                
                                     <div>
-                                        <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
+                                       
                                         {skills}
                                     </div>
                                 </div>
@@ -1382,7 +1420,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={()=>this.skillUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label for="skills">Skills</label>
                                         <Typeahead
@@ -1422,7 +1460,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form className="form" style={{ marginTop: "10px" }} onSubmit={this.skillUpdate}>
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={()=>this.skillUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label for="skills">Skills</label>
                                         <Typeahead

@@ -11,8 +11,8 @@ AWS.config.loadFromPath(awsCredFile);
 const responseTime = require('response-time')
 const redis = require('redis');
 const client = redis.createClient({
-    port : 6379,
-    host : "3.16.242.224"
+    port: 6379,
+    host: "3.16.242.224"
 });
 client.on('error', (err) => {
     console.log("Error " + err);
@@ -22,42 +22,70 @@ client.on('error', (err) => {
 
 module.exports.update = function (req, res) {
     console.log(req.body);
-    var data = {
-        "fName": req.body.fName,
-        "lName": req.body.lName,
-        "email": req.query.email,
-        "address": req.body.address,
-        "country": req.body.country,
-        "state": req.body.state,
-        "zipCode": req.body.zipCode,
-        "headline": req.body.headline,
-        "uniEducation": req.body.education,
-        "industry": req.body.industry,
-        "phone": req.body.phone,
-        "birthdDate": req.body.birthdDate,
-        "summary": req.body.summary,
-        "resume": req.body.resume,
-    }
-
-    kafka.make_request('profile_update', data, function (err, user) {
-        console.log(req.body);
-        console.log('in result');
-        console.log(JSON.stringify(user));
-        console.log(user);
+    let resumeName;
+    var s3 = new AWS.S3();
+    var upload = multer({
+        storage: multerS3({
+            s3: s3,
+            bucket: 'linkedin-bucket',
+            metadata: function (req, file, cb) {
+                cb(null, { fieldName: file.fieldname });
+            },
+            key: function (req, file, cb) {
+                console.log(file);
+                var name = Date.now() + '-' + file.originalname
+                resumeName = `https://s3.us-east-2.amazonaws.com/linkedin-bucket/${name}`
+                cb(null, name); //use Date.now() for unique file keys
+            }
+        })
+    })
+    const singleUpload = upload.single('resume')
+    singleUpload(req, res, (err) => {
+        /*Now do where ever you want to do*/
         if (err) {
-            console.log("Inside err");
-            res.status(400).json({
-                success: false,
-                message: "System Error, Try Again."
+            return res.status(400).send(err);
+        }
+        else {
+            var data = {
+                "fName": req.body.fName,
+                "lName": req.body.lName,
+                "email": req.query.email,
+                "address": req.body.address,
+                "country": req.body.country,
+                "state": req.body.state,
+                "zipCode": req.body.zipCode,
+                "headline": req.body.headline,
+                "uniEducation": req.body.education,
+                "industry": req.body.industry,
+                "phone": req.body.phone,
+                "birthdDate": req.body.birthdDate,
+                "summary": req.body.summary,
+                "resume": resumeName,
+            }
+
+            kafka.make_request('profile_update', data, function (err, user) {
+                console.log(req.body);
+                console.log('in result');
+                console.log(JSON.stringify(user));
+                console.log(user);
+                if (err) {
+                    console.log("Inside err");
+                    res.status(400).json({
+                        success: false,
+                        message: "System Error, Try Again."
+                    })
+                } else {
+                    res.json({
+                        status: 200,
+                        data: user,
+                        message: 'Profile Successfully Updated.'
+                    })
+                }
             })
-        } else {
-            res.json({
-                status: 200,
-                data: user,
-                message: 'Profile Successfully Updated.'
-            })
+
         }
     })
+
 }
 
 module.exports.addExperience = function (req, res) {
@@ -207,59 +235,57 @@ module.exports.profileDisplay = function (req, res) {
     //         return res.status(200).json(resultJSON);
     //     } else {
     //         console.log("else");
-                kafka.make_request('user_profile_display', req.query, function (err, user) {
-                console.log('in result');
-                console.log(JSON.stringify(user));
-                console.log(user);
-                if (err) {
-                    console.log("Inside err");
-                    res.status(400).json({
-                        success: false,
-                        message: "System Error, Try Again."
-                    })
-                } else {
-                    if (Object.keys(user).length != 0) {
-                        // client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
-                        res.writeHead(200, {
-                            'Content-Type': 'application/json'
-                        })
-                        res.end(JSON.stringify(user));
-                    } else {
-                        res.status(400).json({
-                            success: false,
-                            message: "!User is not yet registerd"
-                        })
-                    }
-                }
+    kafka.make_request('user_profile_display', req.query, function (err, user) {
+        console.log('in result');
+        console.log(JSON.stringify(user));
+        console.log(user);
+        if (err) {
+            console.log("Inside err");
+            res.status(400).json({
+                success: false,
+                message: "System Error, Try Again."
             })
-    //     }
-    // })
+        } else {
+            if (Object.keys(user).length != 0) {
+                // client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                res.writeHead(200, {
+                    'Content-Type': 'application/json'
+                })
+                res.end(JSON.stringify(user));
+            } else {
+                res.status(400).json({
+                    success: false,
+                    message: "!User is not yet registerd"
+                })
+            }
+        }
+    })
 }
 
 module.exports.addskills = function (req, res) {
-            console.log(req.body);
-            var data = {
-                email: req.query.email,
-                skills: req.body
-            }
+    console.log(req.body);
+    var data = {
+        email: req.query.email,
+        skills: req.body
+    }
 
-            kafka.make_request('add_skill', data, function (err, user) {
-                console.log(req.body);
-                console.log('in result');
-                console.log(JSON.stringify(user));
-                console.log(user);
-                if (err) {
-                    console.log("Inside err");
-                    res.status(400).json({
-                        success: false,
-                        message: "System Error, Try Again."
-                    })
-                } else {
-                    res.json({
-                        status: 200,
-                        data: user,
-                        message: 'Education Successfully Added.'
-                    })
-                }
+    kafka.make_request('add_skill', data, function (err, user) {
+        console.log(req.body);
+        console.log('in result');
+        console.log(JSON.stringify(user));
+        console.log(user);
+        if (err) {
+            console.log("Inside err");
+            res.status(400).json({
+                success: false,
+                message: "System Error, Try Again."
+            })
+        } else {
+            res.json({
+                status: 200,
+                data: user,
+                message: 'Education Successfully Added.'
             })
         }
+    })
+}

@@ -154,7 +154,7 @@ class ApplicantDetail extends Component {
                     <div className="col-md-12">
                         <div className="col-md-6 form-group">
                             <label>Resume</label> 
-                            <input type="file" className="form-control" name="resume"  accept="resume/pdf, resume/doc "placeholder="Resume"  onChange={this.resumeHandler}/>
+                            <input type="file" className="form-control" name="resume"  accept="resume/pdf"placeholder="Resume"  onChange={this.resumeHandler}/>
                         </div>
                         <div className="col-md-6 form-group">
                             <label>Cover Letter</label> 

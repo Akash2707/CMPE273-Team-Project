@@ -199,6 +199,7 @@ const mapDispatchToProps = dispatch => {
                         localStorage.setItem('state', decoded.state);
                         localStorage.setItem('name',decoded.name);
                         localStorage.setItem('profileImage',decoded.profileImage);
+                        localStorage.setItem('resume',decoded.resume);
                     }
                     dispatch({ type: 'LOGIN', payload: response.data, statusCode: response.data.status })
                 })
