@@ -12,7 +12,8 @@ class connectionList extends Component{
             isConnectionGet:false,
             isProfileGet:false,
             searchPageCount:1,
-            connectcount:0
+            connectcount:0,
+            con:3
         }
     }
     componentDidMount(){
@@ -37,7 +38,8 @@ class connectionList extends Component{
           this.props.history.push({
               pathname:'/viewprofile',
               state:{
-                  email:people
+                  email:people,
+                  st:this.state.con
               }
           })   
        }
@@ -47,6 +49,7 @@ class connectionList extends Component{
               state:{
                   name:name,
                   email : email
+                 
               }
           })   
        }
@@ -77,8 +80,8 @@ class connectionList extends Component{
             connections = this.state.connections.map(connections =>{
             return(
                 <div className="col-md-12 request-result-box"  style={{marginTop:"10px"}}>
-                <div className="col-md-3 search-image-box">
-                    <img className="search-image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                <div className="col-md-3 search-image-box" onClick={this.viewConnection.bind(this,connections.email)}>
+                    <img className="search-image-person" src={connections.imageUrl} />
                 </div>
                 <div className="col-md-7">
                     <h4 style={{ marginTop: "20px", textAlign: "left", color: "#000000", marginLeft: "20px" }}>{connections.fName} {connections.lName}</h4>

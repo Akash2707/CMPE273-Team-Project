@@ -30,6 +30,7 @@ class ViewProfile extends Component {
             summary: "",
             resume: "",
             connect : false,
+            kk:0
            
         }
         this.isConnected = this.isConnected.bind(this);
@@ -82,6 +83,94 @@ class ViewProfile extends Component {
             })
         }
     }
+    onWithdraw(connection_email, e) {
+        console.log(connection_email)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/requestwithdraw', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                user_email: localStorage.getItem('email'),
+                connection_email: connection_email
+            }
+        })
+            .then((response => {
+                this.setState({kk:4})
+             //  window.location.reload()
+                console.log(response)
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+
+            }))
+            .catch(error => {
+                console.log('error', error)
+                this.setState({
+                    onSuccess: false,
+                    errorMessage: error.data
+                })
+            })
+    }
+    onAccept(connection_email, e) {
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/requestaccept', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                user_email: localStorage.getItem('email'),
+                connection_email: connection_email
+            }
+        })
+            .then((response => {
+                this.setState({kk:3})
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+                //window.location.reload()
+
+            }))
+    }
+    onConnect(email, e) {
+        //   var data={sender_email:localStorage.getItem('email'),reciever_email:email}
+        axios.defaults.withCredentials = true;
+        axios.put('http://localhost:3001/sendrequest', {
+            headers: { Authorization: localStorage.getItem('token') },
+            params: {
+                sender_email: localStorage.getItem('email'),
+                reciever_email: email
+            }
+        })
+            .then((response => {
+                this.setState({kk:1})
+                //window.location.reload()
+                if (response.status == 400) {
+                    this.setState({
+                        isReqFail: true
+                    })
+                }
+
+            }))
+    }
+    onRemove(connection_email,e){
+        axios.defaults.withCredentials=true;
+        axios.post('http://localhost:3001/removeconnect', {headers: { Authorization: localStorage.getItem('token')},
+        params: {
+            user_email:localStorage.getItem('email'),
+            connection_email:connection_email
+        }})
+        .then((response=>{
+            this.setState({kk:4})
+            if(response.status==400){
+                this.setState({
+                    isReqFail:true
+                })
+            }
+           // window.location.reload()
+
+        }))
+    }
 
     render() {
         console.log(this.state.expCheck);
@@ -95,10 +184,21 @@ class ViewProfile extends Component {
             })
         }
         let connected = null;
-        if(this.state.connect == true){
-            connected =  <input class="btn btn-success " onClick = {this.isConnected} type="submit" value="Connected" />
+        //console.log(st)
+        var check=this.props.location.state.st
+        if(this.state.kk!=0){
+            check=this.state.kk
+            console.log(check)
+        }
+        if(check== 1){
+            connected =  <input class="btn btn-success " onClick={this.onWithdraw.bind(this, this.props.location.state.email)} type="submit" value="Withdraw" />
+        }else if(check == 2){
+            connected =  <input class="btn btn-primary " onClick={this.onAccept.bind(this, this.props.location.state.email)} type="submit" value="Accept" />
+        }
+        else if(check == 3){
+            connected =  <input class="btn btn-success " onClick={this.onRemove.bind(this, this.props.location.state.email)} type="submit" value="Remove" />
         }else{
-            connected =  <input class="btn btn-primary " onClick = {this.isConnected} type="submit" value="Connect" />
+            connected =  <input class="btn btn-primary " onClick={this.onConnect.bind(this, this.props.location.state.email)} type="submit" value="Connect" />
         }
         let experiences = null;
         if (this.state.profile.experience != null) {
