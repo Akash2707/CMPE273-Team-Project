@@ -39,7 +39,7 @@ class RecruiterHome extends Component {
     onDropdownSelected(e) {
         console.log("THE VAL", e.target.value);
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/getapplicantsbycity', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getapplicantsbycity', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -74,7 +74,7 @@ class RecruiterHome extends Component {
             location: this.state.location
         })
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/traceUsers', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/traceUsers', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 recruiterId: localStorage.getItem(''),
@@ -106,7 +106,7 @@ class RecruiterHome extends Component {
     locationChangeHandle = location => {
         this.setState({ location });
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/traceUsers', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/traceUsers', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 recruiterId: localStorage.getItem(''),
@@ -136,7 +136,7 @@ class RecruiterHome extends Component {
     componentDidMount() {
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.get('http://localhost:3001/getSavedApplicationGraph', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getSavedApplicationGraph', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -161,7 +161,7 @@ class RecruiterHome extends Component {
             });
 
         console.log("between")
-        axios.get('http://localhost:3001/getjobsviewcount', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getjobsviewcount', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -186,7 +186,7 @@ class RecruiterHome extends Component {
             });
 
         console.log("between")
-        axios.get('http://localhost:3001/getlessnoofapplicants', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getlessnoofapplicants', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -212,7 +212,7 @@ class RecruiterHome extends Component {
 
         console.log("between")
         var jobData = null
-        axios.get('http://localhost:3001/getjobstitle', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getjobstitle', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -230,7 +230,7 @@ class RecruiterHome extends Component {
                     jobs[jobId] = jobEasyApply
                 })
                 console.log(jobData)
-                axios.get('http://localhost:3001/getapplicantsbycity', {
+                axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getapplicantsbycity', {
                     headers: { Authorization: localStorage.getItem('token') },
                     params: {
                         email: localStorage.getItem('email'),
@@ -255,7 +255,7 @@ class RecruiterHome extends Component {
 
                         })
                     });
-                axios.get('http://localhost:3001/traceUsers', {
+                axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/traceUsers', {
                     headers: { Authorization: localStorage.getItem('token') },
                     params: {
                         recruiterId: localStorage.getItem('email'),
@@ -284,7 +284,7 @@ class RecruiterHome extends Component {
                     jobOptions: options,
                     jobs: jobs
                 })
-                axios.get('http://localhost:3001/gettoptennoofapplicants', {
+                axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/gettoptennoofapplicants', {
                     headers: { Authorization: localStorage.getItem('token') },
                     params: {
                         email: localStorage.getItem('email'),

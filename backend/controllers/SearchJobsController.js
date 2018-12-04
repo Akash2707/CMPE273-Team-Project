@@ -18,19 +18,19 @@ module.exports.getJobs = function (req, res) {
         'jobTitle': req.query.jobTitle,
         'industry': req.query.industry
     }
-    // client.get(`jobs:${req.query.state}`, (err, result) => {
-    //     // If that key exist in Redis store
-    //     if (result) {
-    //         console.log("if");
-    //         const resultJSON = JSON.parse(result);
-    //         return res.status(200).json(resultJSON);
-    //     } else {
+    client.get(`jobs:${req.query.state}`, (err, result) => {
+        // If that key exist in Redis store
+        if (result) {
+            console.log("if");
+            const resultJSON = JSON.parse(result);
+            return res.status(200).json(resultJSON);
+        } else {
             kafka.make_request('get_jobs', data, function (err, jobs) {
                 if (err) {
                     res.status(400);
                     res.send(err);
                 } else {
-                    // client.setex(`jobs:${req.query.state}`, 3600, JSON.stringify({ source: 'Redis Cache', ...jobs, }));
+                    client.setex(`jobs:${req.query.state}`, 3, JSON.stringify({ source: 'Redis Cache', ...jobs, }));
                     console.log(jobs)
                     res.writeHead(200, {
                         'Content-Type': 'application/json'
@@ -39,6 +39,6 @@ module.exports.getJobs = function (req, res) {
                 }
 
             })
-    //     }
-    // })
+        }
+    })
 }

@@ -78,7 +78,7 @@ class ViewApplicants extends Component {
             jobId = this.state.id
             allowEasyApply = this.state.allowEasyApply
         }
-        axios.get('http://localhost:3001/job/applicants',
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/job/applicants',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {

@@ -113,7 +113,7 @@ class JobApplication extends React.Component {
     }
 
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:3001/updateLogs', log, {
+    axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/updateLogs', log, {
       headers: { Authorization: localStorage.getItem('token') },
     })
       .then(response => {
@@ -282,7 +282,7 @@ const mapDispatchStateToProps = dispatch => {
 
       console.log(values)
       axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/applyjob', values, {
+      axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/applyjob', values, {
         headers: { Authorization: localStorage.getItem('token') },
         params: {
           email: localStorage.getItem('email'),

@@ -28,7 +28,7 @@ class JobsPosted extends Component {
         this.setState({
             noPostedJobs: ""
         })
-        axios.get('http://localhost:3001/recruiter/jobs/posted',
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/recruiter/jobs/posted',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {

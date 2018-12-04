@@ -25,7 +25,7 @@ class SavedJobs extends Component {
         this.setState({
             noSavedJobs: ""
         })
-        axios.get('http://localhost:3001/jobs/saved',
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/jobs/saved',
             {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {

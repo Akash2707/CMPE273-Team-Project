@@ -120,7 +120,7 @@ class DisplayJobDetail extends Component {
                 axios.defaults.withCredentials = true;
                 //make a post request with the user data
 
-                axios.get('http://localhost:3001/check/easyapply', {
+                axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/check/easyapply', {
                     headers: { Authorization: localStorage.getItem('token') },
                     params: {
                         email: localStorage.getItem('email'),
@@ -147,7 +147,7 @@ class DisplayJobDetail extends Component {
             } else {
                 axios.defaults.withCredentials = true;
                 //make a post request with the user data
-                axios.get('http://localhost:3001/check/application', {
+                axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/check/application', {
                     headers: { Authorization: localStorage.getItem('token') },
                     params: {
                         email: localStorage.getItem('email'),
@@ -176,7 +176,7 @@ class DisplayJobDetail extends Component {
             axios.defaults.withCredentials = true;
             //make a post request with the user data
 
-            axios.get('http://localhost:3001/check/savedJobs', {
+            axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/check/savedJobs', {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),
@@ -202,7 +202,7 @@ class DisplayJobDetail extends Component {
                 email: localStorage.getItem('email'),
                 jobId: this.props.location.state.job._id,
             }
-            axios.post('http://localhost:3001/updatejobCount', jobViewCount, {
+            axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/updatejobCount', jobViewCount, {
                 headers: { Authorization: localStorage.getItem('token') },
             })
                 .then(response => {
@@ -420,7 +420,7 @@ const mapDispatchStateToProps = dispatch => {
         submitApplication: (values) => {
             console.log(values)
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/easyapply', values, {
+            axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/easyapply', values, {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem("email")
@@ -437,7 +437,7 @@ const mapDispatchStateToProps = dispatch => {
         submitSaveJob: (values) => {
             console.log(values)
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/savejob', values, {
+            axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/savejob', values, {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem("email")

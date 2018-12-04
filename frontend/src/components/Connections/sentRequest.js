@@ -17,7 +17,7 @@ class sentRequest extends Component{
     componentDidMount(){
         
         axios.defaults.withCredentials =true;
-        axios.get('http://localhost:3001/getsentRequests', {headers: { Authorization: localStorage.getItem('token')},
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getsentRequests', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
        }})
@@ -40,7 +40,7 @@ class sentRequest extends Component{
      }
      onWithdraw(connection_email,e){
         axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/requestwithdraw', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestwithdraw', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:connection_email

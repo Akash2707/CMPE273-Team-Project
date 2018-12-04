@@ -17,7 +17,7 @@ class receivedRequest extends Component{
     componentDidMount(){
         
         axios.defaults.withCredentials =true;
-        axios.get('http://localhost:3001/getRequests', {headers: { Authorization: localStorage.getItem('token')},
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/getRequests', {headers: { Authorization: localStorage.getItem('token')},
        params: {
            email: localStorage.getItem('email')
        }})
@@ -39,7 +39,7 @@ class receivedRequest extends Component{
      }
     onAccept(email,e){
         axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestaccept', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:email
@@ -57,7 +57,7 @@ class receivedRequest extends Component{
     }
     onDeny(connection_email,e){
         axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/requestdeny', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestdeny', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:connection_email

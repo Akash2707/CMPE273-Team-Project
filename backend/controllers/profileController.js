@@ -189,7 +189,7 @@ module.exports.imageUpload = function (req, res) {
             key: function (req, file, cb) {
                 console.log(file);
                 var name = Date.now() + '-' + file.originalname
-                imageName = `http://localhost:3001/download/${name}`
+                imageName = `http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/${name}`
                 cb(null, name); //use Date.now() for unique file keys
             }
         })
@@ -227,37 +227,39 @@ module.exports.imageUpload = function (req, res) {
 
 module.exports.profileDisplay = function (req, res) {
 
-    // client.get(`profile:${req.query.email}`, (err, result) => {
-    //     // If that key exist in Redis store
-    //     if (result) {
-    //         console.log("if");
-    //         const resultJSON = JSON.parse(result);
-    //         return res.status(200).json(resultJSON);
-    //     } else {
-    //         console.log("else");
-    kafka.make_request('user_profile_display', req.query, function (err, user) {
-        console.log('in result');
-        console.log(JSON.stringify(user));
-        console.log(user);
-        if (err) {
-            console.log("Inside err");
-            res.status(400).json({
-                success: false,
-                message: "System Error, Try Again."
-            })
+    client.get(`profile:${req.query.email}`, (err, result) => {
+        // If that key exist in Redis store
+        if (result) {
+            console.log("if");
+            const resultJSON = JSON.parse(result);
+            return res.status(200).json(resultJSON);
         } else {
-            if (Object.keys(user).length != 0) {
-                // client.setex(`profile:${req.query.email}`, 3600, JSON.stringify({ source: 'Redis Cache', ...user, }));
-                res.writeHead(200, {
-                    'Content-Type': 'application/json'
-                })
-                res.end(JSON.stringify(user));
-            } else {
-                res.status(400).json({
-                    success: false,
-                    message: "!User is not yet registerd"
-                })
-            }
+            console.log("else");
+            kafka.make_request('user_profile_display', req.query, function (err, user) {
+                console.log('in result');
+                console.log(JSON.stringify(user));
+                console.log(user);
+                if (err) {
+                    console.log("Inside err");
+                    res.status(400).json({
+                        success: false,
+                        message: "System Error, Try Again."
+                    })
+                } else {
+                    if (Object.keys(user).length != 0) {
+                        client.setex(`profile:${req.query.email}`, 3, JSON.stringify({ source: 'Redis Cache', ...user, }));
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json'
+                        })
+                        res.end(JSON.stringify(user));
+                    } else {
+                        res.status(400).json({
+                            success: false,
+                            message: "!User is not yet registerd"
+                        })
+                    }
+                }
+            })
         }
     })
 }

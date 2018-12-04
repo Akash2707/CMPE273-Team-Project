@@ -15,7 +15,7 @@ class ViewProfile extends Component {
         this.state = {
             profile: {},
             skills: [],
-            profilePhoto: "http://localhost:3001/download/userdefault.png",
+            profilePhoto: "http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png",
             imageURL: "",
             fName: "",
             lName: "",
@@ -41,7 +41,7 @@ class ViewProfile extends Component {
         var email=this.props.location.state.email;
         }catch(e){}
         console.log(email)
-        axios.get('http://localhost:3001/recruiter/profile',
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/recruiter/profile',
             {
                 //  headers: { Authorization: localStorage.getItem('token') },
                 params: {
@@ -88,7 +88,7 @@ class ViewProfile extends Component {
     onWithdraw(connection_email, e) {
         console.log(connection_email)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/requestwithdraw', {
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestwithdraw', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 user_email: localStorage.getItem('email'),
@@ -116,7 +116,7 @@ class ViewProfile extends Component {
     }
     onAccept(connection_email, e) {
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/requestaccept', {
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/requestaccept', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 user_email: localStorage.getItem('email'),
@@ -137,7 +137,7 @@ class ViewProfile extends Component {
     onConnect(email, e) {
         //   var data={sender_email:localStorage.getItem('email'),reciever_email:email}
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/sendrequest', {
+        axios.put('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/sendrequest', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 sender_email: localStorage.getItem('email'),
@@ -157,7 +157,7 @@ class ViewProfile extends Component {
     }
     onRemove(connection_email,e){
         axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/removeconnect', {headers: { Authorization: localStorage.getItem('token')},
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/removeconnect', {headers: { Authorization: localStorage.getItem('token')},
         params: {
             user_email:localStorage.getItem('email'),
             connection_email:connection_email

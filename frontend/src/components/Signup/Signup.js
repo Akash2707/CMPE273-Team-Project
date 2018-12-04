@@ -227,7 +227,7 @@ const mapDispatchToProps = dispatch => {
             data["state"] = state
 
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/signup', data)
+            axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/signup', data)
                 .then((response) => {
                     console.log(response.data)
                     dispatch({ type: 'SIGNUP', payload: response.data, statusCode: response.status })

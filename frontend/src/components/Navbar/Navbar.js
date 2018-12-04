@@ -74,7 +74,7 @@ class Navbar extends Component {
     deleteAccountHandler = () => {
 
         if (window.confirm(" Are you sure to delete your account ? ")) {
-            axios.delete('http://localhost:3001/deleteAnAccount', {
+            axios.delete('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/deleteAnAccount', {
                 params: {
                     email: localStorage.getItem('email')
                 }
@@ -91,6 +91,9 @@ class Navbar extends Component {
             localStorage.removeItem('email')
             localStorage.removeItem('id')
             localStorage.removeItem('isRecruiter')
+            localStorage.removeItem('state')
+            localStorage.removeItem('name')
+            localStorage.removeItem('profileImage')
             let detailPage = null
             detailPage = this.props.history.push({
                 pathname: "/login",

@@ -128,7 +128,7 @@ const mapDispatchStateToProps = dispatch => {
     submitJob: (values) => {
       console.log(values)
       axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/add/job', values, {headers: { Authorization: localStorage.getItem('token')},
+      axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/add/job', values, {headers: { Authorization: localStorage.getItem('token')},
       params: {
           email: localStorage.getItem("email")
       }})

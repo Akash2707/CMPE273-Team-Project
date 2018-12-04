@@ -27,7 +27,7 @@ class Messaging extends Component {
 
     componentDidMount() {
         console.log(this.props.location.state);
-        axios.get('http://localhost:3001/conversation', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/conversation', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),
@@ -50,7 +50,7 @@ class Messaging extends Component {
         }catch(e){}
         console.log(propEmail)
         if(propEmail != null){
-        axios.get('http://localhost:3001/newconversation', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/newconversation', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 name1: localStorage.getItem('name'),
@@ -58,7 +58,7 @@ class Messaging extends Component {
                 email1: localStorage.getItem('email'),
                 email2: propEmail,
                 image1: localStorage.getItem("profileImage"),
-                image2: "http://localhost:3001/download/userdefault.png"
+                image2: "http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png"
             }
         }).then((response) => {
             console.log(response)
@@ -92,7 +92,7 @@ class Messaging extends Component {
         })
 
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/viewmessages', {
+        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/viewmessages', {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 id: idName[0]
@@ -118,7 +118,7 @@ class Messaging extends Component {
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/message', data, {
+        axios.post('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/message', data, {
             headers: { Authorization: localStorage.getItem('token') },
             params: {
                 email: localStorage.getItem('email'),

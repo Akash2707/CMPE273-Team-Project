@@ -240,7 +240,7 @@ const mapDispatchStateToProps = dispatch => {
             axios.defaults.withCredentials = true;
             //make a post request with the user data
 
-            axios.get('http://localhost:3001/search/jobs', {
+            axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/search/jobs', {
                 headers: { Authorization: localStorage.getItem('token') },
                 params: {
                     email: localStorage.getItem('email'),

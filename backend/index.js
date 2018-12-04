@@ -35,7 +35,7 @@ app.use(responseTime());
 require('./config/passport')(passport);
 
 //use cors to allow cross origin resource sharing
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000', 'http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000', 'http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000'], credentials: true }));
 module.exports = app;
 
 app.use(cookieParser('linkedIn'));
@@ -59,7 +59,7 @@ app.use(bodyParser.json());
 
 //Allow Access Control
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000', 'http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000', 'http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000']);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers');
@@ -110,25 +110,25 @@ app.post('/requestaccept', connectionController.acceptrequest);
 app.post('/requestdeny', connectionController.denyrequest);
 app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
-app.post('/removeconnect',connectionController.removeconnect);
+app.post('/removeconnect', connectionController.removeconnect);
 
-app.get('/getRecommendPeople',connectionController.getRecommendPeople);
+app.get('/getRecommendPeople', connectionController.getRecommendPeople);
 
-app.get('/conversation' ,conversationController.checkConversation);
+app.get('/conversation', conversationController.checkConversation);
 app.post('/message', messageController.message);
-app.get('/viewmessages',messageController.messagesView)
+app.get('/viewmessages', messageController.messagesView)
 
-app.delete('/deleteAnAccount',signupController.deleteTheAccount);
-app.get('/getSavedApplicationGraph',recruiterController.getSavedApplicationGraph);
-app.post('/updatejobCount',recruiterController.updateJobCount);
-app.get('/getjobsviewcount',recruiterController.getJobsViewCount);
-app.get('/getlessnoofapplicants',recruiterController.getLessNoOfApplicants);
-app.get('/getjobstitle',recruiterController.getJobsTitle);
-app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
-app.post('/updateLogs',recruiterController.updateLogs);
-app.get('/traceUsers',recruiterController.getTraceUsers);
-app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
-app.put('/edit/job',addJobController.editJob)
+app.delete('/deleteAnAccount', signupController.deleteTheAccount);
+app.get('/getSavedApplicationGraph', recruiterController.getSavedApplicationGraph);
+app.post('/updatejobCount', recruiterController.updateJobCount);
+app.get('/getjobsviewcount', recruiterController.getJobsViewCount);
+app.get('/getlessnoofapplicants', recruiterController.getLessNoOfApplicants);
+app.get('/getjobstitle', recruiterController.getJobsTitle);
+app.get('/getapplicantsbycity', recruiterController.getApplicantsByCity);
+app.post('/updateLogs', recruiterController.updateLogs);
+app.get('/traceUsers', recruiterController.getTraceUsers);
+app.get('/gettoptennoofapplicants', recruiterController.getTopTenNoOfApplicants);
+app.put('/edit/job', addJobController.editJob)
 app.get('/job/applicants', postedJobsController.getApplicants)
 app.get('/newconversation', messageController.newMessage)
 
@@ -138,9 +138,16 @@ app.get('/download/:file(*)', (req, res) => {
     var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
     var params = { Bucket: 'linkedin-bucket', Key: file };
     s3Bucket.getObject(params, function (err, data) {
-        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-        res.write(data.Body, 'binary');
-        res.end(null, 'binary');
+        if (data) {
+            res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+            res.write(data.Body, 'binary');
+            res.end(null, 'binary');
+        } else {
+            res.status(400).json({
+                success: false,
+                message: "System Error, Try Again."
+            })
+        }
     });
 });
 
