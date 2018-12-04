@@ -20,7 +20,8 @@ class Peoples extends Component {
             connected: [],
             sentReq: [],
             hasReq: [],
-            connectcount: 0
+            connectcount: 0,
+            sent:1,rev:2,con:3
         }
         this.onConnect = this.onConnect.bind(this)
         // this.searchPageCount=this.searchPageCount.bind(this)
@@ -171,16 +172,53 @@ class Peoples extends Component {
             }))
     }
     viewConnection(people, e) {
-        this.props.history.push({
-            pathname: '/viewprofile',
-            state: {
-                email: people
-            }
-        })
+        if(this.state.hasReq.includes(people)){
+            this.props.history.push({
+                pathname: '/viewprofile',
+                state: {
+                    email: people,
+                    st:this.state.rev
+
+                }
+            })
+        }
+        else if(this.state.sentReq.includes(people)){
+            this.props.history.push({
+                pathname: '/viewprofile',
+                state: {
+                    email: people,
+                    st:this.state.sent
+                }
+            })
+        }
+        else if(this.state.connected.includes(people)){
+            this.props.history.push({
+                pathname: '/viewprofile',
+                state: {
+                    email: people,
+                    st:this.state.con
+
+                }
+            })
+        }
+        else {
+            this.props.history.push({
+                pathname: '/viewprofile',
+                state: {
+                    email: people,
+                    st:3
+
+                }
+            })
+        }
+        
     }
 
     render() {
-
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         let searchResults = null;
         if (this.state.peoples.length != 0) {
             searchResults = this.state.peoples.map(peoples => {
@@ -188,7 +226,7 @@ class Peoples extends Component {
                 let ButtonDisplay = null
                 if (this.state.hasReq.includes(peoples.email)) {
 
-                    ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-success" onClick={this.onAccept.bind(this, peoples.email)}>Connect</button>
+                    ButtonDisplay =  <button style={{ margin: "20px 5px 0px 35px" }} type="button" class="btn btn-success" onClick={this.onAccept.bind(this, peoples.email)}>Accept</button>
                 }
                 //else if(peoples.requests.receiverequest.includes(localStorage.getItem('email'))){
                 else if (this.state.sentReq.includes(peoples.email)) {
@@ -205,12 +243,12 @@ class Peoples extends Component {
                 }
                 return (
                     <div className="col-md-12 search-result-box">
-                        <div className="col-md-3 search-image-box">
-                            <img className="search-image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                        <div className="col-md-3 search-image-box" onClick={this.viewConnection.bind(this, peoples.email)}>
+                            <img className="search-image-person" src={peoples.imageUrl} />
                         </div>
                         <div className="col-md-6">
                             <h4 style={{ marginTop: "20px", textAlign: "left", color: "#042B89", marginLeft: "20px" }}>{peoples.fName}  {peoples.lName}</h4>
-                            <p style={{ textAlign: "left", fontSize: "15px", marginLeft: "20px" }}>occupation</p>
+                            <p style={{ textAlign: "left", fontSize: "15px", marginLeft: "20px" }}>{peoples.occupation}</p>
                         </div>
                         <div className="col-md-3">
                             {ButtonDisplay}
@@ -229,14 +267,14 @@ class Peoples extends Component {
         let RecommendResults = this.state.recommendPeople.map(recommend => {
             return (
                 <div className="col-md-3 people-box">
-                    <div className="col-md-12 image-box">
+                    <div className="col-md-12 image-box" onClick={this.viewConnection.bind(this, recommend.email)}>
                         <img className="image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
                     </div>
                     <div className="col-md-12">
                         <h6 style={{ marginTop: "20px", textAlign: "center", color: "#042B89" }}>{recommend.fName} {recommend.lName}</h6>
                         <p style={{ textAlign: "center", fontSize: "15px" }}>{recommend.occupation}</p>
                         {/* <button onclick={this.viewConnection.bind(this,recommend.email)} >See Profile</button> */}
-                        <button style={{ margin: "10px 5px 0px 35px" }} type="button" class="btn btn-primary">Connect</button>
+                        <button onClick={this.onConnect.bind(this, recommend.email)} style={{ margin: "10px 5px 0px 35px" }} type="button" class="btn btn-primary">Connect</button>
                     </div>
                 </div>
             )
@@ -244,6 +282,7 @@ class Peoples extends Component {
 
         return (
             <div className="col-md-12" style={{ margin: "auto", marginTop: "70px" }} >
+                {redirectVar}
                 <a id='connectioncount' href='/peoples'>
                 <div className="col-md-2">
                 <div className="col-md-12 your-connection-box">

@@ -68,7 +68,7 @@ class PostJobMain extends Component {
       redirectVar = <Redirect to="/login" />
     }
     if (this.props.jobAdded) {
-      redirectVar = <Redirect to="/applicantLogin" />
+      redirectVar = <Redirect to="/recruiterHome" />
     }
 
     const steps =

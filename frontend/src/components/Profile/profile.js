@@ -407,7 +407,11 @@ class Profile extends Component {
                 })
             });
     }
-
+    connections(e){
+        this.props.history.push({
+            pathname:'/peoples'
+        })   
+     }
 
     render() {
         console.log(this.state.listEducation);
@@ -1033,7 +1037,7 @@ class Profile extends Component {
                                                         </li-icon>
                                                     </span>
                                                 </div>
-                                                <div className="col-md-10" style={{ padding: "0px" }}>
+                                                <div className="col-md-10" style={{ padding: "0px" }} onClick={this.connections.bind(this)}>
                                                     <span className="pv-top-card-v2-section__entity-name pv-top-card-v2-section__connections ml2 t-14 user-prof t-bold">
                                                         See connections
                                                     </span>

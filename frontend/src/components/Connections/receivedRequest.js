@@ -3,13 +3,15 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import ReactPaginate from 'react-paginate';
 import connectionPic from './connection.png'
+import { Redirect } from 'react-router';
 class receivedRequest extends Component{
     constructor(props){
         super(props);
         this.state={
             requests:[],
             isReqFail:false,
-            count:0
+            count:0,
+            rev:2
         }
     }
     componentDidMount(){
@@ -30,7 +32,8 @@ class receivedRequest extends Component{
         this.props.history.push({
             pathname:'/viewprofile',
             state:{
-                email:people
+                email:people,
+                st:this.state.rev
             }
         })   
      }
@@ -71,13 +74,17 @@ class receivedRequest extends Component{
     }
 
     render(){
+        let redirectVar = null
+        if (!localStorage.getItem('email')) {
+            redirectVar = <Redirect to="/login" />
+            }
         let allRequests = null;
         if(this.state.requests !=0){
          allRequests = this.state.requests.map(requests =>{
             return(
-                <div className="col-md-12 request-result-box" onClick={this.viewConnection.bind(this,requests.email)}>
-                <div className="col-md-3 search-image-box">
-                    <img className="search-image-person" src="https://bootdey.com/img/Content/user_1.jpg" />
+                <div className="col-md-12 request-result-box" >
+                <div className="col-md-3 search-image-box"onClick={this.viewConnection.bind(this,requests.email)}>
+                    <img className="search-image-person" src={requests.imageUrl} />
                 </div>
                 <div className="col-md-7">
                     <h4 style={{ marginTop: "20px", textAlign: "left", color: "#042B89", marginLeft: "20px" }}>{requests.fName} {requests.lName}</h4>
@@ -100,6 +107,7 @@ class receivedRequest extends Component{
 
         return(
             <div className="col-md-12">
+            {redirectVar}
             <div className="col-md-1"></div>
             <div className="col-md-8 manage-invitation-box">
                 <h4 style={{ marginTop: "20px",color: "#042B89", fontWeight:"bold" }}>Manage Invitations</h4>

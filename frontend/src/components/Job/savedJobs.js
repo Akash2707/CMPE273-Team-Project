@@ -73,13 +73,17 @@ class SavedJobs extends Component {
     }
 
     render() {
+        let redirectVar = null;
+        if (!localStorage.getItem('email') ) {
+            redirectVar = <Redirect to="/login" />
+        }
 
         let displaySavedJobs = this.state.savedjobs.map(jobs => {
             return (
                 
                     <div className="col-md-12 savedJobsCards">
-                        <div className="col-md-2 savedJobsLogo">
-
+                        <div className="col-md-2 ">
+                            <img style={{height:"100px", width:"100px", overflow:"hidden"}} src={jobs.companyLogo}></img>
                         </div>
                         <div className="col-md-10 bottom-border-jobs">
                         <div className="col-md-7 savedJobsDetails">
@@ -132,6 +136,7 @@ class SavedJobs extends Component {
 
         return (
             <div className="containerFluid" style={{ marginTop: "52px" }}>
+                {redirectVar}
              <div className="col-md-12 ">
                  <div className="col-md-7" >
                  <div className="col-md-12">
@@ -142,7 +147,7 @@ class SavedJobs extends Component {
                
                     <div className="col-md-12 savedJobsBox" style={{paddingTop:"0px"}}>
                     <div className="col-md-12 savedJobsBanner">
-                     <h4 > Jobs Saved</h4>
+                     <h4 > Saved Jobs</h4>
                     </div>
                        
                         {displaySavedJobs}

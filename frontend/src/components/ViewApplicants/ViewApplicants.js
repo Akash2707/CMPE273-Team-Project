@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import PDFReader from "react-pdf-reader";
-import "react-pdf-reader/dist/TextLayerBuilder.css";
-
+import {Page, Document} from "react-pdf";
+import PDF from 'react-pdf-js-infinite';
 class ViewApplicants extends Component {
 
     constructor(props) {
@@ -18,8 +17,37 @@ class ViewApplicants extends Component {
             noApplicants: "",
             errormsg: "",
             id: "",
-            allowEasyApply: ""
+            allowEasyApply: "",
+            numPages: null,
+            pageNumber: 1,
+            resumeFlag: false,
+            resumeFileUrl: '',
+            resumeApplicant: {}
         }
+    }
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages })
+    }
+
+    goToPrevPage = () => {
+        if(this.state.numPages != 1){
+            this.setState(state => ({ pageNumber: this.state.pageNumber - 1 }))
+        }
+    }
+
+    goToNextPage = () => {
+        if(this.state.numPages != 1){
+            this.setState(state => ({ pageNumber: this.state.pageNumber + 1 }))
+        }
+    }
+
+    viewResume = (e) => {
+        this.setState({
+            resumeFlag: !this.state.resumeFlag,
+            resumeFileUrl: e.resume,
+            resumeApplicant: e
+        })
     }
 
     componentDidMount() {
@@ -104,22 +132,72 @@ class ViewApplicants extends Component {
 
     render() {
         console.log(this.state.noApplicants)
+        let redirectVar = null;
+        if (!localStorage.getItem('email') || localStorage.getItem('isRecruiter') == "false") {
+            redirectVar = <Redirect to="/login" />
+        }
+        
+        // if(this.state.resumeFlag){
+        //     resumeDisplay = (
+        //         <div>
+        //             <div style={{width: 600}}>
+        //                 <Document
+        //                     file = {this.state.resumeFileUrl}
+        //                     onLoadSuccess = {this.onDocumentLoadSuccess}
+        //                 >
+        //                     <Page pageNumber={this.state.pageNumber} width={600} />
+        //                 </Document>
+        //             </div>
+        //             <nav>
+        //                 <button class="prev-button" onClick={this.goToPrevPage}> Prev </button>
+        //                 <button class="prev-button" onClick={this.goToNextPage}> Next </button>
+        //             </nav>
+        //             <p class= "pagenumber-display">
+        //                 Page {this.state.pageNumber} of {this.state.numPages}
+        //             </p>
+        //         </div>
+        //     )
+        // }
         
         let displayApplicants = this.state.applicants.map(applicant => {
+            let resumeDisplay = null
+            if(applicant._id == this.state.resumeApplicant._id && this.state.resumeFlag == true){
+                resumeDisplay = (
+                    <div>
+                        <div style={{width: 600}}>
+                            <Document
+                                file = {this.state.resumeFileUrl}
+                                onLoadSuccess = {this.onDocumentLoadSuccess}
+                            >
+                                <Page pageNumber={this.state.pageNumber} width={600} />
+                            </Document>
+                        </div>
+                        <nav>
+                            <button class="prev-button" onClick={this.goToPrevPage}> Prev </button>
+                            <button class="prev-button" onClick={this.goToNextPage}> Next </button>
+                        </nav>
+                        <p class= "pagenumber-display">
+                            Page {this.state.pageNumber} of {this.state.numPages}
+                        </p>
+                    </div>
+                )
+            }else{
+                resumeDisplay = null
+            }
             return (
                 
                     <div className="col-md-12 applicantsCards bottom-border-jobs">
                         
-                        <div className="col-md-12 savedJobsDetails">
+                        <div className="col-md-12 applicantDetails">
 
                             <h5><b>Name: {applicant.fName} {applicant.lName}</b></h5> 
                             <h6>Email: {applicant.email}</h6>
                             <h6>City: {applicant.address}</h6>
                             <h6>Phone: {applicant.phone}</h6>
-                            <PDFReader
-                                file={applicant.resume}
-                                renderType="canvas"
-                            />
+                            <button className="btn btn-primary" onClick = { () => {this.viewResume(applicant)}} name="ResumeButton" value={applicant.resume}>
+                                <span>View Resume</span>
+                            </button>
+                            {resumeDisplay}
                         </div>
                         
                         
@@ -130,7 +208,7 @@ class ViewApplicants extends Component {
 
         return (
             <div className="containerFluid" style={{ marginTop: "52px" }}>
-                
+                {redirectVar}
                 <div className="col-md-12">
                 <p style={{ color: "red" }}>{this.state.noSavedJobs}</p>
                 <p style={{ color: "red" }}>{this.state.errormsg}</p>

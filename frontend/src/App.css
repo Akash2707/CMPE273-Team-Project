@@ -144,7 +144,7 @@ margin: 0px;
 }
 
 .savedJobsCards{
-  border:1px solid transparent;
+  border-bottom:1px solid #B8BDBE;
   width:97%;
   height:170px;
   margin: 0px 10px 0px 10px;
@@ -154,7 +154,6 @@ margin: 0px;
 .applicantsCards{
   border:1px solid transparent;
   width:97%;
-  height:170px;
   margin: 0px 10px 0px 10px;
   padding: 5px 0px 5px 0px;
 }
@@ -169,7 +168,7 @@ margin: 0px;
 }
 
 .savedJobsLogo{
-  border:1px solid #B8BDBE;
+  border:1px solid transparent;
   width:80px;
   height:80px;
   margin: 15px 25px;
@@ -179,6 +178,13 @@ margin: 0px;
   border:1px solid transparent;
   width:90%;
   height:125px;
+  margin: 0px 0px 20px 30px;
+  padding: 5px 0px 5px 0px;
+}
+
+.applicantDetails{
+  border:1px solid transparent;
+  width:90%;
   margin: 0px 0px 20px 30px;
   padding: 5px 0px 5px 0px;
 }

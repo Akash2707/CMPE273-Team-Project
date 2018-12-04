@@ -14,8 +14,8 @@ const driver = neo4j.driver('bolt://ec2-3-17-8-206.us-east-2.compute.amazonaws.c
         var data = []
         var count=0
         var resultPromise = session.run(
-            'match(n: User {email : $mail}), (p: User) where not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
-                {mail : msg.email }
+            'match(n: User {email : $mail}), (p: User) where not (n)-[:sent]->(p) and not (p)-[:hasRequest]->(n) and not (n)-[:connected]->(p) and n.location = p.location and n.email <> p.email return (p) LIMIT 10',
+               {mail : msg.email }
         )
                 resultPromise.then(result => {
 
