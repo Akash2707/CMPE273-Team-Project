@@ -43,13 +43,13 @@ class connectionList extends Component{
               }
           })   
        }
-       Message(name,email,e){
+       Message(name,email,url,e){
           this.props.history.push({
               pathname:'/messaging',
               state:{
                   name:name,
-                  email : email
-                 
+                  email : email,
+                  profilePhoto : url
               }
           })   
        }
@@ -88,7 +88,7 @@ class connectionList extends Component{
                     <a onClick={this.viewConnection.bind(this,connections.email)}><label style={{marginLeft:"20px", textDecoration:"underline", color:"blue"}}>View Profile</label></a>
                 </div>
                 <div className="col-md-3">
-                <button style={{ margin: "30px 5px 0px 0px" }} type="button" class="btn btn-primary" onClick={this.Message.bind(this,connections.fName + " " + connections.lName,connections.email)}>Message</button>
+                <button style={{ margin: "30px 5px 0px 0px" }} type="button" class="btn btn-primary" onClick={this.Message.bind(this,connections.fName + " " + connections.lName,connections.email,connections.imageUrl)}>Message</button>
                     <button style={{ margin: "30px 5px 0px 0px" }} type="button" class="btn btn-secondary" onClick={this.onRemove.bind(this,connections.email)}>Remove</button>
                    
                 </div>

@@ -83,6 +83,7 @@ class SearchJobDisplay extends Component {
     };
 
     jobDetailPage(job) {
+        job.created_at = job.created_at.slice(0, 10)
         if (localStorage.getItem('email')) {
             this.props.getDetailJob(job)
             this.setState({

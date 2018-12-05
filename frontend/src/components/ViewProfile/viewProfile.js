@@ -76,6 +76,20 @@ class ViewProfile extends Component {
                 })
             });
             console.log(this.state.userLocation)
+
+            const profileViewCount = {
+                email: localStorage.getItem('email'),
+                profileEmail: email,
+            }
+            axios.put('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/profilecount', profileViewCount, {
+                headers: { Authorization: localStorage.getItem('token') },
+            })
+                .then(response => {
+                    console.log("Status Code : ", response);
+                })
+                .catch(error => {
+                    console.log("Error : ", error);
+                });
     }
 
     isConnected(){

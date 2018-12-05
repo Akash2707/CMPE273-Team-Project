@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import ReactChartkick, { BarChart, PieChart, ColumnChart } from 'react-chartkick'
+import Chart from 'chart.js';
 import '../../profileCss/Profile.css'
 
 class Profile extends Component {
@@ -55,7 +57,9 @@ class Profile extends Component {
             listEducation: [],
             skillchecked: false,
             educhecked: false,
-            expCheck: false
+            expCheck: false,
+            count: 0,
+            profileViewData: ["Number of people"],
 
         }
         this.onChangeSkillsFunction = this.onChangeSkillsFunction.bind(this);
@@ -85,6 +89,8 @@ class Profile extends Component {
             })
             .then((response) => {
                 console.log(response)
+                var jData = []
+                jData.push(["No. of People", response.data.totalViews])
                 //update the state with the response data
                 this.setState({
                     profile: response.data,
@@ -100,6 +106,9 @@ class Profile extends Component {
                     address: response.data.address,
                     summary: response.data.summary,
                     resume: response.data.resume,
+                    count: response.data.totalViews,
+                    profileViewData: jData
+
                 });
                 if (response.data.profilePhoto) {
                     this.setState({
@@ -108,7 +117,7 @@ class Profile extends Component {
                 }
                 if (response.data.skills) {
                     this.setState({
-                        skills : response.data.skills.split(',')
+                        skills: response.data.skills.split(',')
                     })
                 }
             }).catch(error => {
@@ -128,7 +137,7 @@ class Profile extends Component {
     expAddHandler(education) {
         this.setState({
             expCheck: true,
-            
+
 
         })
     }
@@ -251,18 +260,18 @@ class Profile extends Component {
         // console.log(data);
 
         let data = new FormData()
-        data.append("fName",this.state.fName)
+        data.append("fName", this.state.fName)
         data.append("lName", this.state.lName)
         data.append("headline", this.state.headline)
         data.append("education", this.state.education)
         data.append("country", this.state.country)
         data.append("zipCode", this.state.zipCode)
-        data.append("state",  this.state.userLocation)
+        data.append("state", this.state.userLocation)
         data.append("industry", this.state.industry)
         data.append("phone", this.state.phone)
         data.append("resume", this.state.resume)
         data.append("address", this.state.address)
-        data.append("summary",this.state.summary)
+        data.append("summary", this.state.summary)
         console.log(data)
 
 
@@ -334,7 +343,7 @@ class Profile extends Component {
     }
 
     educationUpdate = (e) => {
-        e.preventDefault();
+
         if (this.state.eduCheck == true) {
             var data = {
                 school: this.state.school,
@@ -407,19 +416,21 @@ class Profile extends Component {
                 })
             });
     }
-    connections(e){
+    connections(e) {
         this.props.history.push({
-            pathname:'/peoples'
-        })   
-     }
+            pathname: '/peoples'
+        })
+    }
 
     render() {
-        console.log(this.state.listEducation);
+        console.log(this.state.count);
+
+        console.log(this.state.profileViewData);
         var dropdown = null;
         var expdropDown = null;
         var dismiss = null;
         let redirectVar = null;
-        if (!localStorage.getItem('email') ) {
+        if (!localStorage.getItem('email')) {
             redirectVar = <Redirect to="/login" />
         }
 
@@ -724,7 +735,7 @@ class Profile extends Component {
                                         </div>
                                     </div>
                                     <div class="modal-body">
-                                        <form name="editEdu" style={{ marginTop: "10px" }} onSubmit = { () => this.educationUpdate()}>
+                                        <form name="editEdu" style={{ marginTop: "10px" }} onSubmit={() => this.educationUpdate()}>
                                             <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                                 <label>School</label>
                                                 <input type="text" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.school} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
@@ -740,7 +751,7 @@ class Profile extends Component {
                                             </div>
                                             <div className="col-md-12 form-group pop-up">
                                                 <label>Grade</label>
-                                                <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} defaultValue={this.state.listEducation.grade} className="form-control" name="grade" />
+                                                <input type="number" onChange={(e) => this.onEduChangeHandle(e, index)} min = "0" max = "4" step = "0.1" defaultValue={this.state.listEducation.grade} className="form-control" name="grade" />
                                             </div>
                                             <div className="col-md-12 form-group pop-up">
                                                 <div className="col-md-5" style={{ padding: "0px" }}>
@@ -858,7 +869,7 @@ class Profile extends Component {
 
         return (
             <div style={{ margin: "auto", maxWidth: "70%", marginTop: "50px" }}>
-            {redirectVar}
+                {redirectVar}
                 <div className="card">
                     <img className="card-img-top" style={{ width: "100%" }} src="http://svgur.com/i/66g.svg" alt="Card image cap" />
                     <div className="pv-top-card-section__profile-photo-container pv-top-card-v2-section__profile-photo-container" >
@@ -937,7 +948,7 @@ class Profile extends Component {
                                             <div className="col-md-2"></div>
                                             <div className="col-md-5 form-group pop-up" style={{ marginTop: "20px", padding: "0px" }}>
                                                 <label>Zip code</label>
-                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" placeholder="Zip Code" />
+                                                <input type="text" className="form-control" onChange={this.onChangeHandle} defaultValue={this.state.zipCode} name="zipCode" pattern = "(^\d{5}$)|(^\d{5}-\d{4}$)" title = "Enter either 5 digit (xxxxx) or 9 digit (xxxxx-xxxx) Zip code"  placeholder="Zip Code" />
                                             </div>
                                         </div>
                                         <div className="col-md-12 form-group pop-up">
@@ -962,7 +973,7 @@ class Profile extends Component {
                                         </div>
                                         <div className="col-md-12 form-group">
                                             <label>Resume</label>
-                                            <input type="file"  onChange={this.resumeHandler} className="form-control" name="resume" accept=".pdf" placeholder="Resume" />
+                                            <input type="file" onChange={this.resumeHandler} className="form-control" name="resume" accept=".pdf" placeholder="Resume" />
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-primary " type="submit" value="Submit">Submit</button>
@@ -1098,7 +1109,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form name="addExp" style={{ marginTop: "10px" }} onSubmit={this.experienceUpdate}>
+                                <form name="addExp" style={{ marginTop: "10px" }} onSubmit={() => this.experienceUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label>Title</label>
                                         <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="title" placeholder="Ex. Manager" required />
@@ -1239,7 +1250,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form name="addEdu" style={{ marginTop: "10px" }} onSubmit={this.educationUpdate}>
+                                <form name="addEdu" style={{ marginTop: "10px" }}  onSubmit={() => this.educationUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label>School</label>
                                         <input type="text" onChange={this.onChangeHandle} className="form-control" style={{ background: "#ffffff" }} name="school" placeholder="Ex. Boston University" required />
@@ -1255,7 +1266,7 @@ class Profile extends Component {
                                     </div>
                                     <div className="col-md-12 form-group pop-up">
                                         <label>Grade</label>
-                                        <input type="number" onChange={this.onChangeHandle} className="form-control" name="grade" />
+                                        <input type="number" onChange={this.onChangeHandle}   min = "0" max = "4" step = "0.1" className="form-control" name="grade" />
                                     </div>
                                     <div className="col-md-12 form-group pop-up">
                                         <div className="col-md-5" style={{ padding: "0px" }}>
@@ -1393,11 +1404,11 @@ class Profile extends Component {
                         </header>
                         <ul>
                             <div class="pv-entity__summary-info pv-entity__summary-info--background-section mb2">
-                            <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
+                                <hr style={{ marginLeft: "30px", marginRight: "30px" }} />
                                 <div className="row" >
-                                
+
                                     <div>
-                                       
+
                                         {skills}
                                     </div>
                                 </div>
@@ -1420,7 +1431,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form className="form" style={{ marginTop: "10px" }} onSubmit={()=>this.skillUpdate()}>
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={() => this.skillUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label for="skills">Skills</label>
                                         <Typeahead
@@ -1460,7 +1471,7 @@ class Profile extends Component {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form className="form" style={{ marginTop: "10px" }} onSubmit={()=>this.skillUpdate()}>
+                                <form className="form" style={{ marginTop: "10px" }} onSubmit={() => this.skillUpdate()}>
                                     <div className="col-md-12 form-group pop-up" style={{ marginTop: "20px" }}>
                                         <label for="skills">Skills</label>
                                         <Typeahead
@@ -1485,7 +1496,12 @@ class Profile extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="card" style={{ marginTop: "40px", marginBottom : "20px" , padding: "25px", height: '400px' , margin: "auto", maxWidth: "100%"}}>
+                    <h4 style={{ marginBottom: "40px" }}>Number of People who viewed your application</h4>
+                    <PieChart data={this.state.profileViewData} donut={true} legend="bottom" />
+                </div>
             </div>
+                    
 
         )
     }

@@ -35,7 +35,7 @@ app.use(responseTime());
 require('./config/passport')(passport);
 
 //use cors to allow cross origin resource sharing
-app.use(cors({ origin: ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000', 'http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000', 'http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000'], credentials: true }));
+app.use(cors({ origin: 'http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000', credentials: true }));
 module.exports = app;
 
 app.use(cookieParser('linkedIn'));
@@ -46,7 +46,7 @@ app.use(session({
     secret: 'linkedIn',
     resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
     saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
-    duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
+    duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
     activeDuration: 5 * 60 * 1000
 }));
 
@@ -59,7 +59,7 @@ app.use(bodyParser.json());
 
 //Allow Access Control
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', ['http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000', 'http://ec2-3-16-98-239.us-east-2.compute.amazonaws.com:3000', 'http://ec2-18-216-56-12.us-east-2.compute.amazonaws.com:3000']);
+    res.setHeader('Access-Control-Allow-Origin', 'http://linkedin-frontend-elb-1770071659.us-east-2.elb.amazonaws.com:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers');
@@ -81,7 +81,7 @@ var messageController = require('./controllers/messageController')
 var savedJobsController = require('./controllers/SavedJobsController')
 var postedJobsController = require('./controllers/PostedJobController')
 var recruiterController = require('./controllers/RecruiterController')
-
+var profileCountController = require('./controllers/profileController')
 
 app.post('/login', loginController.authenticate);
 app.post('/signup', signupController.register);
@@ -110,27 +110,28 @@ app.post('/requestaccept', connectionController.acceptrequest);
 app.post('/requestdeny', connectionController.denyrequest);
 app.post('/requestwithdraw', connectionController.withdrawrequest);
 app.get('/getConnections', connectionController.getConnections);
-app.post('/removeconnect', connectionController.removeconnect);
+app.post('/removeconnect',connectionController.removeconnect);
 
-app.get('/getRecommendPeople', connectionController.getRecommendPeople);
+app.get('/getRecommendPeople',connectionController.getRecommendPeople);
 
-app.get('/conversation', conversationController.checkConversation);
+app.get('/conversation' ,conversationController.checkConversation);
 app.post('/message', messageController.message);
-app.get('/viewmessages', messageController.messagesView)
+app.get('/viewmessages',messageController.messagesView)
 
-app.delete('/deleteAnAccount', signupController.deleteTheAccount);
-app.get('/getSavedApplicationGraph', recruiterController.getSavedApplicationGraph);
-app.post('/updatejobCount', recruiterController.updateJobCount);
-app.get('/getjobsviewcount', recruiterController.getJobsViewCount);
-app.get('/getlessnoofapplicants', recruiterController.getLessNoOfApplicants);
-app.get('/getjobstitle', recruiterController.getJobsTitle);
-app.get('/getapplicantsbycity', recruiterController.getApplicantsByCity);
-app.post('/updateLogs', recruiterController.updateLogs);
-app.get('/traceUsers', recruiterController.getTraceUsers);
-app.get('/gettoptennoofapplicants', recruiterController.getTopTenNoOfApplicants);
-app.put('/edit/job', addJobController.editJob)
+app.delete('/deleteAnAccount',signupController.deleteTheAccount);
+app.get('/getSavedApplicationGraph',recruiterController.getSavedApplicationGraph);
+app.post('/updatejobCount',recruiterController.updateJobCount);
+app.get('/getjobsviewcount',recruiterController.getJobsViewCount);
+app.get('/getlessnoofapplicants',recruiterController.getLessNoOfApplicants);
+app.get('/getjobstitle',recruiterController.getJobsTitle);
+app.get('/getapplicantsbycity',recruiterController.getApplicantsByCity);
+app.post('/updateLogs',recruiterController.updateLogs);
+app.get('/traceUsers',recruiterController.getTraceUsers);
+app.get('/gettoptennoofapplicants',recruiterController.getTopTenNoOfApplicants);
+app.put('/edit/job',addJobController.editJob)
 app.get('/job/applicants', postedJobsController.getApplicants)
 app.get('/newconversation', messageController.newMessage)
+app.put('/profilecount' , profileCountController.updateProfileCount )
 
 app.get('/download/:file(*)', (req, res) => {
     console.log("Inside download file");
@@ -138,16 +139,9 @@ app.get('/download/:file(*)', (req, res) => {
     var s3Bucket = new AWS.S3({ params: { Bucket: 'linkedin-bucket' } })
     var params = { Bucket: 'linkedin-bucket', Key: file };
     s3Bucket.getObject(params, function (err, data) {
-        if (data) {
-            res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-            res.write(data.Body, 'binary');
-            res.end(null, 'binary');
-        } else {
-            res.status(400).json({
-                success: false,
-                message: "System Error, Try Again."
-            })
-        }
+        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        res.write(data.Body, 'binary');
+        res.end(null, 'binary');
     });
 });
 

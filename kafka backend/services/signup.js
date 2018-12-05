@@ -45,6 +45,7 @@ function handle_request(msg, callback){
                     email : msg.email,
                     isRecruiter : msg.isRecruiter,
                     state: msg.state,
+                    totalViews : 0,
                     profilePhoto: "https://s3.us-east-2.amazonaws.com/linkedin-bucket/userdefault.png"
                 })
                 profile.save();

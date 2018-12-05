@@ -25,7 +25,7 @@ class Messaging extends Component {
         this.onMessageSendHandler = this.onMessageSendHandler.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         console.log(this.props.location.state);
         axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/conversation', {
             headers: { Authorization: localStorage.getItem('token') },
@@ -44,39 +44,40 @@ class Messaging extends Component {
 
             })
         });
-        try{
+        try {
             var propName = this.props.location.state.name
             var propEmail = this.props.location.state.email
-        }catch(e){}
+            var propImage = this.props.location.state.profilePhoto
+        } catch (e) { }
         console.log(propEmail)
-        if(propEmail != null){
-        axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/newconversation', {
-            headers: { Authorization: localStorage.getItem('token') },
-            params: {
-                name1: localStorage.getItem('name'),
-                name2: propName,
-                email1: localStorage.getItem('email'),
-                email2: propEmail,
-                image1: localStorage.getItem("profileImage"),
-                image2: "http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/download/userdefault.png"
-            }
-        }).then((response) => {
-            console.log(response)
-            //update the state with the response data
-            this.setState({
-                listMessage: response.data.messageList.messages,
-                uName :  this.props.location.state.name,
-                uId : response.data.messageList.id
-            })
-        }).catch(error => {
-            console.log("else")
-            this.setState({
+        if (propEmail != null) {
+            axios.get('http://KafkaBackend-Elb-1573375377.us-east-2.elb.amazonaws.com:3001/newconversation', {
+                headers: { Authorization: localStorage.getItem('token') },
+                params: {
+                    name1: localStorage.getItem('name'),
+                    name2: propName,
+                    email1: localStorage.getItem('email'),
+                    email2: propEmail,
+                    image1: localStorage.getItem("profileImage"),
+                    image2: propImage
+                }
+            }).then((response) => {
+                console.log(response)
+                //update the state with the response data
+                this.setState({
+                    listMessage: response.data.messageList.messages,
+                    uName: this.props.location.state.name,
+                    uId: response.data.messageList.id
+                })
+            }).catch(error => {
+                console.log("else")
+                this.setState({
 
-            })
-        });
-        console.log(this.state.listConversation);
+                })
+            });
+            console.log(this.state.listConversation);
+        }
     }
-}
 
 
     messageChangeHandler = (e) => {
@@ -145,44 +146,55 @@ class Messaging extends Component {
         console.log(this.state.listMessage);
         let conversation = null;
         let conversationDisplay = null;
-        let profileDisplay = null;
+        let imageDisplay = null;
         let messageDisplay = null;
         let id = null;
         let name = "";
+        let image = "";
         let redirectVar = null;
-        if (!localStorage.getItem('email') ) {
+        if (!localStorage.getItem('email')) {
             redirectVar = <Redirect to="/login" />
         }
-        if (this.state.listConversation != null) {
-            conversationDisplay = this.state.listConversation.map((conversation) => {
-                id = conversation._id
-                let participants = conversation.participants
-                profileDisplay = conversation.participantsImage[1];
-                console.log(participants);
-                console.log(participants.length);
-                for (let i = 0; i < participants.length; i++) {
-                    if (localStorage.getItem('name') != participants[i]) {
-                        name = participants[i]
-                        console.log(name);
+        try {
+            if (this.state.listConversation.length != 0) {
+                conversationDisplay = this.state.listConversation.map((conversation) => {
+                    id = conversation._id
+                    let participants = conversation.participants
+                    imageDisplay = conversation.participantsImage;
+                    console.log(participants);
+                    console.log(participants.length);
+                    for (let i = 0; i < participants.length; i++) {
+                        if (localStorage.getItem('name') != participants[i]) {
+                            name = participants[i]
+                            console.log(name);
+                        }
                     }
-                }
-                var idName = [conversation._id, name]
-                return (<div>
-                    <hr style={{ margin: "0px" }} />
-                    <div class="row" style={{ margin: "10px", marginTop: "15px", cursor: "pointer" }} onClick={() => { this.onMessageViewHandler(idName) }}>
-                        <div class="col-md-2">
-                            <div aria-label="Kevin Bell Romero" id="ember1389" class=" presence-entity__image EntityPhoto-circle-4 ember-view" style={{ backgroundImage: `url(${profileDisplay})` }}    >
-                                <span class="visually-hidden">Demo Man</span>
+                    for (let i = 0; i < imageDisplay.length; i++) {
+                        if (localStorage.getItem('profileImage') != imageDisplay[i]) {
+                            image = imageDisplay[i]
+                            console.log(image);
+                        }
+                    }
+                    var idName = [conversation._id, name]
+                    return (<div>
+                        <hr style={{ margin: "0px" }} />
+                        <div class="row" style={{ margin: "10px", marginTop: "15px", cursor: "pointer" }} onClick={() => { this.onMessageViewHandler(idName) }}>
+                            <div class="col-md-2">
+                                <div aria-label="Kevin Bell Romero" id="ember1389" class=" presence-entity__image EntityPhoto-circle-4 ember-view" style={{ backgroundImage: `url(${image})` }}    >
+                                    <span class="visually-hidden">Demo Man</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8" style={{ marginTop: "10px" }}>
+                                <label>{name}</label>
                             </div>
                         </div>
-                        <div class="col-md-8" style={{ marginTop: "10px" }}>
-                            <label>{name}</label>
-                        </div>
                     </div>
-                </div>
-                )
-            })
-            if (this.state.listMessage != null) {
+                    )
+                })
+            }
+        } catch (e) { }
+        try {
+            if (this.state.listMessage.length != 0) {
                 messageDisplay = this.state.listMessage.map((message) => {
                     console.log("render ID" + message.timeCreated);
                     return (
@@ -205,7 +217,8 @@ class Messaging extends Component {
 
                 })
             }
-        }
+        } catch (e) { }
+
 
         console.log(this.state.listConversation);
         return (
@@ -263,8 +276,8 @@ class Messaging extends Component {
                         </div>
                     </div>
                 </div>
-                <form onSubmit= {this.onMessageSendHandler}>
-                <button class="btn message-btn" style={{ marginTop: "600px", marginLeft: "-80px" }} type="submit"  value="Send">Send</button>
+                <form onSubmit={this.onMessageSendHandler}>
+                    <button class="btn message-btn" style={{ marginTop: "600px", marginLeft: "-80px" }} type="submit" value="Send">Send</button>
                 </form>
             </div >
         )

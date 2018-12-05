@@ -138,7 +138,8 @@ class SavedJobs extends Component {
             <div className="containerFluid" style={{ marginTop: "52px" }}>
                 {redirectVar}
              <div className="col-md-12 ">
-                 <div className="col-md-7" >
+             <div className="col-md-2"></div>
+                 <div className="col-md-8" >
                  <div className="col-md-12">
                 <p style={{ color: "red" }}>{this.state.noSavedJobs}</p>
                 <p style={{ color: "red" }}>{this.state.errormsg}</p>
@@ -171,8 +172,8 @@ class SavedJobs extends Component {
                     </div>
                     </div>
                     
-                    <div className="col-md-1"></div>
-                    {displayAppliedJobs}
+                    <div className="col-md-2"></div>
+                    
                 </div>
             </div>
             )}
